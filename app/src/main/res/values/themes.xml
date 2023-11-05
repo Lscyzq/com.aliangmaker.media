@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Media" parent="Base.Theme.Media">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorAccent">@android:color/holo_green_light</item>
+    </style>
+    <style name="Base.Theme.Media" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowSwipeToDismiss">true</item>
+    </style>
+    <style name="Base.Theme.Media.gone" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowSwipeToDismiss">false</item>
+    </style>
+</resources>

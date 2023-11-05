@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+android:shape="ring"
+android:thickness="2dp"
+android:useLevel="false">
+
+<!-- 设置滑块的颜色为红色 -->
+<solid android:color="#FFFFFF" />
+
+<!-- 设置滑块的大小 -->
+<size
+    android:width="17dp"
+    android:height="17dp" />
+</shape>

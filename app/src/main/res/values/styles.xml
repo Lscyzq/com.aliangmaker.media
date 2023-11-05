@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 自定义对话框主题 -->
+    <style name="CustomDialogTheme" >
+        <!-- 设置背景颜色为黑色 -->
+        <item name="android:background">@android:color/black</item>
+        <!-- 设置文本颜色为白色 -->
+        <item name="android:textColor">@android:color/white</item>
+        <!-- 添加其他样式设置，根据需要进行自定义 -->
+
+    </style>
+
+</resources>

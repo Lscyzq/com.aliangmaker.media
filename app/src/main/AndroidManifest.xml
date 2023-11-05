@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+    <!-- 储存卡读写 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission
+            android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            android:protectionLevel="normal"/>
+    <uses-permission
+            android:name="android.permission.READ_EXTERNAL_STORAGE"
+            android:protectionLevel="normal"/>
+    <uses-permission
+            android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+            tools:ignore="ScopedStorage"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+            android:allowBackup="true"
+            android:alwaysRetainTaskState="true"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:fullBackupContent="@xml/backup_rules"
+            android:icon="@mipmap/ic_launcher_foreground"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:requestLegacyExternalStorage="true"
+            android:resizeableActivity="true"
+            android:supportsRtl="false"
+            android:theme="@style/Theme.Media"
+            android:usesCleartextTraffic="true">
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.aliangmaker.media.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths" />
+        </provider>
+        <activity
+                android:name=".PlaySetActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".DanmakuSetActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".NetOpenActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".GetIntentActivity"
+                android:exported="true">
+
+            <!-- 用于浏览器的配置 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:mimeType="video/*"/>
+
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+            </intent-filter>
+            <!-- 用于文件管理器的配置 -->
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="video/*"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".AppAboutActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".HandleActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".DisplayActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".AboutActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".FileEmptyActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".ListVideoBiliActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".EmptyActivity"
+                android:exported="false"/>
+
+        <service
+                android:name=".SaveGetVideoProgressService"
+                android:exported="true"/>
+
+        <activity
+                android:name=".VideoPlayerActivity"
+                android:configChanges="orientation|screenSize"
+                android:exported="true"
+                android:theme="@style/Base.Theme.Media.gone"/>
+        <activity
+                android:name=".ListVideoActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".SettingsActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".FirstsetActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".WelcomeActivity"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.OPEN_DOCUMENT_TREE"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

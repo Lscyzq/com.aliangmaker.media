@@ -1,0 +1,241 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/video_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <FrameLayout
+        android:id="@+id/surface_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
+
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/danmakuSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:id="@+id/top_overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="105px"
+        android:background="@drawable/gradient_overlay_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottom_overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="130px"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_overlay_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="33dp"
+        android:layout_height="32dp"
+        android:indeterminateTint="@android:color/holo_green_light"
+        android:progressTint="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.425" />
+
+    <ImageView
+        android:id="@+id/play_pause_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="22dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:contentDescription="Back Button"
+        android:onClick="onBackButtonClick"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPlaybackSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:text="1.0x"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scr" />
+
+    <ImageView
+        android:id="@+id/screen"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        app:layout_constraintEnd_toStartOf="@+id/play_pause_button"
+        app:layout_constraintTop_toTopOf="@+id/play_pause_button"
+        app:srcCompat="@drawable/rotation" />
+    <ImageView android:layout_width="25dp" android:layout_height="25dp"
+               android:id="@+id/lc"
+               android:src="@drawable/unlock"
+               android:layout_marginStart="4dp"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/current_time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/seekbar"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/current_time38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/seekbar"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/current_time_textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:text="88:88"
+        android:textColor="#FFFFFF"
+        android:textSize="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="36dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:progressTint="@android:color/holo_green_light"
+        android:thumb="@drawable/custom_thumb"
+        android:thumbTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/gray_rounded_corner"
+        android:text="倍速播放中"
+        app:layout_constraintBottom_toTopOf="@+id/current_time_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/play_pause_button"
+        app:layout_constraintTop_toTopOf="@+id/play_pause_button"
+        app:srcCompat="@drawable/round_data_usage_24" />
+
+    <ImageView
+        android:id="@+id/danmaku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+        app:layout_constraintStart_toEndOf="@+id/imageView13"
+        app:layout_constraintTop_toTopOf="@+id/imageView13"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/danmakuic" />
+
+    <TextView
+        android:id="@+id/wifiSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar3"
+        app:layout_constraintStart_toStartOf="@+id/progressBar3"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar3" />
+    <LinearLayout
+            android:id="@+id/scr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/back_button"
+            app:layout_constraintEnd_toStartOf="@+id/tvPlaybackSpeed"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintTop_toTopOf="@+id/back_button">
+        <TextView
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="-1"
+                android:ellipsize="marquee"/>
+    </LinearLayout>
+    <View android:layout_width="match_parent" android:layout_height="wrap_content"
+          android:id="@+id/dark"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:visibility="gone"
+          android:background="#5D020202"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Android 9.0 之后不允许使用 HTTP, 只能使用 HTTPS,
+         如果要使用 HTTP , 必须在 application 节点的 android:networkSecurityConfig 属性中
+         配置本文件 -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2"
+        android:name="com.aliangmaker.meida.BaseTitleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView2"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="奔赴山海|为你而来"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:text="当前版本"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:text="历史版本"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+            <TextView
+                android:id="@+id/textView43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="Beta-23.7.30"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+            <TextView
+                android:id="@+id/textView47"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="Beta-23.8.3"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+            <TextView
+                android:id="@+id/textView53"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="2.4.3"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView56" />
+
+            <TextView
+                android:id="@+id/textView55"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="2.5.4"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="3.6.7"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView62" />
+
+            <TextView
+                    android:id="@+id/textView80"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_shallow_border"
+                    android:text="3.9.8"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+            <TextView
+                android:id="@+id/textView60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="3.7.8"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView81" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/round_shallow_border"
+                android:text="Beta-23.7.27"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView39" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="梦幻交织中，我们仿佛正经历由云朵掉下的童话，共赴幻境之旅，遇见你～真好！克服一切困难，开发平板生产力，只为～更早地相遇。I am willing to postpone the time I meet with you,only wishing that you can see the better me.\n凉腕播放器于2023.9.30决定恢复更新！"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:textColor="#FFFFFF"
+                android:text="1.新增视频屏锁功能\n2.新增视频下载功能（播放Url中）\n3.新增应用内更新功能\n4.新增服务器地址自动更新\n5.新增播放布局及布局选择\n6.新增夜间模式（可在显示设置中开启）\n7.修复了大部分设备的进度条无法正常呼出问题\n8.更改了视频删除方法（修复ow3无法删除视频）"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            <TextView
+                    android:id="@+id/textView81"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增接入哔哩终端高清播放功能（需要V2.0及以上哔哩终端打开高清播放开关）\n2.新增软硬解设置（感谢“RobinNotBad”提议）\n3.新增卡顿跳帧设置（部分设备解决音画不同步的问题）（感谢“RobinNotBad”支持）\n4.新增实时公告功能\n5.新增弹幕开关记忆功能\n6.优化了检测更新逻辑，流量消耗约减少80%\n7.修改丑陋的黑边弹幕（感谢“SrobotF”提议）"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView80" />
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:text="继承于Beta-23.7.27：\n1.实现单指缩放播放功能（你可以通过“设置-操作设置-单指缩放”来开启）\n2.实现播放时进度条底端可显示\n3.实现可持续倍速功能\n4.适配普通安卓11系统（ow3除外）\n5.新增首次运行可进入引导说明\n6.视频尺寸状态改变后可恢复（“YaYa”提议）\n7.修复了部分bug"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView43" />
+
+            <TextView
+                android:id="@+id/textView48"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:text="继承于Beta-23.7.30：\n1.实现检测更新功能（“关于-应用信息”界面）\n2.实现更新完成后首次运行引导进入“更新日志”\n3.修复了部分bug"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView47" />
+
+            <TextView
+                android:id="@+id/textView54"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:text="继承于Beta-23.8.3：\n1.实现圆屏自动适配\n2.修复了部分bug\n3.封锁了安卓11及以上设备接入腕上哔哩的通道"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+            <TextView
+                android:id="@+id/textView56"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:text="1.新增通过Url打开网络视频\n2.新增可通过其他（文件管理器、浏览器等）APP调用凉腕播放器进行播放\n3.修复了倍速播放不连贯的问题\n4.修复了暂停后的进度返回问题"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView55" />
+
+            <TextView
+                android:id="@+id/textView58"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:text="1.新增接入腕上哔哩缓存弹幕功能\n2.新增弹幕设置选项\n3.优化Url视频播放逻辑，彻底解决了因播放器原因导致的缓冲问题（网络问题除外）\n4.优化了部分文字说明\n5.修复了长按倍速播放后导致的问题\n6.适配了ow3系列设备，彻底解决了ow3系列腕上哔哩无法接入的问题\n7.修复了圆屏手表的闪退问题\n8.更新了隐私条款相关内容\n9.提升彩蛋接口的稳定性"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/textView62"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:text="1.新增接入哔哩哔哩终端（新第三方哔哩哔哩APP）实现哔哩哔哩实时播放功能\n2.新增彩蛋更新提醒指引\n3.新增彩蛋链接url动态获取，以彻底解决因彩蛋链接容易失效而导致无法播放的问题\n4.新增网络视频播放动态获取缓冲速度功能\n5.优化视频播放逻辑，新增视频缓冲功能\n6.优化了更新指引逻辑，新增网盘更新功能\n7.新增开发者接入凉腕指引\n8.新增进度条显示缓冲进度\n9.修复了从本地文件管理器等应用调用凉腕播放器播放时的闪退问题"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView60" />
+
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="35dp"
+                android:ellipsize="end"
+                android:text="1.实现双指实时缩放视频\n2.实现播放时长按倍速播放\n3.实现视频播放记录保存\n4.可设置屏幕方向/列表字号/播完返回\n5.实现接入腕上哔哩\n6.实现长按删除功能\n7.实现视频列表缩略图预览\n8.其他基本功能"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView44" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/version"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView23"
+                app:layout_constraintStart_toEndOf="@+id/textView23" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

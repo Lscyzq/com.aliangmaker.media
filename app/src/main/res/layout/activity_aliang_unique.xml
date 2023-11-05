@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView3"
+        android:name="com.aliangmaker.meida.BaseTitleFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView3"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="小可爱:\n        你好啊！\n        我是阿凉，时光正好，微风不燥，很高兴能在这里与你见面，也非常感谢你对阿凉的信任！\n        凉腕播放器是阿凉自2023年4月8日以来不懈完善的作品，一路上虽然艰辛，但也因为很多开发者的陪伴，以及你对我的鼓励而不再孤单。阿凉的产品永远不会收费，因为你的每一句感谢都会给阿凉带来满满的幸福感。\n        作为一名住校高中生，随着课程难度的增加，阿凉是多么希望在宿舍时，能够听一听课程。学校唯一能带的电子设备可能也就是手表，看着这若小的屏幕，阿凉的开发之路由此开始。\n        如果你也是高中生，但愿这小小的屏幕能够折射出不一样的世界，每当你在奋斗，阿凉也在陪伴着你。点点微火，似星辰大海，披星戴月走过的路，一定能有所收获！\n        中华民族几千年来，波澜壮阔，浩瀚无垠的名族复兴图景，镌刻了一代又一代人艰苦卓绝，不懈奋斗的身影，少年啊！用我们的智慧和力量，接过时代的星火！"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="34dp"
+                android:layout_height="33dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/aliangface" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

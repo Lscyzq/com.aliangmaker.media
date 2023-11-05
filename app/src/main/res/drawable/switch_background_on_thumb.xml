@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 设置滑块的颜色，这里使用一个红色圆角矩形作为示例 -->
+    <solid android:color="#FFFFFF" />
+
+    <!-- 设置滑块的大小 -->
+    <size
+        android:width="17dp"
+        android:height="17dp" />
+</shape>
