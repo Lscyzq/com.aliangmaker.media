@@ -382,7 +382,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     textRun.setVisibility(View.VISIBLE);
                     ijkMediaPlayer.setSpeed(2.0f);
                     setDanmakuSpeed(CurrentSpeed,(Float)getDanmakuSet("danmakuSpeed")*0.5f);
-                    1
+                    12
                     super.onLongPress(e);
                 }
                 // 在这里处理长按事件
