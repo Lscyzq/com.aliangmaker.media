@@ -21,16 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
@@ -46,6 +36,15 @@ import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import static java.security.AccessController.getContext;
 
@@ -311,6 +310,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 }
                 @Override
                 public void updateTimer(DanmakuTimer timer) {
+                    timer.update(ijkMediaPlayer.getCurrentPosition());
                 }
                 @Override
                 public void danmakuShown(BaseDanmaku danmaku) {
@@ -366,7 +366,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "flush_packets");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 1);
-
+        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         tvPlaybackSpeed.setOnClickListener(v -> showPlaybackSpeedMenu(v));
         textRegain.setOnClickListener(v -> {
             surfaceContainer.setScaleX(1f);
@@ -374,6 +374,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             scaleFactor = 1f;
             handler.postDelayed(resetVideoViewPosition,0);
         });
+
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
@@ -381,6 +382,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     textRun.setVisibility(View.VISIBLE);
                     ijkMediaPlayer.setSpeed(2.0f);
                     setDanmakuSpeed(CurrentSpeed,(Float)getDanmakuSet("danmakuSpeed")*0.5f);
+                    1
                     super.onLongPress(e);
                 }
                 // 在这里处理长按事件

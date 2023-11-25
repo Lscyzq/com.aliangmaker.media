@@ -3,6 +3,7 @@ package com.aliangmaker.meida;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
@@ -135,6 +136,7 @@ public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String filePath) {
+        Toast.makeText(context, "finish", Toast.LENGTH_SHORT).show();
         listener.onDanmakuDownloaded();
     }
 }

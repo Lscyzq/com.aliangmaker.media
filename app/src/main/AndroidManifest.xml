@@ -100,9 +100,10 @@
 
         <activity
                 android:name=".VideoPlayerActivity"
-                android:configChanges="orientation|screenSize"
+                android:configChanges="orientation|screenSize|keyboardHidden"
                 android:exported="true"
-                android:theme="@style/Base.Theme.Media.gone"/>
+                android:theme="@style/Base.Theme.Media.gone"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ListVideoActivity"
                 android:exported="false"/>

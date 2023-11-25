@@ -21,7 +21,6 @@ public class ChangeServerTask extends AsyncTask<Void, Void, String> {
     public ChangeServerTask(Context context) {
         mContext = context;
     }
-    Boolean isOK = true;
     @Override
     protected String doInBackground(Void... voids) {
         HttpURLConnection urlConnection = null;
@@ -43,10 +42,16 @@ public class ChangeServerTask extends AsyncTask<Void, Void, String> {
                 String server = jsonObject.getString("server");
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences("stage",Context.MODE_PRIVATE);
                 sharedPreferences.edit().putString("server",server).apply();
-            }else isOK = false;
+                if (!(mContext instanceof MainActivity)) {
+                    Toast.makeText(mContext, "服务器地址已更新，如若再次失败，请等待几分钟再试", Toast.LENGTH_SHORT).show();
+                }
+            }else if (!(mContext instanceof MainActivity)) {
+                Toast.makeText(mContext, "服务器地址更新失败，请进群反馈", Toast.LENGTH_SHORT).show();
+            }
         } catch (IOException | JSONException e) {
-            isOK = false;
             e.printStackTrace();
+            if (!(mContext instanceof MainActivity)) {
+                Toast.makeText(mContext, "服务器地址更新失败，请进群反馈", Toast.LENGTH_SHORT).show();}
             // 设置请求异常的标志
         } finally {
             if (urlConnection != null) {
@@ -58,11 +63,6 @@ public class ChangeServerTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String a) {
-        if (!(mContext instanceof MainActivity) && isOK) {
-            Toast.makeText(mContext, "服务器地址已更新，如若再次失败，请等待几分钟再试", Toast.LENGTH_SHORT).show();
-        }else if (!(mContext instanceof MainActivity) && !isOK) {
-            Toast.makeText(mContext, "服务器地址更新失败，请进群反馈", Toast.LENGTH_SHORT).show();
-        }
         super.onPostExecute(a);
     }
 }
