@@ -42,18 +42,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="12dp"
-                android:text="当前版本"
-                android:textColor="@android:color/holo_green_light"
-                android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <TextView
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +52,58 @@
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
+            <TextView
+                    android:id="@+id/textView83"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_shallow_border"
+                    android:text="3.10.8"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            <TextView
+                    android:id="@+id/textView82"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增视频屏锁功能\n2.新增视频下载功能（播放Url中）\n3.新增应用内更新功能\n4.新增服务器地址自动更新\n5.新增播放布局及布局选择\n6.新增夜间模式（可在显示设置中开启）\n7.修复了大部分设备的进度条无法正常呼出问题\n8.更改了视频删除方法（修复ow3无法删除视频）"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView83" />
 
+
+            <TextView
+                    android:id="@+id/textView80"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_shallow_border"
+                    android:text="3.9.8"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView82" />
+            <TextView
+                    android:id="@+id/textView81"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增接入哔哩终端高清播放功能（需要V2.0及以上哔哩终端打开高清播放开关）\n2.新增软硬解设置（感谢“RobinNotBad”提议）\n3.新增卡顿跳帧设置（部分设备解决音画不同步的问题）（感谢“RobinNotBad”支持）\n4.新增实时公告功能\n5.新增弹幕开关记忆功能\n6.优化了检测更新逻辑，流量消耗约减少80%\n7.修改丑陋的黑边弹幕（感谢“SrobotF”提议）"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView80" />
             <TextView
                 android:id="@+id/textView43"
                 android:layout_width="wrap_content"
@@ -130,18 +169,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
-            <TextView
-                    android:id="@+id/textView80"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/round_shallow_border"
-                    android:text="3.9.8"
-                    android:textColor="#FFFFFF"
-                    android:textSize="17sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
             <TextView
                 android:id="@+id/textView60"
@@ -183,6 +210,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="12dp"
+                    android:text="当前版本"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,23 +230,11 @@
                 android:layout_marginEnd="4dp"
                 android:ellipsize="end"
                 android:textColor="#FFFFFF"
-                android:text="1.新增视频屏锁功能\n2.新增视频下载功能（播放Url中）\n3.新增应用内更新功能\n4.新增服务器地址自动更新\n5.新增播放布局及布局选择\n6.新增夜间模式（可在显示设置中开启）\n7.修复了大部分设备的进度条无法正常呼出问题\n8.更改了视频删除方法（修复ow3无法删除视频）"
+                android:text="1.新增音频输出设置选项以解决部分设备的音画问题（播放设置中）"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
-            <TextView
-                    android:id="@+id/textView81"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:ellipsize="end"
-                    android:textColor="#FFFFFF"
-                    android:text="1.新增接入哔哩终端高清播放功能（需要V2.0及以上哔哩终端打开高清播放开关）\n2.新增软硬解设置（感谢“RobinNotBad”提议）\n3.新增卡顿跳帧设置（部分设备解决音画不同步的问题）（感谢“RobinNotBad”支持）\n4.新增实时公告功能\n5.新增弹幕开关记忆功能\n6.优化了检测更新逻辑，流量消耗约减少80%\n7.修改丑陋的黑边弹幕（感谢“SrobotF”提议）"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView80" />
+
             <TextView
                 android:id="@+id/textView39"
                 android:layout_width="match_parent"

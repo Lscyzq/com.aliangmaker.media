@@ -50,7 +50,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+                app:layout_constraintTop_toBottomOf="@+id/tvypsca" />
 
             <TextView
                 android:id="@+id/pt2"
@@ -102,6 +102,55 @@
                         android:buttonTint="@android:color/holo_green_light"
                         android:text="TextureView" />
             </RadioGroup>
+            <TextView
+                    android:id="@+id/tvypsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="5dp"
+                    android:text="音频输出"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+            <RadioGroup
+                    android:id="@+id/rgypsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvypsc">
+
+                <RadioButton
+                        android:id="@+id/rbOpenSL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:buttonTint="#99CC00"
+                        android:text="OpenSL" />
+
+                <RadioButton
+                        android:id="@+id/rbAudioTrack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:buttonTint="@android:color/holo_green_light"
+                        android:checked="true"
+                        android:text="AudioTrack" />
+            </RadioGroup>
+            <TextView
+                    android:id="@+id/tvypsca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="默认使用AudioTrack，音画问题请选择OpenSL"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rgypsc" />
             <TextView
                     android:id="@+id/tv2xz"
                     android:layout_width="0dp"
@@ -161,7 +210,7 @@
                 android:thumb="@drawable/custom_switch_thumb_dif"
                 android:track="@drawable/custom_switch_background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+                app:layout_constraintTop_toBottomOf="@+id/tvypsca" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

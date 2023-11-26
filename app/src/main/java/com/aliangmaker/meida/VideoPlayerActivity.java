@@ -10,13 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.*;
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -45,8 +42,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import static java.security.AccessController.getContext;
 
 public class VideoPlayerActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
     private boolean single_touch;
@@ -362,6 +357,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         if (sharedPreferences_play_set.getBoolean("hard_play", true)) {
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
         }else ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 0);
+        if (!sharedPreferences_play_set.getBoolean("audio", true)) {
+            ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", 1);
+        }
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_clear", 1); //dns 清理
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "flush_packets");
@@ -382,7 +380,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     textRun.setVisibility(View.VISIBLE);
                     ijkMediaPlayer.setSpeed(2.0f);
                     setDanmakuSpeed(CurrentSpeed,(Float)getDanmakuSet("danmakuSpeed")*0.5f);
-                    12
                     super.onLongPress(e);
                 }
                 // 在这里处理长按事件

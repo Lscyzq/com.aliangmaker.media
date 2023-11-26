@@ -3,15 +3,11 @@ package com.aliangmaker.meida;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-
-import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.aliangmaker.meida.databinding.ActivityPlaySetBinding;
 
 public class PlaySetActivity extends AppCompatActivity {
@@ -45,10 +41,25 @@ public class PlaySetActivity extends AppCompatActivity {
             binding.rbxzs.setChecked(false);
             binding.rbxzt.setChecked(true);
         }
+
+        if (sharedPreferences.getBoolean("audio",true)) {
+            binding.rbOpenSL.setChecked(false);
+            binding.rbAudioTrack.setChecked(true);
+        }else {
+            binding.rbOpenSL.setChecked(true);
+            binding.rbAudioTrack.setChecked(false);
+        }
+
         binding.rg2xz.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.rbxzs) sharedPreferences.edit().putString("view","surface").apply();
             else if (i == R.id.rbxzt) {
                 sharedPreferences.edit().putString("view","texture").apply();
+            }
+        });
+        binding.rgypsc.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (i == R.id.rbOpenSL) sharedPreferences.edit().putBoolean("audio",false).apply();
+            else if (i == R.id.rbAudioTrack) {
+                sharedPreferences.edit().putBoolean("audio",true).apply();
             }
         });
         binding.rg.setOnCheckedChangeListener((group, checkedId) -> {
