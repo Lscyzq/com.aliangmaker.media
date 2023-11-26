@@ -2,7 +2,6 @@ package com.aliangmaker.meida;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import okhttp3.*;
 import okio.BufferedSink;
@@ -37,7 +36,7 @@ public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
             }
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                Sink sink = null;
+                Sink sink;
                 BufferedSink bufferedSink = null;
                 try {
                     File danmakuFile = createDanmakuFile();
@@ -46,13 +45,13 @@ public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
 //                    Log.d("length", String.valueOf(decompressBytes.length));
                     bufferedSink = Okio.buffer(sink);
                     bufferedSink.write(decompressBytes);//将解压后数据写入文件（sink）中
+                    listener.onDanmakuDownloaded();
                     bufferedSink.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     if (bufferedSink != null) {
                         bufferedSink.close();
-                        onPostExecute("1");
                     }
                 }
 
@@ -131,8 +130,6 @@ public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String filePath) {
-        Toast.makeText(context, "finish", Toast.LENGTH_SHORT).show();
-        listener.onDanmakuDownloaded();
     }
 }
 

@@ -5,22 +5,16 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.aliangmaker.meida.databinding.ActivityErrorBackBinding;
 import com.aliangmaker.meida.databinding.ActivitySingleTouchBinding;
 import com.aliangmaker.meida.databinding.ActivityVersionUpBinding;
@@ -56,7 +50,6 @@ public class EmptyActivity extends AppCompatActivity {
     }
     private void installUpdate() {
         // 设置APK文件的路径
-
         File apk = new File("/sdcard/Download/凉腕播放器.apk");
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -125,21 +118,10 @@ public class EmptyActivity extends AppCompatActivity {
                         try {
                             response = mOkHttpClient.newCall(request).execute();
                             result = String.valueOf(response.request().url());
-                            DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, new DownloadDanmakuTask.DownloadDanmakuListener() {
-                                @Override
-                                public void onDanmakuDownloaded() {
-                                    Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show();
-                                    Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            // 这里执行暂停操作，可以根据需要执行UI操作或其他操作
-                                            installUpdate();
-                                            handler.removeCallbacks(this);
-                                        }
-                                    }, 2500);
-                                }
-                            });
+                            DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, () -> runOnUiThread(() -> {
+                                installUpdate();
+                                Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show();
+                            }));
                             task.execute(result,"凉腕播放器.apk");
                         } catch (IOException e) {
                             e.printStackTrace();
