@@ -230,7 +230,7 @@
                 android:layout_marginEnd="4dp"
                 android:ellipsize="end"
                 android:textColor="#FFFFFF"
-                android:text="1.新增音频输出设置选项以解决部分设备的音画问题（播放设置中）\n2.修复了内部下载的部分问题\n3.修复了应用内更新问题"
+                android:text="1.新增音频输出设置选项以解决部分设备的音画问题（播放设置中）\n2.修复了内部下载的部分问题\n3.修复了应用内更新问题\n4.修复了弹幕不加载/重复加载问题\n5.修复了锁屏后的倍速问题\n6.修复了从后台返回后弹幕提前播放"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />

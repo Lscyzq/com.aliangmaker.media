@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GetIntentActivity extends AppCompatActivity {
@@ -28,6 +27,7 @@ public class GetIntentActivity extends AppCompatActivity {
             intent2.putExtra("videoName", path);
         }
         if (path.startsWith("http://") || path.startsWith("https://"))  intent2.putExtra("internet", true);
+        if(videoProgress != null) intent2.putExtra("progress",videoProgress);
         startService(intent2);
         finish();
     }

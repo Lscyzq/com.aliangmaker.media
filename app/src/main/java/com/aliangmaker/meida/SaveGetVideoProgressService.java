@@ -51,7 +51,8 @@ public class SaveGetVideoProgressService extends Service {
                 getVideoPath = intent.getStringExtra("videoPath");
                 int getVideoProgress;
                 if (intent.getStringExtra("danmakuInternetUrl") != null) {
-                    getVideoProgress = getVideoProgress(intent.getStringExtra("videoName"));
+                    if(intent.getStringExtra("progress") == null) getVideoProgress = getVideoProgress(intent.getStringExtra("videoName"));
+                    else getVideoProgress = Integer.parseInt(intent.getStringExtra("progress"));
                 } else getVideoProgress = getVideoProgress(getVideoPath);
                 Intent playIntent = new Intent(this, VideoPlayerActivity.class);
                 if (intent.getStringExtra("cookie") != null)
@@ -70,8 +71,7 @@ public class SaveGetVideoProgressService extends Service {
                 playIntent.putExtra("single_touch", getSPSet("3"));
                 playIntent.putExtra("internet", intent.getBooleanExtra("internet", false));
                 startActivity(playIntent);
-                int savedProgress = getVideoProgress;
-                if (savedProgress > 0) {
+                if (getVideoProgress > 0) {
                     Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();
                 }
             }else {

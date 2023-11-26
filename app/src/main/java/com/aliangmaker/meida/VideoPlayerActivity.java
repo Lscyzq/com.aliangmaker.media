@@ -332,9 +332,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                                     // 这里执行暂停操作，可以根据需要执行UI操作或其他操作
                                     mParser = createParser("/storage/emulated/0/Android/data/com.aliangmaker.media/files/danmaku.xml");
                                     mDanmakuView.prepare(mParser, mContext);
+                                    mDanmakuView.hide();
+                                    mDanmakuView.pause();
                                     handler.removeCallbacks(this);
                                 }
-                            }, 800);
+                            }, 50);
                         }
                     });
                     task.execute(danmakuInternetUrl,"danmaku.xml");
@@ -358,6 +360,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
         }else ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 0);
         if (!sharedPreferences_play_set.getBoolean("audio", true)) {
+            Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", 1);
         }
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_clear", 1); //dns 清理
@@ -376,7 +379,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
-                if (ijkMediaPlayer.isPlaying() && !isMoving) {
+                if (ijkMediaPlayer.isPlaying() && !isMoving && !isLocked) {
                     textRun.setVisibility(View.VISIBLE);
                     ijkMediaPlayer.setSpeed(2.0f);
                     setDanmakuSpeed(CurrentSpeed,(Float)getDanmakuSet("danmakuSpeed")*0.5f);
@@ -415,8 +418,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 isLandscape = false;
             }
-            handler.postDelayed(resetLandScape, 100);
-            handler.postDelayed(resetVideoViewPosition, 120);
+            handler.postDelayed(resetLandScape, 200);
+            handler.postDelayed(resetVideoViewPosition, 200);
         });
 
         play_pause.setOnClickListener(v -> {
@@ -541,7 +544,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             seekBar.setMax(Math.toIntExact(ijkMediaPlayer.getDuration()) + seekBar.getPaddingEnd());
             handler.postDelayed(resetLandScape, 0);
             ijkMediaPlayer.seekTo(currentProgress);
-            handler.postDelayed(resetVideoViewPosition, 400);
+            if (danmakuTrue) {
+                mDanmakuView.show();
+                mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
+            }
+            handler.postDelayed(resetVideoViewPosition, 600);
 
         });
         ijkMediaPlayer.setOnCompletionListener(iMediaPlayer -> {
@@ -601,7 +608,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                             offsetX = event.getX() - startX; // X 轴上的移动距离
                             offsetY = event.getY() - startY; // Y 轴上的移动距离
                             float value = (float) Math.sqrt(offsetX  * offsetX +  offsetY*  offsetY);
-                            if(value > 0.5){
+                            if(value > 0.2){
                                 handler.postDelayed(setVisibilityGONE, 0);
                                 isMoving = true;
                             }
@@ -943,33 +950,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     protected void onDestroy() {
         super.onDestroy();
         if (mDanmakuView != null) {
-            // dont forget release!
             mDanmakuView.release();
             mDanmakuView = null;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ijkMediaPlayer.seekTo(currentProgress);
-        mDanmakuView.seekTo((long) currentProgress);
-        handler.postDelayed(updateSeekBar, 600);
-        handler.postDelayed(setVisibilityGONE, 3500);
-        handler.postDelayed(updateSystemTimeRunnable, 1000);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        // 获取保存的数据并显示在 Toast 中（仅当有保存的进度时）
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDanmakuView.pause();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
         int totalDuration = (int) ijkMediaPlayer.getDuration();
-
         Intent intent = new Intent(VideoPlayerActivity.this, SaveGetVideoProgressService.class);
         if (currentProgress >= totalDuration-3000) {
             intent.putExtra("saveProgress","0");
@@ -982,8 +967,30 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         startService(intent);
         handler.removeCallbacks(updateSeekBar);
         handler.removeCallbacks(setVisibilityGONE);
+        ijkMediaPlayer.release();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ijkMediaPlayer.seekTo(currentProgress);
+        ijkMediaPlayer.start();
+        play_pause.setImageResource(R.drawable.play);
+        mDanmakuView.seekTo((long) currentProgress);
+        handler.postDelayed(updateSeekBar, 600);
+        handler.postDelayed(setVisibilityGONE, 3500);
+        handler.postDelayed(updateSystemTimeRunnable, 1000);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // 获取保存的数据并显示在 Toast 中（仅当有保存的进度时）
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDanmakuView.pause();
         ijkMediaPlayer.pause();
         play_pause.setImageResource(R.drawable.pause);
+        currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
     }
     float minScale;
 
