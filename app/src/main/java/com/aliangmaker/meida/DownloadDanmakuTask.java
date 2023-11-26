@@ -2,23 +2,17 @@ package com.aliangmaker.meida;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import okhttp3.*;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Sink;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.Inflater;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Sink;
 
 public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
     
@@ -58,6 +52,7 @@ public class DownloadDanmakuTask extends AsyncTask<String, Void, String> {
                 } finally {
                     if (bufferedSink != null) {
                         bufferedSink.close();
+                        onPostExecute("1");
                     }
                 }
 
