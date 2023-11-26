@@ -360,7 +360,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
         }else ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 0);
         if (!sharedPreferences_play_set.getBoolean("audio", true)) {
-            Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", 1);
         }
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_clear", 1); //dns 清理
@@ -638,7 +637,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                                 if (scrollText.getVisibility() == View.VISIBLE) {
                                     handler.postDelayed(getPlaybackStatusRunnable, 301);
                                 } else {
-                                    videoLayout.invalidate();
                                     handler.postDelayed(setVisibilityVISIBLE, 301);
                                     handler.postDelayed(setVisibilityGONE, 3500);
                                 }
@@ -647,7 +645,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                                 if (scrollText.getVisibility() == View.VISIBLE) {
                                     handler.postDelayed(setVisibilityGONE, 301);
                                 } else {
-                                    videoLayout.invalidate();
                                     handler.postDelayed(setVisibilityVISIBLE, 301);
                                     handler.postDelayed(setVisibilityGONE, 3500);
                                 }
@@ -949,9 +946,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        ijkMediaPlayer.pause();
         if (mDanmakuView != null) {
             mDanmakuView.release();
             mDanmakuView = null;
+            mDanmakuView.pause();
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         int totalDuration = (int) ijkMediaPlayer.getDuration();
@@ -974,7 +974,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     protected void onResume() {
         super.onResume();
         ijkMediaPlayer.seekTo(currentProgress);
-        ijkMediaPlayer.start();
+        if(ijkMediaPlayer.isPlaying())ijkMediaPlayer.start();
         play_pause.setImageResource(R.drawable.play);
         mDanmakuView.seekTo((long) currentProgress);
         handler.postDelayed(updateSeekBar, 600);
@@ -987,8 +987,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onPause() {
         super.onPause();
-        mDanmakuView.pause();
-        ijkMediaPlayer.pause();
         play_pause.setImageResource(R.drawable.pause);
         currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
     }

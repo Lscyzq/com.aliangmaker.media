@@ -37,6 +37,7 @@
                     android:text="软硬解"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
+                    android:layout_marginTop="50dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +51,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvypsca" />
 
             <TextView
                     android:id="@+id/pt2"
@@ -103,6 +104,52 @@
                         android:text="TextureView" />
             </RadioGroup>
             <TextView
+                    android:id="@+id/tvypsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="5dp"
+                    android:text="音频输出"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+            <RadioGroup
+                    android:id="@+id/rgypsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvypsc">
+
+                <RadioButton
+                        android:id="@+id/rbOpenSL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#99CC00"
+                        android:text="OpenSL" />
+
+                <RadioButton
+                        android:id="@+id/rbAudioTrack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:buttonTint="@android:color/holo_green_light"
+                        android:checked="true"
+                        android:text="AudioTrack" />
+            </RadioGroup>
+            <TextView
+                    android:id="@+id/tvypsca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="默认使用AudioTrack，音画问题请选择OpenSL"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rgypsc" />
+            <TextView
                     android:id="@+id/tv2xz"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -118,13 +165,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginBottom="50dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="卡顿跳帧播放 旧设备建议开启\n（解决音画不同步）"
+                    android:layout_marginEnd="60dp"
+                    android:text="卡顿跳帧播放 旧设备建议开启\n（解决可能音画不同步）"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/jump" />
 
             <RadioGroup
@@ -163,7 +208,7 @@
                     android:thumb="@drawable/custom_switch_thumb_dif"
                     android:track="@drawable/custom_switch_background"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv2xz" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvypsca" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
