@@ -155,7 +155,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
 
         if (stream == null) {
             return new BaseDanmakuParser() {
-
                 @Override
                 protected Danmakus parse() {
                     return new Danmakus();
@@ -900,7 +899,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.removeCallbacks(this);
         }
     };
-    final Runnable setVisibilityVISIBLE = new Runnable() {
+    Runnable setVisibilityVISIBLE = new Runnable() {
         @Override
         public void run() {
             isGone = false;
@@ -946,12 +945,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        ijkMediaPlayer.pause();
         if (mDanmakuView != null) {
             mDanmakuView.release();
             mDanmakuView = null;
-            mDanmakuView.pause();
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         int totalDuration = (int) ijkMediaPlayer.getDuration();
@@ -974,7 +970,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     protected void onResume() {
         super.onResume();
         ijkMediaPlayer.seekTo(currentProgress);
-        if(ijkMediaPlayer.isPlaying())ijkMediaPlayer.start();
+        if(!ijkMediaPlayer.isPlaying())ijkMediaPlayer.start();
         play_pause.setImageResource(R.drawable.play);
         mDanmakuView.seekTo((long) currentProgress);
         handler.postDelayed(updateSeekBar, 600);

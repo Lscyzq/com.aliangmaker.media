@@ -16,8 +16,8 @@ android {
         minSdk 21
         //noinspection ExpiredTargetSdkVersion
         targetSdk 26
-        versionCode 12
-        versionName "3.10.8"
+        versionCode 13
+        versionName "3.11.9"
         resConfigs("cn")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // 仅保留两种架构的 so 库

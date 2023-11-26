@@ -1,18 +1,17 @@
 package com.aliangmaker.meida;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements UpdateChecker.Upd
         }else if(latestVersion.equals("serverOut")){
             new ChangeServerTask(MainActivity.this).execute();
         }
-        if (!latestVersion.equals(getSPSetSring())) {
+        if (!latestVersion.equals(R.string.version)&&!latestVersion.equals(getSPSetSring())) {
             if (!latestVersion.equals("netWorkOut")&&!latestVersion.equals("serverOut")) {
                 intent = new Intent(MainActivity.this, EmptyActivity.class);
                 intent.putExtra("versionCheck", latestVersion);
