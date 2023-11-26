@@ -117,9 +117,7 @@
                     android:id="@+id/rgypsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvypsc">
 
@@ -127,7 +125,6 @@
                         android:id="@+id/rbOpenSL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:buttonTint="#99CC00"
                         android:text="OpenSL" />
 
@@ -135,7 +132,6 @@
                         android:id="@+id/rbAudioTrack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:buttonTint="@android:color/holo_green_light"
                         android:checked="true"
                         android:text="AudioTrack" />
@@ -168,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="卡顿跳帧播放 旧设备建议开启\n（解决音画不同步）"
+                android:text="卡顿跳帧播放 旧设备建议开启\n（解决可能音画不同步）"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
