@@ -488,6 +488,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 ijkMediaPlayer.seekTo(progress);
                 if (!isPausing){
                     ijkMediaPlayer.start();
+                    mDanmakuView.clearDanmakusOnScreen();
                     if (!getIntent().getBooleanExtra("internet", false)) mDanmakuView.resume();
                 }
                 handler.postDelayed(setVisibilityGONE, 3500);
