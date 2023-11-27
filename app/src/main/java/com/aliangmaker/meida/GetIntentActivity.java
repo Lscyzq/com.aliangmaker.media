@@ -12,7 +12,6 @@ public class GetIntentActivity extends AppCompatActivity {
     String videoProgress;
     private void startVideoPlayback(String path) {
         Intent intent2 = new Intent(GetIntentActivity.this, SaveGetVideoProgressService.class);
-
         intent2.putExtra("videoPath",path);
         intent2.putExtra("play", "play");
         if (videoTitleFromBili != null) {

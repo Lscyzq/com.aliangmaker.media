@@ -52,18 +52,8 @@ public class BaseTitleFragment extends Fragment {
         textView = binding.textViewName;
         timer = new Timer();
         timer.schedule(new UpdateTimeTask(), 0, 1000);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
-        binding.textViewName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+        btnBack.setOnClickListener(v -> getActivity().onBackPressed());
+        binding.textViewName.setOnClickListener(v -> getActivity().onBackPressed());
         return binding.getRoot();
     }
     public void setTextViewText(String value) {

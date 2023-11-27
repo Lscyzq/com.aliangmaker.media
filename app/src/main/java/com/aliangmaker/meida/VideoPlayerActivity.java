@@ -44,7 +44,27 @@ import java.util.Locale;
 import java.util.Map;
 
 public class VideoPlayerActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
-    private boolean single_touch;
+    private ScaleGestureDetector scaleGestureDetector;
+    private float scaleFactor = 1.0f;
+    private GestureDetector gestureDetector;
+    private SeekBar seekBar;
+    private int currentProgress;
+    private String videoName,videoPath,danmakuInternetUrl;
+    private boolean speed = false, backlight,isGone,isLandscape = true,isLocked = false,single_touch,first = true,surface_choose = true,danmakuTrue;
+    private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView;
+    private View topOverlayView,bottomOverlayView;
+    private ImageView screen,back,textRegain,play_pause,danmaku,lock;
+    private Drawable thumb;
+    private IjkMediaPlayer ijkMediaPlayer;
+    int videoWidth,screenHeight,videoHeight;
+    float CurrentSpeed;
+    private SurfaceView surfaceView;
+    private ProgressBar progressBar;
+    private FrameLayout  surfaceContainer;
+    ConstraintLayout videoLayout;
+    private BaseDanmakuParser mParser;//解析器对象
+    private DanmakuContext mContext;
+    private IDanmakuView mDanmakuView;
     Runnable resetLandScape = new Runnable(){
         @Override
         public void run() {
@@ -90,11 +110,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             }
             handler.removeCallbacks(this);
         }
-
     };
-    private IjkMediaPlayer ijkMediaPlayer;
-
-
     private <T> T getDanmakuSet(String SPId) {
         SharedPreferences sharedPreferences = getSharedPreferences("danmakuSet", MODE_PRIVATE);
         if (SPId.equals("style")) {
@@ -128,10 +144,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }
         throw new IllegalArgumentException("Invalid item: " + SPId);
     }
-    float CurrentSpeed;
-    private SurfaceView surfaceView;
-    private ProgressBar progressBar;
-    private FrameLayout  surfaceContainer;
     private String getFilePathInFolder(String folderPath, String fileName) {
         File directory = new File(folderPath);
         File pathFolder = new File(directory.getParent());
@@ -145,12 +157,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }
         return null; // 文件不存在
     }
-    private boolean danmakuTrue;
-    ConstraintLayout videoLayout;
-    private String danmakuInternetUrl;
-    private BaseDanmakuParser mParser;//解析器对象
-    private DanmakuContext mContext;
-    private IDanmakuView mDanmakuView;
     private BaseDanmakuParser createParser(String stream) {
 
         if (stream == null) {
@@ -204,9 +210,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.postDelayed(this, 500); // 每隔500毫秒刷新一次网速值
         }
     };
-    Boolean surface_choose = true;
-    TextView textView;
-    ImageView danmaku,lock;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,8 +223,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         danmakuTrue = getIntent().getBooleanExtra("activity", false);
         danmakuInternetUrl = getIntent().getStringExtra("danmakuInternetUrl");
         videoName = getIntent().getStringExtra("videoName");
-        backright = getIntent().getBooleanExtra("backright", false);
-        diplayland = getIntent().getBooleanExtra("displayland", false);
+        backlight = getIntent().getBooleanExtra("backright", false);
+        boolean diplayland = getIntent().getBooleanExtra("displayland", false);
         single_touch = getIntent().getBooleanExtra("single_touch", false);
         currentProgress = getIntent().getIntExtra("getVideoProgress",0);
         if (diplayland) {
@@ -300,11 +303,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 @Override
                 public void prepared() {
                     mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
-
                 }
                 @Override
                 public void updateTimer(DanmakuTimer timer) {
-                    timer.update(ijkMediaPlayer.getCurrentPosition());
                 }
                 @Override
                 public void danmakuShown(BaseDanmaku danmaku) {
@@ -314,10 +315,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 }
             });
             mContext.setDuplicateMergingEnabled(getDanmakuSet("same"))//弹幕重复
-                    .setFTDanmakuVisibility(getDanmakuSet("style"))//居中弹幕
-                    .setScrollSpeedFactor(getDanmakuSet("danmakuSpeed"))
-                    .setScaleTextSize(getDanmakuSet("danmakuSize"))
-                    .setMaximumLines(maxLinesPair) //设置最大显示行数
+                        .setFTDanmakuVisibility(getDanmakuSet("style"))//居中弹幕
+                        .setScrollSpeedFactor(getDanmakuSet("danmakuSpeed"))
+                        .setScaleTextSize(getDanmakuSet("danmakuSize"))
+                        .setMaximumLines(maxLinesPair) //设置最大显示行数
                     .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW,1)
                     .preventOverlapping(getDanmakuSet("fold")); //设置防弹幕重叠，null为允许重叠
             if (mDanmakuView != null) {
@@ -346,10 +347,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 }
                 mDanmakuView.showFPS(false); //是否显示FPS
                 mDanmakuView.enableDanmakuDrawingCache(true);//弹幕缓存
-                if (!sharedPreferences_play_set.getBoolean("danmaku_display", true)) {
-                    mDanmakuView.hide();
-                    danmaku.setImageResource(R.drawable.danmaku_gone_ic);
-                }
             }
         } else danmaku.setVisibility(View.GONE);
         IjkMediaPlayer.loadLibrariesOnce(null);
@@ -373,7 +370,26 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             scaleFactor = 1f;
             handler.postDelayed(resetVideoViewPosition,0);
         });
-
+        if (videoPath != null) {
+            try {
+                String cookie = getIntent().getStringExtra("cookie");
+                if (cookie != null) {
+                    Map<String,String> headers = new HashMap<>();
+                    headers.put("Connection","Keep-Alive");
+                    headers.put("Referer","https://www.bilibili.com/");
+                    headers.put("Origin","https://www.bilibili.com/");
+                    headers.put("Cookie",cookie);
+                    ijkMediaPlayer.setDataSource(videoPath, headers);
+                }else ijkMediaPlayer.setDataSource(videoPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            ijkMediaPlayer.prepareAsync();
+        } else {
+            Toast.makeText(this, "未找到该视频！", Toast.LENGTH_SHORT).show();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            finish();
+        }
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
@@ -455,10 +471,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                if (isGone) {
-                    return;
-                }
-                handler.removeCallbacks(setVisibilityGONE);
+                if (isGone) return;
                 if(ijkMediaPlayer.isPlaying()){
                     isPausing=false;
                 } else {
@@ -470,38 +483,16 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (isGone) {
-                    return;
-                }
+                if (isGone) return;
                 int progress = seekBar.getProgress();
                 ijkMediaPlayer.seekTo(progress);
                 if (!isPausing){
                     ijkMediaPlayer.start();
-                    mDanmakuView.resume();
+                    if (!getIntent().getBooleanExtra("internet", false)) mDanmakuView.resume();
                 }
                 handler.postDelayed(setVisibilityGONE, 3500);
             }
         });
-        if (videoPath != null) {
-            try {
-                String cookie = getIntent().getStringExtra("cookie");
-                if (cookie != null) {
-                    Map<String,String> headers = new HashMap<>();
-                    headers.put("Connection","Keep-Alive");
-                    headers.put("Referer","https://www.bilibili.com/");
-                    headers.put("Origin","https://www.bilibili.com/");
-                    headers.put("Cookie",cookie);
-                    ijkMediaPlayer.setDataSource(videoPath, headers);
-                }else ijkMediaPlayer.setDataSource(videoPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            ijkMediaPlayer.prepareAsync();
-        } else {
-            Toast.makeText(this, "未找到该视频！", Toast.LENGTH_SHORT).show();
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            finish();
-        }
         if (getIntent().getBooleanExtra("internet", false)) {
             // 设置缓冲回调监听器
             ijkMediaPlayer.setOnBufferingUpdateListener((iMediaPlayer, percent) -> {
@@ -510,12 +501,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 int bufferedProgress = percent * videoDuration / 100;
                 seekBar.setSecondaryProgress(bufferedProgress); // 更新进度条的缓冲进度
             });
-        }
-        // 在onInfo回调中启动定时器
-        if (getIntent().getBooleanExtra("internet", false)) {
             ijkMediaPlayer.setOnInfoListener((mp, what, extra) -> {
                 // 判断缓冲状态
                 if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                    mDanmakuView.pause();
                     handler.postDelayed(updateSpeedRunnable, 500); // 启动定时器
                     // 显示ProgressBar
                     progressBar.setVisibility(View.VISIBLE);
@@ -526,11 +515,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     // 取消定时器
                     handler.removeCallbacks(updateSpeedRunnable);
                     textView.setVisibility(View.GONE);
+                    mDanmakuView.resume();
                 }
                 return false;
             });
         }
-
         ijkMediaPlayer.setOnErrorListener((iMediaPlayer, i, i1) -> {
             Toast.makeText(VideoPlayerActivity.this, "未找到该视频！", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
@@ -543,11 +532,15 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.postDelayed(resetLandScape, 0);
             ijkMediaPlayer.seekTo(currentProgress);
             if (danmakuTrue) {
-                mDanmakuView.show();
-                mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
+                if (!sharedPreferences_play_set.getBoolean("danmaku_display", true)) {
+                    mDanmakuView.hide();
+                    danmaku.setImageResource(R.drawable.danmaku_gone_ic);
+                }else{
+                    mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
+                    mDanmakuView.show();
+                }
             }
             handler.postDelayed(resetVideoViewPosition, 600);
-
         });
         ijkMediaPlayer.setOnCompletionListener(iMediaPlayer -> {
             Toast.makeText(VideoPlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
@@ -585,7 +578,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                         if (!isLocked) {
-                            if (event.getX() < screenWidth * 0.1 && backright) {
+                            if (event.getX() < screenWidth * 0.1 && backlight) {
                                 isSwipeBack = true;
                                 startX = (int) event.getX();
                             }
@@ -610,7 +603,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                                 handler.postDelayed(setVisibilityGONE, 0);
                                 isMoving = true;
                             }
-                            if (isSwipeBack && Math.abs(event.getX() - startX) > Math.abs(event.getY() - startY) && event.getX() - startX > 30 && backright && event.getPointerCount() == 1) {
+                            if (isSwipeBack && Math.abs(event.getX() - startX) > Math.abs(event.getY() - startY) && event.getX() - startX > 30 && backlight && event.getPointerCount() == 1) {
                                 finish();
                                 return true;
                             }
@@ -726,23 +719,17 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         ijkMediaPlayer.setSurface(surface);
 
     }
-
     @Override
     public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
-
     }
-
     @Override
     public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surfaceTexture) {
         return false;
     }
-
     @Override
     public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
 
     }
-
-
     private void choose_surface (boolean surface){
         if (surface) {
             surfaceView = new SurfaceView(this);
@@ -750,26 +737,20 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     , FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER);
             surfaceView.setLayoutParams(layoutParams);
             surfaceContainer.addView(surfaceView);
-
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(new SurfaceHolder.Callback() {
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
                     ijkMediaPlayer.setDisplay(holder);
-
                 }
-
                 @Override
                 public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
                     // 可以在需要时处理 surface 变化
                 }
-
                 @Override
-
                 public void surfaceDestroyed(SurfaceHolder holder) {
                     // 在 surface 销毁时进行必要的操作
                 }
-
             });
         }else {
             textureView = null;
@@ -806,33 +787,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.postDelayed(this, 100); // 每500毫秒更新一次进度和时间
         }
     };
-    int screenHeight;
-    private ScaleGestureDetector scaleGestureDetector;
-    private float scaleFactor = 1.0f;
-    private GestureDetector gestureDetector;
-    private SeekBar seekBar;
-    private int currentProgress;
-    private String videoName;
-    private ImageView play_pause;
-    String videoPath;
-    private boolean diplayland;
-    private boolean speed = false;
-    private TextView currentTimeTextView2;
-    private TextView currentTimeTextView3;
-    private View topOverlayView;
-    private TextView textRun;
-    private TextView scrollText;
-    private View bottomOverlayView;
-    private ImageView back;
-    private boolean backright ;
-    private boolean isGone;
-    private ImageView screen;
-    private Drawable thumb;
-    private boolean isLandscape = true,isLocked = false;
-    private TextView currentTimeTextView;
-    int videoWidth;
-    private ImageView textRegain;
-    int videoHeight;
     Runnable resetVideoViewPosition = new Runnable() {
         @Override
         public void run() {
@@ -870,13 +824,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
     }
-
     Runnable setVisibilityGONE = new Runnable() {
         @Override
         public void run() {
             isGone = true;
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)seekBar.getLayoutParams();
-            params.bottomMargin = -7;
+            params.bottomMargin = -10;
             seekBar.setLayoutParams(params);
             seekBar.setThumb(ContextCompat.getDrawable(VideoPlayerActivity.this, android.R.color.transparent));
             tvPlaybackSpeed.setVisibility(View.GONE);
@@ -969,10 +922,30 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onResume() {
         super.onResume();
-        ijkMediaPlayer.seekTo(currentProgress);
-        if(!ijkMediaPlayer.isPlaying())ijkMediaPlayer.start();
-        play_pause.setImageResource(R.drawable.play);
-        mDanmakuView.seekTo((long) currentProgress);
+/*        if(surface_choose && !first) {
+            surfaceContainer.removeAllViews();
+            surfaceView = new SurfaceView(this);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
+                    , FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+            surfaceView.setLayoutParams(layoutParams);
+            surfaceContainer.addView(surfaceView);
+            SurfaceHolder surfaceHolder = surfaceView.getHolder();
+            surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+                @Override
+                public void surfaceCreated(SurfaceHolder holder) {
+                    ijkMediaPlayer.setDisplay(holder);
+                }
+                @Override
+                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                    // 可以在需要时处理 surface 变化
+                }
+                @Override
+                public void surfaceDestroyed(SurfaceHolder holder) {
+                    // 在 surface 销毁时进行必要的操作
+                }
+            });
+        }*/
+        mDanmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
         handler.postDelayed(updateSeekBar, 600);
         handler.postDelayed(setVisibilityGONE, 3500);
         handler.postDelayed(updateSystemTimeRunnable, 1000);
@@ -983,30 +956,23 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onPause() {
         super.onPause();
-        play_pause.setImageResource(R.drawable.pause);
+        first = false;
         currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
     }
     float minScale;
-
     private class ScaleListener extends SimpleOnScaleGestureListener {
-
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-
             scaleFactor *= detector.getScaleFactor();
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 8.0f)); // 设置缩放范围 (0.1 to 10)
-
             videoWidth = surfaceContainer.getWidth();
             videoHeight = surfaceContainer.getHeight();
-
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             screenWidth = displayMetrics.widthPixels;
             screenHeight = displayMetrics.heightPixels;
-
             minScale = Math.min((float) screenWidth / videoWidth, (float) screenHeight / videoHeight);
             scaleFactor = Math.max(scaleFactor, minScale);
-
             surfaceContainer.setScaleX(scaleFactor);
             surfaceContainer.setScaleY(scaleFactor);
             return true;

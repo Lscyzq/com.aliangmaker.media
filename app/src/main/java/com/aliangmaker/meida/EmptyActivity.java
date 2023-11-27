@@ -24,6 +24,8 @@ import okhttp3.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EmptyActivity extends AppCompatActivity {
     private ActivitySingleTouchBinding binding;
@@ -57,6 +59,7 @@ public class EmptyActivity extends AppCompatActivity {
         Uri uri = FileProvider.getUriForFile(this, "com.aliangmaker.media.fileprovider", apk);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         startActivity(intent);
+
     }
 
     @Override
@@ -118,10 +121,21 @@ public class EmptyActivity extends AppCompatActivity {
                         try {
                             response = mOkHttpClient.newCall(request).execute();
                             result = String.valueOf(response.request().url());
-                            DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, () -> runOnUiThread(() -> {
-                                installUpdate();
-                                Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show();
-                            }));
+                            DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, new DownloadDanmakuTask.DownloadDanmakuListener() {
+                                @Override
+                                public void onDanmakuDownloaded() {
+                                    runOnUiThread(() -> Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show());
+                                   Timer timer = new Timer();
+                                    TimerTask timerTask = new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            installUpdate();
+                                        }
+                                    };
+                                    timer.schedule(timerTask,1000);
+                                }
+                            });
+
                             task.execute(result,"凉腕播放器.apk");
                         } catch (IOException e) {
                             e.printStackTrace();
