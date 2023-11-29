@@ -16,8 +16,8 @@ public class GetIntentActivity extends AppCompatActivity {
         intent2.putExtra("play", "play");
         if (videoTitleFromBili != null) {
             if (!(danmakuUrl.equals("null") || danmakuUrl == null)) {
-                intent2.putExtra("activity", true);
                 intent2.putExtra("danmakuInternetUrl", danmakuUrl);
+                intent2.putExtra("activity", true);
                 if (getIntent().getStringExtra("cookie") != null) intent2.putExtra("cookie", getIntent().getStringExtra("cookie"));
             }
             intent2.putExtra("videoName", videoTitleFromBili);

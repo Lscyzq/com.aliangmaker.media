@@ -50,7 +50,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private SeekBar seekBar;
     private int currentProgress;
     private String videoName,videoPath,danmakuInternetUrl;
-    private boolean speed = false, backlight,isGone,isLandscape = true,isLocked = false,single_touch,first = true,surface_choose = true,danmakuTrue;
+    private boolean speed = false, backlight,isGone,isLandscape = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
     private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView;
     private View topOverlayView,bottomOverlayView;
     private ImageView screen,back,textRegain,play_pause,danmaku,lock;
@@ -184,7 +184,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private void setDanmakuSpeed (float oldSpeedFactor,float newSpeedFactor){
         if(danmakuTrue){
             ValueAnimator animator = ValueAnimator.ofFloat(0, 1).setDuration(500);
-
             animator.addUpdateListener(animation -> {
                 float factor = (float) animation.getAnimatedValue();
                 float currentSpeedFactor = oldSpeedFactor + (newSpeedFactor - oldSpeedFactor) * factor;
@@ -265,6 +264,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         mDanmakuView = (IDanmakuView) findViewById(R.id.danmakuSurfaceView);
         videoLayout = findViewById(R.id.video_layout);
         choose_surface(surface_choose);
+        if (danmakuInternetUrl == null) danmakuInternetUrl = videoPath;
         lock.setOnClickListener(view -> {
             if (isLocked){
                 isLocked = false;
@@ -321,8 +321,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                         .setMaximumLines(maxLinesPair) //设置最大显示行数
                     .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW,1)
                     .preventOverlapping(getDanmakuSet("fold")); //设置防弹幕重叠，null为允许重叠
-            if (mDanmakuView != null) {
-                if (danmakuInternetUrl != null) {
+            if (danmakuTrue && mDanmakuView != null) {
+                if (danmakuInternetUrl != null && danmakuInternetUrl.startsWith("http")) {
                     DownloadDanmakuTask task = new DownloadDanmakuTask(this, new DownloadDanmakuTask.DownloadDanmakuListener() {
                         @Override
                         public void onDanmakuDownloaded() {
@@ -332,8 +332,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                                     // 这里执行暂停操作，可以根据需要执行UI操作或其他操作
                                     mParser = createParser("/storage/emulated/0/Android/data/com.aliangmaker.media/files/danmaku.xml");
                                     mDanmakuView.prepare(mParser, mContext);
-                                    mDanmakuView.hide();
-                                    mDanmakuView.pause();
                                     handler.removeCallbacks(this);
                                 }
                             }, 50);
@@ -341,17 +339,22 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     });
                     task.execute(danmakuInternetUrl,"danmaku.xml");
                     ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 BiliDroid/1.1.1 (bbcallen@gmail.com)");
+                }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
+                    mParser = createParser(danmakuInternetUrl);
+                    mDanmakuView.prepare(mParser, mContext);
                 }else {
                     mParser = createParser(this.getFilePathInFolder(videoPath, "danmaku.xml")); //创建解析器对象，从raw资源目录下解析comments.xml文本
                     mDanmakuView.prepare(mParser, mContext);
                 }
+                mDanmakuView.hide();
+                mDanmakuView.pause();
                 mDanmakuView.showFPS(false); //是否显示FPS
                 mDanmakuView.enableDanmakuDrawingCache(true);//弹幕缓存
             }
         } else danmaku.setVisibility(View.GONE);
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-        if (sharedPreferences_play_set.getBoolean("jump_play", false)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
+        if (sharedPreferences_play_set.getBoolean("jump_play", true)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
         if (sharedPreferences_play_set.getBoolean("hard_play", true)) {
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
         }else ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 0);
@@ -362,7 +365,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "flush_packets");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 1);
-        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
+        if (sharedPreferences_play_set.getBoolean("sharp",false)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         tvPlaybackSpeed.setOnClickListener(v -> showPlaybackSpeedMenu(v));
         textRegain.setOnClickListener(v -> {
             surfaceContainer.setScaleX(1f);
@@ -471,6 +474,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                if(danmakuTrue)mDanmakuView.clearDanmakusOnScreen();
                 if (isGone) return;
                 if(ijkMediaPlayer.isPlaying()){
                     isPausing=false;
@@ -488,8 +492,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 ijkMediaPlayer.seekTo(progress);
                 if (!isPausing){
                     ijkMediaPlayer.start();
-                    mDanmakuView.clearDanmakusOnScreen();
-                    if (!getIntent().getBooleanExtra("internet", false)) mDanmakuView.resume();
+                    if (danmakuTrue && !getIntent().getBooleanExtra("internet", false)) mDanmakuView.resume();
                 }
                 handler.postDelayed(setVisibilityGONE, 3500);
             }
@@ -505,18 +508,22 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             ijkMediaPlayer.setOnInfoListener((mp, what, extra) -> {
                 // 判断缓冲状态
                 if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
-                    mDanmakuView.pause();
+                    if(danmakuTrue)mDanmakuView.pause();
                     handler.postDelayed(updateSpeedRunnable, 500); // 启动定时器
                     // 显示ProgressBar
                     progressBar.setVisibility(View.VISIBLE);
-                } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END ||
-                        what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END || what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
                     // 隐藏ProgressBar
                     progressBar.setVisibility(View.GONE);
                     // 取消定时器
                     handler.removeCallbacks(updateSpeedRunnable);
                     textView.setVisibility(View.GONE);
-                    mDanmakuView.resume();
+                    if (danmakuTrue) mDanmakuView.resume();
+                    if (danmakuTrue && danmakuInternetUrl.startsWith("http") && first && sharedPreferences_play_set.getBoolean("danmaku_display", true)){
+                        first = false;
+                        mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
+                        mDanmakuView.show();
+                    }
                 }
                 return false;
             });
@@ -534,9 +541,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             ijkMediaPlayer.seekTo(currentProgress);
             if (danmakuTrue) {
                 if (!sharedPreferences_play_set.getBoolean("danmaku_display", true)) {
-                    mDanmakuView.hide();
                     danmaku.setImageResource(R.drawable.danmaku_gone_ic);
-                }else{
+                }else if (!danmakuInternetUrl.startsWith("http")) {
                     mDanmakuView.start(ijkMediaPlayer.getCurrentPosition());
                     mDanmakuView.show();
                 }
@@ -751,6 +757,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 @Override
                 public void surfaceDestroyed(SurfaceHolder holder) {
                     // 在 surface 销毁时进行必要的操作
+                    if(surface_choose)ijkMediaPlayer.setDisplay(null);
                 }
             });
         }else {

@@ -66,7 +66,12 @@ public class PlaySetActivity extends AppCompatActivity {
             if (checkedId == R.id.pr2)   sharedPreferences.edit().putBoolean("hard_play", true).apply();
             else   sharedPreferences.edit().putBoolean("hard_play", false).apply();
         });
-        if (sharedPreferences.getBoolean("jump_play", false)) {
+        if (sharedPreferences.getBoolean("sharp", false)) {
+            binding.sharpSwitch.setChecked(true);
+        }else binding.sharpSwitch.setChecked(false);
+        binding.sharpSwitch.setOnClickListener(v -> sharedPreferences.edit().putBoolean("sharp", binding.sharpSwitch.isChecked()).apply());
+
+        if (sharedPreferences.getBoolean("jump_play", true)) {
             binding.jumpSwitch.setChecked(true);
         }else binding.jumpSwitch.setChecked(false);
         binding.jumpSwitch.setOnClickListener(v -> sharedPreferences.edit().putBoolean("jump_play", binding.jumpSwitch.isChecked()).apply());

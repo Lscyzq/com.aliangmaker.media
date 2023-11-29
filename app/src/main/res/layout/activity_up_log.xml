@@ -177,7 +177,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/round_shallow_border"
-                android:text="3.7.8"
+                android:text="3.8.8"
                 android:textColor="#FFFFFF"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
