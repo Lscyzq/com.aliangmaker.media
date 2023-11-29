@@ -264,7 +264,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         mDanmakuView = (IDanmakuView) findViewById(R.id.danmakuSurfaceView);
         videoLayout = findViewById(R.id.video_layout);
         choose_surface(surface_choose);
-        if (danmakuInternetUrl == null) danmakuInternetUrl = videoPath;
         lock.setOnClickListener(view -> {
             if (isLocked){
                 isLocked = false;
@@ -345,6 +344,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 }else {
                     mParser = createParser(this.getFilePathInFolder(videoPath, "danmaku.xml")); //创建解析器对象，从raw资源目录下解析comments.xml文本
                     mDanmakuView.prepare(mParser, mContext);
+                    danmakuInternetUrl = "";
                 }
                 mDanmakuView.hide();
                 mDanmakuView.pause();
@@ -424,7 +424,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             }
         });
         scrollText = findViewById(R.id.textView34);
-
         screen.setOnClickListener(v -> {
             if (!isLandscape) {
                 // 切换为竖屏

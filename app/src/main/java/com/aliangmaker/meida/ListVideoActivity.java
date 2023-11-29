@@ -2,16 +2,9 @@ package com.aliangmaker.meida;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,10 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -144,6 +135,7 @@ public class ListVideoActivity extends AppCompatActivity implements LoaderManage
         return output;
     }
     int sure=0;
+    String item;
     // 自定义适配器 VideoAdapter
     private class VideoAdapter extends ArrayAdapter<VideoItem> {
         public VideoAdapter() {
@@ -189,17 +181,17 @@ public class ListVideoActivity extends AppCompatActivity implements LoaderManage
                 textView.setMaxLines(3);
             }
             view.setOnLongClickListener(v -> {
-
                 // 处理长按视频项的操作
                 if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager())) {
                     if(sure == 0){
+                        item=videoItem.getVideoPath();
                         Toast.makeText(ListVideoActivity.this, "再次长按以删除", Toast.LENGTH_SHORT).show();
                         sure = 1;
-                    } else if (sure == 1) {
+                    } else if (sure == 1 && item.equals(videoItem.getVideoPath())) {
                         deleteVideoFile(videoItem.getVideoPath());
                         Toast.makeText(ListVideoActivity.this, "已尝试删除", Toast.LENGTH_SHORT).show();
                         sure = 0;
-                    }
+                    } else if(sure==1) sure = 0;
 
                 } else
                     startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));

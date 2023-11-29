@@ -1,15 +1,7 @@
 package com.aliangmaker.meida;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,21 +10,14 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ListVideoBiliActivity extends AppCompatActivity {
@@ -122,21 +107,18 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                     }
 
                     // Add your click listener
-                    view.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v){
-                            String videoName=mVideoList.get(position);
-                            String videoPath=mVideoPathList.get(position);
+                    view.setOnClickListener(v -> {
+                        String videoName=mVideoList.get(position);
+                        String videoPath1 =mVideoPathList.get(position);
 
-                            // 获取视频文件路径
-                            Intent intent=new Intent(ListVideoBiliActivity.this,SaveGetVideoProgressService.class);
-                            intent.putExtra("videoName", videoName);
-                            intent.putExtra("videoPath", videoPath);
-                            // 将视频文件路径作为额外数据传递
-                            intent.putExtra("play", "play");
-                            intent.putExtra("activity", true);
-                            startService(intent);
-                        }
+                        // 获取视频文件路径
+                        Intent intent=new Intent(ListVideoBiliActivity.this,SaveGetVideoProgressService.class);
+                        intent.putExtra("videoName", videoName);
+                        intent.putExtra("videoPath", videoPath1);
+                        // 将视频文件路径作为额外数据传递
+                        intent.putExtra("play", "play");
+                        intent.putExtra("activity", true);
+                        startService(intent);
                     });
 
                     // Add your long click listener
@@ -166,12 +148,12 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                         }
                         @Override
                         public boolean onLongClick(View v){
-
                             if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager())) {
                                 if(sure == 0){
+                                    item = mVideoPathList.get(position);
                                     Toast.makeText(ListVideoBiliActivity.this, "再次长按以删除", Toast.LENGTH_SHORT).show();
                                     sure = 1;
-                                } else if (sure == 1) {
+                                } else if (sure == 1 && item.equals(mVideoPathList.get(position))) {
                                     String videoPath = mVideoPathList.get(position);
                                     String grandParentFolderPath = getParentFolderPath(videoPath);
                                     deleteFolder(grandParentFolderPath);
@@ -180,7 +162,7 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                                     mAdapter.notifyDataSetChanged();
                                     Toast.makeText(ListVideoBiliActivity.this, "已尝试删除", Toast.LENGTH_SHORT).show();
                                     sure = 0;
-                                }
+                                } else if(sure == 1) sure = 0;
 
                             } else
                                 startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
@@ -202,6 +184,7 @@ public class ListVideoBiliActivity extends AppCompatActivity {
         }
     }
     int sure = 0;
+    String item;
     private void listVideosRecursive(File directory) {
         File[] files = directory.listFiles(file -> file.isFile() && file.getName().toLowerCase().endsWith(".mp4"));
 
