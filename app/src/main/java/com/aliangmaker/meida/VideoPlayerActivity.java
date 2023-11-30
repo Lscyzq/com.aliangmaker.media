@@ -670,7 +670,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private boolean isMoving = false;
     @SuppressLint("UseCompatLoadingForDrawables")
     private void showPlaybackSpeedMenu(View anchorView) {
-        String[] playbackSpeeds = {"0.5", "1.0", "1.5", "2.0"};
+        String[] playbackSpeeds = {"0.5", "1.0", "1.25", "1.5", "2.0"};
         ListPopupWindow listPopupWindow = new ListPopupWindow(this);
         listPopupWindow.setAdapter(new ArrayAdapter<>(this, R.layout.text_item, playbackSpeeds));
         listPopupWindow.setAnchorView(anchorView);
@@ -700,11 +700,14 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     setDanmakuSpeed(CurrentSpeed,getDanmakuSet("danmakuSpeed"));
                     CurrentSpeed = (Float) getDanmakuSet("danmakuSpeed");
                 } else if (speed == 1.5) {
-                    setDanmakuSpeed(CurrentSpeed,(Float) getDanmakuSet("danmakuSpeed")*0.667f);
-                    CurrentSpeed = (Float) getDanmakuSet("danmakuSpeed")*0.667f;
+                    setDanmakuSpeed(CurrentSpeed,(Float) getDanmakuSet("danmakuSpeed")*0.666667f);
+                    CurrentSpeed = (Float) getDanmakuSet("danmakuSpeed")*0.666667f;
                 } else if (speed == 2.0) {
                     setDanmakuSpeed(CurrentSpeed,(Float) getDanmakuSet("danmakuSpeed")*0.5f);
                     CurrentSpeed = (Float) getDanmakuSet("danmakuSpeed")*0.5f;
+                } else if (speed == 1.25) {
+                    setDanmakuSpeed(CurrentSpeed,(Float) getDanmakuSet("danmakuSpeed")*0.8f);
+                    CurrentSpeed = (Float) getDanmakuSet("danmakuSpeed")*0.8f;
                 }
             }
             CurrentIjkSpeed = speed;
@@ -852,7 +855,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             play_pause.setVisibility(View.GONE);
             currentTimeTextView.setVisibility(View.GONE);
             videoLayout.requestLayout();
-
             if(!isLocked){
                 lock.setVisibility(View.GONE);
             }
@@ -910,16 +912,13 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             mDanmakuView = null;
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        int totalDuration = (int) ijkMediaPlayer.getDuration();
         Intent intent = new Intent(VideoPlayerActivity.this, SaveGetVideoProgressService.class);
-        if (currentProgress >= totalDuration-3000) {
-            intent.putExtra("saveProgress","0");
+        if (currentProgress >= ijkMediaPlayer.getDuration()-3000) {
+            intent.putExtra("saveProgress",0);
         } else
             intent.putExtra("saveProgress", currentProgress);
         intent.putExtra("play", "save");
-        if (danmakuInternetUrl != null) {
-            intent.putExtra("saveName", videoName);
-        } else intent.putExtra("saveName", videoPath);
+        intent.putExtra("saveName", videoPath);
         startService(intent);
         handler.removeCallbacks(updateSeekBar);
         handler.removeCallbacks(setVisibilityGONE);
@@ -929,29 +928,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onResume() {
         super.onResume();
-/*        if(surface_choose && !first) {
-            surfaceContainer.removeAllViews();
-            surfaceView = new SurfaceView(this);
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
-                    , FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER);
-            surfaceView.setLayoutParams(layoutParams);
-            surfaceContainer.addView(surfaceView);
-            SurfaceHolder surfaceHolder = surfaceView.getHolder();
-            surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-                @Override
-                public void surfaceCreated(SurfaceHolder holder) {
-                    ijkMediaPlayer.setDisplay(holder);
-                }
-                @Override
-                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                    // 可以在需要时处理 surface 变化
-                }
-                @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
-                    // 在 surface 销毁时进行必要的操作
-                }
-            });
-        }*/
         mDanmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
         handler.postDelayed(updateSeekBar, 600);
         handler.postDelayed(setVisibilityGONE, 3500);
@@ -959,19 +935,18 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // 获取保存的数据并显示在 Toast 中（仅当有保存的进度时）
     }
-
     @Override
     protected void onPause() {
         super.onPause();
-        first = false;
         currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
     }
+
     float minScale;
     private class ScaleListener extends SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 8.0f)); // 设置缩放范围 (0.1 to 10)
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 8.3f)); // 设置缩放范围 (0.1 to 10)
             videoWidth = surfaceContainer.getWidth();
             videoHeight = surfaceContainer.getHeight();
             DisplayMetrics displayMetrics = new DisplayMetrics();

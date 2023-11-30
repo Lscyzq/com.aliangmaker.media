@@ -49,53 +49,44 @@ public class SaveGetVideoProgressService extends Service {
             SharedPreferences sharedPreferences = getSharedPreferences("play_set",MODE_PRIVATE);
             if (!sharedPreferences.getString("view","null").equals("null")) {
                 getVideoPath = intent.getStringExtra("videoPath");
-                int getVideoProgress;
-                if (intent.getStringExtra("danmakuInternetUrl") != null) {
-                    if(intent.getStringExtra("progress") == null) getVideoProgress = getVideoProgress(intent.getStringExtra("videoName"));
-                    else getVideoProgress = Integer.parseInt(intent.getStringExtra("progress"));
-                } else getVideoProgress = getVideoProgress(getVideoPath);
+                int VideoProgress;
+                if(intent.getIntExtra("progress",0) == 0) VideoProgress = getVideoProgress(getVideoPath);
+                else VideoProgress = intent.getIntExtra("progress",0);
                 Intent playIntent = new Intent(this, VideoPlayerActivity.class);
-                if (intent.getStringExtra("cookie") != null)
-                    playIntent.putExtra("cookie", intent.getStringExtra("cookie"));
+                if (intent.getStringExtra("cookie") != null) playIntent.putExtra("cookie", intent.getStringExtra("cookie"));
                 playIntent.putExtra("activity", intent.getBooleanExtra("activity", false));
                 playIntent.putExtra("set", getSPSet(String.valueOf(0)));
                 playIntent.putExtra("backright", getSPSet(String.valueOf(1)));
                 playIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                playIntent.putExtra("getVideoProgress", getVideoProgress);
-                if (intent.getStringExtra("danmakuInternetUrl") != null) {
-                    playIntent.putExtra("danmakuInternetUrl", intent.getStringExtra("danmakuInternetUrl"));
-                }
+                playIntent.putExtra("getVideoProgress", VideoProgress);
+                if (intent.getStringExtra("danmakuInternetUrl") != null) playIntent.putExtra("danmakuInternetUrl", intent.getStringExtra("danmakuInternetUrl"));
                 playIntent.putExtra("videoName", intent.getStringExtra("videoName"));
                 playIntent.putExtra("getVideoPath", getVideoPath);
                 playIntent.putExtra("displayland", getSPSet("1.display"));
                 playIntent.putExtra("single_touch", getSPSet("3"));
                 playIntent.putExtra("internet", intent.getBooleanExtra("internet", false));
                 startActivity(playIntent);
-                if (getVideoProgress > 0) {
-                    Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();
-                }
+                if (VideoProgress > 0) Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();
             }else {
                 startActivity(new Intent(SaveGetVideoProgressService.this,PlaySetActivity.class));
                 Toast.makeText(this, "请选择视图", Toast.LENGTH_SHORT).show();
             }
             new developer().execute();
         }
-
         if (todo.equals("save")) {
             String videoName = intent.getStringExtra("saveName");
             int currentProgress = intent.getIntExtra("saveProgress", 0);
             saveVideoProgress(videoName, currentProgress);
         }
-
         stopSelf(); // 停止服务
-
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }    private int getVideoProgress(String videoName) {
+    }
+    private int getVideoProgress(String videoName) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String[] projection = {VideoProgressDBHelper.COLUMN_PROGRESS};
         String selection = VideoProgressDBHelper.COLUMN_VIDEO_NAME + "=?";
@@ -168,12 +159,10 @@ public class SaveGetVideoProgressService extends Service {
                 } else {
                     Log.e("fail",deviceName);
                 }
-
                 conn.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
     }
@@ -182,7 +171,6 @@ public class SaveGetVideoProgressService extends Service {
         ContentValues values = new ContentValues();
         values.put(VideoProgressDBHelper.COLUMN_VIDEO_NAME, videoName);
         values.put(VideoProgressDBHelper.COLUMN_PROGRESS, progress);
-
         // 检查数据库中是否已存在该视频的进度记录
         String selection = VideoProgressDBHelper.COLUMN_VIDEO_NAME + "=?";
         String[] selectionArgs = {videoName};

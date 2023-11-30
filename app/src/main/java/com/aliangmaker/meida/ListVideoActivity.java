@@ -191,7 +191,10 @@ public class ListVideoActivity extends AppCompatActivity implements LoaderManage
                         deleteVideoFile(videoItem.getVideoPath());
                         Toast.makeText(ListVideoActivity.this, "已尝试删除", Toast.LENGTH_SHORT).show();
                         sure = 0;
-                    } else if(sure==1) sure = 0;
+                    } else if(sure==1) {
+                        sure = 0;
+                        Toast.makeText(ListVideoActivity.this, "再次长按以删除", Toast.LENGTH_SHORT).show();
+                    }
 
                 } else
                     startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));

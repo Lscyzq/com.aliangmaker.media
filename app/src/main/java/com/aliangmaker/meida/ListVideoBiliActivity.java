@@ -17,7 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ListVideoBiliActivity extends AppCompatActivity {
@@ -89,18 +92,15 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                         view = convertView;
                     }
                     view=super.getView(position,convertView,parent);
-
                     String videoPath=mVideoPathList.get(position);
                     File videoFile=new File(videoPath);
                     File parentDir=new File(videoFile.getParent());
                     String coverPath=parentDir.getAbsolutePath()+"/cover.png";
                     Bitmap bitmap=BitmapFactory.decodeFile(coverPath);
-
                     if(bitmap!=null){
                         //添加小圆角
                         int cornerRadius=20;
                         Bitmap roundedThumbnailBitmap=getRoundedCornerBitmap(bitmap,cornerRadius);
-
                         //设置缩略图到ImageView
                         ImageView imageViewThumbnail=view.findViewById(R.id.imageView);
                         imageViewThumbnail.setImageBitmap(roundedThumbnailBitmap);
@@ -110,7 +110,6 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                     view.setOnClickListener(v -> {
                         String videoName=mVideoList.get(position);
                         String videoPath1 =mVideoPathList.get(position);
-
                         // 获取视频文件路径
                         Intent intent=new Intent(ListVideoBiliActivity.this,SaveGetVideoProgressService.class);
                         intent.putExtra("videoName", videoName);
@@ -162,8 +161,10 @@ public class ListVideoBiliActivity extends AppCompatActivity {
                                     mAdapter.notifyDataSetChanged();
                                     Toast.makeText(ListVideoBiliActivity.this, "已尝试删除", Toast.LENGTH_SHORT).show();
                                     sure = 0;
-                                } else if(sure == 1) sure = 0;
-
+                                } else if(sure == 1) {
+                                    sure = 0;
+                                    Toast.makeText(ListVideoBiliActivity.this, "再次长按以删除", Toast.LENGTH_SHORT).show();
+                                }
                             } else
                                 startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
                             // 创建一个AlertDialog.Builder实例
@@ -187,21 +188,13 @@ public class ListVideoBiliActivity extends AppCompatActivity {
     String item;
     private void listVideosRecursive(File directory) {
         File[] files = directory.listFiles(file -> file.isFile() && file.getName().toLowerCase().endsWith(".mp4"));
-
         if (files != null) {
             for (File file : files) {
                 mVideoList.add(getVideoTitle(file.getParentFile()));
                 mVideoPathList.add(file.getAbsolutePath());
             }
         }
-
-        File[] subDirectories = directory.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory();
-            }
-        });
-
+        File[] subDirectories = directory.listFiles(File::isDirectory);
         if (subDirectories != null) {
             for (File subDirectory : subDirectories) {
                 listVideosRecursive(subDirectory);
@@ -237,7 +230,6 @@ public class ListVideoBiliActivity extends AppCompatActivity {
         }catch(Exception e){
             e.printStackTrace();
         }
-
         return "";
     }
     private Bitmap getRoundedCornerBitmap(Bitmap bitmap, int cornerRadius){
@@ -256,5 +248,4 @@ public class ListVideoBiliActivity extends AppCompatActivity {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
-
 }
