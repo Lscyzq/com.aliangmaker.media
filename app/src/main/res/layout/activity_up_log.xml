@@ -53,6 +53,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
             <TextView
+                    android:id="@+id/textView84"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_shallow_border"
+                    android:text="3.11.9"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            <TextView
+                    android:id="@+id/textView85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增音频输出设置选项以解决部分设备的音画问题（播放设置中）\n2.修复了内部下载的部分问题\n3.修复了应用内更新问题\n4.修复了弹幕不加载/重复加载问题\n5.修复了童锁后的倍速问题\n6.修复了从后台返回后弹幕提前播放问题\n7.修复了检测更新问题\n8.修复了应用内更新问题\n9.增加进度条准度"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView84" />
+            <TextView
                     android:id="@+id/textView83"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,7 +88,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView85" />
             <TextView
                     android:id="@+id/textView82"
                     android:layout_width="match_parent"
@@ -230,7 +255,7 @@
                 android:layout_marginEnd="4dp"
                 android:ellipsize="end"
                 android:textColor="#FFFFFF"
-                android:text="1.新增音频输出设置选项以解决部分设备的音画问题（播放设置中）\n2.修复了内部下载的部分问题\n3.修复了应用内更新问题\n4.修复了弹幕不加载/重复加载问题\n5.修复了童锁后的倍速问题\n6.修复了从后台返回后弹幕提前播放问题\n7.修复了检测更新问题\n8.修复了应用内更新问题\n9.增加进度条准度"
+                android:text="1.新增1.25倍速播放功能\n修复弹幕缓冲时提前加载问题\n开发者支持接入视频进度"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />

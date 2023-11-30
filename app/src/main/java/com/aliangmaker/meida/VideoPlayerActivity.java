@@ -50,7 +50,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private SeekBar seekBar;
     private int currentProgress;
     private String videoName,videoPath,danmakuInternetUrl;
-    private boolean speed = false, backlight,isGone,isLandscape = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
+    private boolean speed = false, backlight,isGone,isLandscape = true,firstin = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
     private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView;
     private View topOverlayView,bottomOverlayView;
     private ImageView screen,back,textRegain,play_pause,danmaku,lock;
@@ -264,6 +264,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         mDanmakuView = (IDanmakuView) findViewById(R.id.danmakuSurfaceView);
         videoLayout = findViewById(R.id.video_layout);
         choose_surface(surface_choose);
+        //mediaSession();
         lock.setOnClickListener(view -> {
             if (isLocked){
                 isLocked = false;
@@ -352,6 +353,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 mDanmakuView.enableDanmakuDrawingCache(true);//弹幕缓存
             }
         } else danmaku.setVisibility(View.GONE);
+
+
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         if (sharedPreferences_play_set.getBoolean("jump_play", true)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
@@ -712,7 +715,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             }
             CurrentIjkSpeed = speed;
             if (speed == 1.0) tvPlaybackSpeed.setText("倍速");
-            else tvPlaybackSpeed.setText(String.format("%.1fx", speed));
+            else tvPlaybackSpeed.setText(speed+"x");
             listPopupWindow.dismiss();
         });
         listPopupWindow.show();
@@ -928,19 +931,58 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     @Override
     protected void onResume() {
         super.onResume();
-        mDanmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
+        if(danmakuTrue && mDanmakuView != null) mDanmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
         handler.postDelayed(updateSeekBar, 600);
         handler.postDelayed(setVisibilityGONE, 3500);
         handler.postDelayed(updateSystemTimeRunnable, 1000);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        ijkMediaPlayer.start();
+//        play_pause.setImageResource(R.drawable.play);
         // 获取保存的数据并显示在 Toast 中（仅当有保存的进度时）
     }
     @Override
     protected void onPause() {
         super.onPause();
         currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
+//        play_pause.setImageResource(R.drawable.pause);
+//        ijkMediaPlayer.stop();
+//        if(danmakuTrue && mDanmakuView != null)mDanmakuView.stop();
     }
+/*    private void mediaSession(){
+        MediaSession mediaSession = new MediaSession(this, getPackageName());
+        mediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
+                MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
+        // 设置媒体按钮回调
+        mediaSession.setCallback(new MediaSession.Callback() {
+            @Override
+            public void onCommand(@NonNull String command, @Nullable Bundle args, @Nullable ResultReceiver cb) {
+                super.onCommand(command, args, cb);
+            }
+            @Override
+            public void onPlay() {
+                // 处理播放事件
+                ijkMediaPlayer.start();
+                if(danmakuTrue && mDanmakuView != null) mDanmakuView.resume();
+            }
+
+            @Override
+            public void onPause() {
+                // 处理暂停事件
+                ijkMediaPlayer.pause();
+                if(danmakuTrue && mDanmakuView != null) mDanmakuView.stop();
+            }
+
+            // 其他回调方法
+        });
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(getPackageName(), ".VideoPlayerActivity"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        mediaSession.setActive(true);
+        // 激活媒体会话
+        mediaSession.setActive(true);
+    }*/
     float minScale;
     private class ScaleListener extends SimpleOnScaleGestureListener {
         @Override

@@ -78,6 +78,7 @@ public class SaveGetVideoProgressService extends Service {
             int currentProgress = intent.getIntExtra("saveProgress", 0);
             saveVideoProgress(videoName, currentProgress);
         }
+
         stopSelf(); // 停止服务
         return super.onStartCommand(intent, flags, startId);
     }
@@ -88,6 +89,9 @@ public class SaveGetVideoProgressService extends Service {
     }
     private int getVideoProgress(String videoName) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Log.e("p",db.getPath());
+        Log.e("s", String.valueOf(db.getPageSize()));
+        Toast.makeText(this, (int) db.getPageSize(), Toast.LENGTH_SHORT).show();
         String[] projection = {VideoProgressDBHelper.COLUMN_PROGRESS};
         String selection = VideoProgressDBHelper.COLUMN_VIDEO_NAME + "=?";
         String[] selectionArgs = {videoName};
