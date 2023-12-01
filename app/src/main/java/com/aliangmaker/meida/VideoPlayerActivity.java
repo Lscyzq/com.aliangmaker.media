@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.widget.*;
@@ -146,16 +147,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     }
     private String getFilePathInFolder(String folderPath, String fileName) {
         File directory = new File(folderPath);
-        File pathFolder = new File(directory.getParent());
-        File[] files = pathFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.getName().equals(fileName)) {
-                    return file.getAbsolutePath(); // 返回目标文件的路径
-                }
-            }
-        }
-        return null; // 文件不存在
+        File xml = new File(directory.getParent()+"/"+fileName);
+        Log.e("xml", String.valueOf(xml));
+        return String.valueOf(xml); // 文件不存在
     }
     private BaseDanmakuParser createParser(String stream) {
 
@@ -167,9 +161,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 }
             };
         }
-
         ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
-
         try {
             loader.load(stream);
         } catch (IllegalDataException e) {
@@ -343,7 +335,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     mParser = createParser(danmakuInternetUrl);
                     mDanmakuView.prepare(mParser, mContext);
                 }else {
-                    mParser = createParser(this.getFilePathInFolder(videoPath, "danmaku.xml")); //创建解析器对象，从raw资源目录下解析comments.xml文本
+                    mParser = createParser(getFilePathInFolder(videoPath, "danmaku.xml")); //创建解析器对象，从raw资源目录下解析comments.xml文本
                     mDanmakuView.prepare(mParser, mContext);
                     danmakuInternetUrl = "";
                 }

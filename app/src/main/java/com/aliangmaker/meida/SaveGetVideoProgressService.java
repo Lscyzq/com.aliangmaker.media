@@ -91,7 +91,7 @@ public class SaveGetVideoProgressService extends Service {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Log.e("p",db.getPath());
         Log.e("s", String.valueOf(db.getPageSize()));
-        Toast.makeText(this, (int) db.getPageSize(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,""+db.getPageSize(), Toast.LENGTH_SHORT).show();
         String[] projection = {VideoProgressDBHelper.COLUMN_PROGRESS};
         String selection = VideoProgressDBHelper.COLUMN_VIDEO_NAME + "=?";
         String[] selectionArgs = {videoName};
