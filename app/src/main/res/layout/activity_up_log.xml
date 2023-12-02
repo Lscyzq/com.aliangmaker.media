@@ -31,6 +31,19 @@
             android:layout_height="wrap_content">
 
             <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增1.25倍速播放功能\n2.新增音量控制\n3.新增精准进度条开关（播放设置中）\n4.修复弹幕缓冲时提前加载问题\n5.修复弹幕不加载问题\n6.优化更新界面\n7.开发者支持接入视频进度"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -193,8 +206,6 @@
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView62" />
-
-
             <TextView
                 android:id="@+id/textView60"
                 android:layout_width="wrap_content"
@@ -245,20 +256,6 @@
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:textColor="#FFFFFF"
-                android:text="1.新增1.25倍速播放功能\n修复弹幕缓冲时提前加载问题\n开发者支持接入视频进度"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
             <TextView
                 android:id="@+id/textView39"

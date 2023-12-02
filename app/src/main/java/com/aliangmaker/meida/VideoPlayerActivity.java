@@ -2,11 +2,13 @@ package com.aliangmaker.meida;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -42,9 +44,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class VideoPlayerActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
+public class VideoPlayerActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener, View.OnClickListener {
     Surface surface;
-    private float scaleFactor = 1.0f,CurrentIjkSpeed;
+    private float scaleFactor = 1.0f,CurrentIjkSpeed,minScale;
     TextureView textureView;
     private SeekBar seekBar;
     private int currentProgress,screenWidth;
@@ -52,7 +54,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private boolean speed = false,isMoving = false, backlight,isGone,isLandscape = true,firstin = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
     private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView,tvPlaybackSpeed;
     private View topOverlayView,bottomOverlayView;
-    private ImageView screen,back,textRegain,play_pause,danmaku,lock;
+    private ImageView screen,back,textRegain,play_pause,danmaku,lock,volume_up,volume_down;
     private Drawable thumb;
     private IjkMediaPlayer ijkMediaPlayer;
     int videoWidth,screenHeight,videoHeight;
@@ -78,6 +80,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         ijkInitial();
         onScale();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -92,7 +95,26 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         super.onPause();
         currentProgress = (int) ijkMediaPlayer.getCurrentPosition();
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDanmakuView != null) {
+            mDanmakuView.release();
+            mDanmakuView = null;
+        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Intent intent = new Intent(VideoPlayerActivity.this, SaveGetVideoProgressService.class);
+        if (currentProgress >= ijkMediaPlayer.getDuration()-3000) {
+            intent.putExtra("saveProgress",0);
+        } else
+            intent.putExtra("saveProgress", currentProgress);
+        intent.putExtra("play", "save");
+        intent.putExtra("saveName", videoPath);
+        startService(intent);
+        handler.removeCallbacks(updateSeekBar);
+        handler.removeCallbacks(setVisibilityGONE);
+        ijkMediaPlayer.release();
+    }
 
     private void onScale(){
         GestureDetector gestureDetector;
@@ -441,8 +463,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             animator.start();
         }
     }
-
-    // 在VideoPlayerActivity中定义一个变量
     private final Handler handler = new Handler();
     private final Runnable updateSpeedRunnable = new Runnable() {
         @Override
@@ -460,7 +480,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private void getSet(){
         sharedPreferences_play_set = getSharedPreferences("play_set", MODE_PRIVATE);
         if (sharedPreferences_play_set.getString("view","surface").equals("texture")) surface_choose = false;
-
         CurrentSpeed = getDanmakuSet("danmakuSpeed");
         CurrentIjkSpeed = 1.0f;
         danmakuTrue = getIntent().getBooleanExtra("activity", false);
@@ -481,6 +500,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         videoPath = getIntent().getStringExtra("getVideoPath");
     }
     private void findView(){
+        volume_down = findViewById(R.id.volume_down);
+        volume_up = findViewById(R.id.volume_up);
         scrollText = findViewById(R.id.textView34);
         currentTimeTextView2 = findViewById(R.id.current_time_textview2);
         ijkMediaPlayer = new IjkMediaPlayer();
@@ -585,6 +606,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             textRegain.setVisibility(View.GONE);
             topOverlayView.setVisibility(View.GONE);
             bottomOverlayView.setVisibility(View.GONE);
+            volume_down.setVisibility(View.GONE);
+            volume_up.setVisibility(View.GONE);
             screen.setVisibility(View.GONE);
             currentTimeTextView2.setVisibility(View.GONE);
             danmaku.setVisibility(View.GONE);
@@ -717,6 +740,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             params.bottomMargin = dpToPx(36);
             seekBar.setLayoutParams(params);
             textRegain.setVisibility(View.VISIBLE);
+            volume_up.setVisibility(View.VISIBLE);
+            volume_down.setVisibility(View.VISIBLE);
             scrollText.setVisibility(View.VISIBLE);
             if (danmakuTrue) danmaku.setVisibility(View.VISIBLE);
             topOverlayView.setVisibility(View.VISIBLE);
@@ -749,26 +774,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private String getCurrentSystemTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return dateFormat.format(new Date());
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mDanmakuView != null) {
-            mDanmakuView.release();
-            mDanmakuView = null;
-        }
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Intent intent = new Intent(VideoPlayerActivity.this, SaveGetVideoProgressService.class);
-        if (currentProgress >= ijkMediaPlayer.getDuration()-3000) {
-            intent.putExtra("saveProgress",0);
-        } else
-            intent.putExtra("saveProgress", currentProgress);
-        intent.putExtra("play", "save");
-        intent.putExtra("saveName", videoPath);
-        startService(intent);
-        handler.removeCallbacks(updateSeekBar);
-        handler.removeCallbacks(setVisibilityGONE);
-        ijkMediaPlayer.release();
     }
     private void setListener(){
         screen.setOnClickListener(v -> {
@@ -853,6 +858,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 lock.setImageResource(R.drawable.lock);
             }
         });
+        volume_up.setOnClickListener(this);
+        volume_down.setOnClickListener(this);
     }
     private void initialDanmaku(){
         if (danmakuTrue) {
@@ -929,8 +936,30 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             mDanmakuView.enableDanmakuDrawingCache(true);//弹幕缓存
         } else danmaku.setVisibility(View.GONE);
     }
-
-    float minScale;
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if(id == R.id.volume_down) adjustVolume(false);
+        else if (id == R.id.volume_up) adjustVolume(true);
+    }
+    private void adjustVolume(boolean increase) {
+        AudioManager audioManager;
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        // 获取当前音量
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        // 获取系统最大音量
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        // 计算新的音量值
+        int newVolume;
+        if (increase) {
+            newVolume = Math.min(currentVolume + 1, maxVolume);
+        } else {
+            newVolume = Math.max(currentVolume - 1, 0);
+        }
+        // 设置新的音量值
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+    }
     private class ScaleListener extends SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {

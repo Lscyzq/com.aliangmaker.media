@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.aliangmaker.meida.databinding.ActivityErrorBackBinding;
+import com.aliangmaker.meida.databinding.ActivityOpenInforBinding;
 import com.aliangmaker.meida.databinding.ActivitySingleTouchBinding;
 import com.aliangmaker.meida.databinding.ActivityVersionUpBinding;
 import okhttp3.OkHttpClient;
@@ -30,6 +31,7 @@ import java.util.TimerTask;
 public class EmptyActivity extends AppCompatActivity {
     private ActivitySingleTouchBinding binding;
     private ActivityVersionUpBinding bindingVersion;
+    private ActivityOpenInforBinding openInforBinding;
 
     private void setSPSet(String item) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(EmptyActivity.this);
@@ -102,47 +104,44 @@ public class EmptyActivity extends AppCompatActivity {
                 Toast.makeText(EmptyActivity.this, "已复制链接！", Toast.LENGTH_SHORT).show();
                 return true;
             });
-            bindingVersion.updateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(EmptyActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
-                    OkHttpClient mOkHttpClient = new OkHttpClient();
-                    String url = value+"com.media/aliang-media.apk";
-                    // Request 中封装了请求相关信息
-                    Request request = new Request.Builder()
-                            .url(url)   // 设置请求地址
-                            .get()                          // 使用 Get 方法
-                            .build();
+            bindingVersion.updateButton.setOnClickListener(view -> {
+                Toast.makeText(EmptyActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+                OkHttpClient mOkHttpClient = new OkHttpClient();
+                String url = value+"com.media/aliang-media.apk";
+                // Request 中封装了请求相关信息
+                Request request = new Request.Builder()
+                        .url(url)   // 设置请求地址
+                        .get()                          // 使用 Get 方法
+                        .build();
 
-                    // 同步 Get 请求
-                    new Thread(() -> {
-                        String result;
-                        Response response;
-                        try {
-                            response = mOkHttpClient.newCall(request).execute();
-                            result = String.valueOf(response.request().url());
-                            DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, new DownloadDanmakuTask.DownloadDanmakuListener() {
-                                @Override
-                                public void onDanmakuDownloaded() {
-                                    runOnUiThread(() -> Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show());
-                                   Timer timer = new Timer();
-                                    TimerTask timerTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            installUpdate();
-                                        }
-                                    };
-                                    timer.schedule(timerTask,1000);
-                                }
-                            });
+                // 同步 Get 请求
+                new Thread(() -> {
+                    String result;
+                    Response response;
+                    try {
+                        response = mOkHttpClient.newCall(request).execute();
+                        result = String.valueOf(response.request().url());
+                        DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, new DownloadDanmakuTask.DownloadDanmakuListener() {
+                            @Override
+                            public void onDanmakuDownloaded() {
+                                runOnUiThread(() -> Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show());
+                               Timer timer = new Timer();
+                                TimerTask timerTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        installUpdate();
+                                    }
+                                };
+                                timer.schedule(timerTask,1000);
+                            }
+                        });
 
-                            task.execute(result,"凉腕播放器.apk");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }).start();
+                        task.execute(result,"凉腕播放器.apk");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
 
-                }
             });
             if (getIntent().getStringExtra("visible").equals("null")) {
                 bindingVersion.checkBox.setVisibility(View.GONE);
@@ -178,7 +177,6 @@ public class EmptyActivity extends AppCompatActivity {
             setContentView(bindingVersion.getRoot());
             setTitleText("重要公告");
             bindingVersion.updateButton.setVisibility(View.GONE);
-            bindingVersion.detailTv.setVisibility(View.GONE);
             bindingVersion.checkBox.setVisibility(View.GONE);
             bindingVersion.imageView14.setVisibility(View.GONE);
             bindingVersion.textView42.setText(getIntent().getStringExtra("notice"));

@@ -34,7 +34,7 @@ public class AboutActivity extends AppCompatActivity {
             }
         }, false);
 
-        String[] data = {"应用信息","更新日志","作者的话","赞助我们","官方群聊\n（反馈）"};
+        String[] data = {"应用信息","更新日志","作者的话","赞助我们","官方群聊\n（反馈）","关于开源"};
         // Create an ArrayAdapter to convert the array into views
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data) {
 
@@ -63,6 +63,8 @@ public class AboutActivity extends AppCompatActivity {
                     imageView.setImageResource(R.drawable.errorback);
                 } else if (position == 2) {
                     imageView.setImageResource(R.drawable.auther);
+                } else if (position == 5) {
+                    imageView.setImageResource(R.drawable.openinfor);
                 }
                 return view;
             }
@@ -96,6 +98,10 @@ public class AboutActivity extends AppCompatActivity {
                     intent3.putExtra("layout","activity_error_back");
                     startActivity(intent3);
                     break;
+                case 5:
+                    Intent intent4 = new Intent(AboutActivity.this,EmptyActivity.class);
+                    intent4.putExtra("layout","activity_open_infor");
+                    startActivity(intent4);
             }
         });
     }
