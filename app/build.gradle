@@ -44,18 +44,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.+'
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
-    api'com.github.ctiao:dfm:0.4.2'
-    api 'com.danikula:videocache:2.7.1'
+    api'com.github.ctiao:dfm:0.5.5'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
 }
-
-//dependencies {
-//    implementation 'com.squareup.okhttp3:okhttp:3.14.+'
-//    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8' //??IJKPlayer
-//    api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8' //??IJKPlayer
-//    api'com.github.ctiao:dfm:0.4.2'
-//    api 'com.danikula:videocache:2.7.1'
-//    implementation 'androidx.appcompat:appcompat:1.4.1'
-//    implementation 'com.google.android.material:material:1.5.0'
-//}
