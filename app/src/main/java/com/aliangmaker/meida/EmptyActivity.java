@@ -16,7 +16,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.aliangmaker.meida.databinding.ActivityErrorBackBinding;
-import com.aliangmaker.meida.databinding.ActivityOpenInforBinding;
 import com.aliangmaker.meida.databinding.ActivitySingleTouchBinding;
 import com.aliangmaker.meida.databinding.ActivityVersionUpBinding;
 import okhttp3.OkHttpClient;
@@ -31,7 +30,6 @@ import java.util.TimerTask;
 public class EmptyActivity extends AppCompatActivity {
     private ActivitySingleTouchBinding binding;
     private ActivityVersionUpBinding bindingVersion;
-    private ActivityOpenInforBinding openInforBinding;
 
     private void setSPSet(String item) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(EmptyActivity.this);
@@ -47,7 +45,6 @@ public class EmptyActivity extends AppCompatActivity {
                 super.onFragmentViewCreated(fm, f, v, savedInstanceState);
                 if(f instanceof BaseTitleFragment){
                     ((BaseTitleFragment)f).setTextViewText(text);
-
                 }
             }
         }, false);
@@ -61,12 +58,9 @@ public class EmptyActivity extends AppCompatActivity {
         Uri uri = FileProvider.getUriForFile(this, "com.aliangmaker.media.fileprovider", apk);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         startActivity(intent);
-
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         layout = getIntent().getStringExtra("layout");
         if (layout.equals("activity_privacy_policy")) {
@@ -121,19 +115,16 @@ public class EmptyActivity extends AppCompatActivity {
                     try {
                         response = mOkHttpClient.newCall(request).execute();
                         result = String.valueOf(response.request().url());
-                        DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, new DownloadDanmakuTask.DownloadDanmakuListener() {
-                            @Override
-                            public void onDanmakuDownloaded() {
-                                runOnUiThread(() -> Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show());
-                               Timer timer = new Timer();
-                                TimerTask timerTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        installUpdate();
-                                    }
-                                };
-                                timer.schedule(timerTask,1000);
-                            }
+                        DownloadDanmakuTask task = new DownloadDanmakuTask(EmptyActivity.this, () -> {
+                            runOnUiThread(() -> Toast.makeText(EmptyActivity.this, "下载完成，即将安装", Toast.LENGTH_SHORT).show());
+                           Timer timer = new Timer();
+                            TimerTask timerTask = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    installUpdate();
+                                }
+                            };
+                            timer.schedule(timerTask,1000);
                         });
 
                         task.execute(result,"凉腕播放器.apk");
@@ -180,6 +171,9 @@ public class EmptyActivity extends AppCompatActivity {
             bindingVersion.checkBox.setVisibility(View.GONE);
             bindingVersion.imageView14.setVisibility(View.GONE);
             bindingVersion.textView42.setText(getIntent().getStringExtra("notice"));
+        } else if (layout.equals("activity_open_infor")) {
+            setContentView(R.layout.activity_open_infor);
+            setTitleText("关于开源");
         }
     }
 }

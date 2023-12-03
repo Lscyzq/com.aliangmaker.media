@@ -268,10 +268,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
-
         // 计算弹出选择框的水平偏移量
         int offsetX = screenWidth - anchorView.getWidth() - listPopupWindow.getWidth();
-
         // 设置弹出选择框的水平偏移量和垂直偏移量
         listPopupWindow.setHorizontalOffset(offsetX);
         listPopupWindow.setVerticalOffset(0);
@@ -391,7 +389,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     textureView.setLayoutParams(params);
                 } else {    // Portrait video
                     int surfaceWidth = (int) (screenHeight * videoAspectRatio);
-
                     ViewGroup.LayoutParams params = textureView.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     params.width = surfaceWidth;
@@ -459,21 +456,18 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 float currentSpeedFactor = oldSpeedFactor + (newSpeedFactor - oldSpeedFactor) * factor;
                 mContext.setScrollSpeedFactor(currentSpeedFactor);
             });
-
             animator.start();
         }
     }
-    private final Handler handler = new Handler();
+    private Handler handler = new Handler();
     private final Runnable updateSpeedRunnable = new Runnable() {
         @Override
         public void run() {
             long tcpSpeed = ijkMediaPlayer.getTcpSpeed();
             double speedInKilobytesPerSecond = tcpSpeed / 1024.0; // 转换为千字节每秒
             @SuppressLint("DefaultLocale") String speedString = String.format("%.2f KB/s", speedInKilobytesPerSecond);
-
             textView.setVisibility(View.VISIBLE);
             textView.setText(speedString);
-
             handler.postDelayed(this, 500); // 每隔500毫秒刷新一次网速值
         }
     };
@@ -594,35 +588,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
     }
-    Runnable setVisibilityGONE = new Runnable() {
-        @Override
-        public void run() {
-            isGone = true;
-            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)seekBar.getLayoutParams();
-            params.bottomMargin = -10;
-            seekBar.setLayoutParams(params);
-            seekBar.setThumb(ContextCompat.getDrawable(VideoPlayerActivity.this, android.R.color.transparent));
-            tvPlaybackSpeed.setVisibility(View.GONE);
-            textRegain.setVisibility(View.GONE);
-            topOverlayView.setVisibility(View.GONE);
-            bottomOverlayView.setVisibility(View.GONE);
-            volume_down.setVisibility(View.GONE);
-            volume_up.setVisibility(View.GONE);
-            screen.setVisibility(View.GONE);
-            currentTimeTextView2.setVisibility(View.GONE);
-            danmaku.setVisibility(View.GONE);
-            back.setVisibility(View.GONE);
-            currentTimeTextView3.setVisibility(View.GONE);
-            scrollText.setVisibility(View.GONE);
-            play_pause.setVisibility(View.GONE);
-            currentTimeTextView.setVisibility(View.GONE);
-            videoLayout.requestLayout();
-            if(!isLocked){
-                lock.setVisibility(View.GONE);
-            }
-            handler.removeCallbacks(this);
-        }
-    };
+
     private void ijkInitial(){
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
@@ -730,7 +696,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             play_pause.setImageResource(R.drawable.pause);
         });
     }
-    Runnable setVisibilityVISIBLE = new Runnable() {
+    private Runnable setVisibilityVISIBLE = new Runnable() {
         @Override
         public void run() {
             isGone = false;
@@ -758,15 +724,42 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.removeCallbacks(this);
         }
     };
-    Runnable updateSystemTimeRunnable = new Runnable() {
+    private Runnable setVisibilityGONE = new Runnable() {
+        @Override
+        public void run() {
+            isGone = true;
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)seekBar.getLayoutParams();
+            params.bottomMargin = -10;
+            seekBar.setLayoutParams(params);
+            seekBar.setThumb(ContextCompat.getDrawable(VideoPlayerActivity.this, android.R.color.transparent));
+            tvPlaybackSpeed.setVisibility(View.GONE);
+            textRegain.setVisibility(View.GONE);
+            topOverlayView.setVisibility(View.GONE);
+            bottomOverlayView.setVisibility(View.GONE);
+            volume_down.setVisibility(View.GONE);
+            volume_up.setVisibility(View.GONE);
+            screen.setVisibility(View.GONE);
+            currentTimeTextView2.setVisibility(View.GONE);
+            danmaku.setVisibility(View.GONE);
+            back.setVisibility(View.GONE);
+            currentTimeTextView3.setVisibility(View.GONE);
+            scrollText.setVisibility(View.GONE);
+            play_pause.setVisibility(View.GONE);
+            currentTimeTextView.setVisibility(View.GONE);
+            videoLayout.requestLayout();
+            if(!isLocked){
+                lock.setVisibility(View.GONE);
+            }
+            handler.removeCallbacks(this);
+        }
+    };
+    private Runnable updateSystemTimeRunnable = new Runnable() {
         @Override
         public void run() {
             // 获取当前系统时间
             String currentTime = getCurrentSystemTime();
-
             // 更新系统时间显示
             currentTimeTextView2.setText(currentTime);
-
             // 每秒钟更新一次系统时间
             handler.postDelayed(this, 1000);
         }
