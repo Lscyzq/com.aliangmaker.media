@@ -916,7 +916,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     }
                 });
                 task.execute(danmakuInternetUrl,"danmaku.xml");
-                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 BiliDroid/1.1.1 (bbcallen@gmail.com)");
+                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
             }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
                 mDanmakuView.prepare(createParser(danmakuInternetUrl), mContext);
             }else {
