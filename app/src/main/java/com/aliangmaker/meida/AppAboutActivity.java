@@ -29,12 +29,12 @@ public class AppAboutActivity extends AppCompatActivity implements UpdateChecker
                 Toast.makeText(this, "耶？服务器好像坏掉了，开始更新服务地址", Toast.LENGTH_SHORT).show();
                 new ChangeServerTask(this).execute();
             } else {
-                intent = new Intent(AppAboutActivity.this, EmptyActivity.class);
+                intent = new Intent(AppAboutActivity.this, EmptyActivity.class);d
                 intent.putExtra("layout", "activity_update");
                 UpdateDetail updateDetail = new UpdateDetail(this, this);
                 updateDetail.execute();
             }
-        } else Toast.makeText(this, "已是最新版！", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(this, "已是最新版！", Toast.LENGTH_SHORT).show();ddd
         binding.progressBar2.setVisibility(View.GONE);
     }
     @Override
