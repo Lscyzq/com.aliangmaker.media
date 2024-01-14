@@ -109,6 +109,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         } else
             intent.putExtra("saveProgress", currentProgress);
         intent.putExtra("play", "save");
+        if (danmakuInternetUrl.startsWith("http")) videoPath = videoName;
         intent.putExtra("saveName", videoPath);
         startService(intent);
         handler.removeCallbacks(updateSeekBar);

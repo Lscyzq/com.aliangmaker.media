@@ -50,16 +50,20 @@ public class SaveGetVideoProgressService extends Service {
             if (!sharedPreferences.getString("view","null").equals("null")) {
                 getVideoPath = intent.getStringExtra("videoPath");
                 int VideoProgress;
+                Intent playIntent = new Intent(this, VideoPlayerActivity.class);
+                String danmakuInternetUrl = intent.getStringExtra("danmakuInternetUrl");
+                if (danmakuInternetUrl != null) {
+                    playIntent.putExtra("danmakuInternetUrl", danmakuInternetUrl);
+                    getVideoPath = intent.getStringExtra("videoName");
+                }
                 if(intent.getIntExtra("progress",0) == 0) VideoProgress = getVideoProgress(getVideoPath);
                 else VideoProgress = intent.getIntExtra("progress",0);
-                Intent playIntent = new Intent(this, VideoPlayerActivity.class);
                 if (intent.getStringExtra("cookie") != null) playIntent.putExtra("cookie", intent.getStringExtra("cookie"));
                 playIntent.putExtra("activity", intent.getBooleanExtra("activity", false));
                 playIntent.putExtra("set", getSPSet(String.valueOf(0)));
                 playIntent.putExtra("backright", getSPSet(String.valueOf(1)));
                 playIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 playIntent.putExtra("getVideoProgress", VideoProgress);
-                if (intent.getStringExtra("danmakuInternetUrl") != null) playIntent.putExtra("danmakuInternetUrl", intent.getStringExtra("danmakuInternetUrl"));
                 playIntent.putExtra("videoName", intent.getStringExtra("videoName"));
                 playIntent.putExtra("getVideoPath", getVideoPath);
                 playIntent.putExtra("displayland", getSPSet("1.display"));
@@ -72,11 +76,8 @@ public class SaveGetVideoProgressService extends Service {
                 Toast.makeText(this, "请选择视图", Toast.LENGTH_SHORT).show();
             }
             new developer().execute();
-        }
-        if (todo.equals("save")) {
-            String videoName = intent.getStringExtra("saveName");
-            int currentProgress = intent.getIntExtra("saveProgress", 0);
-            saveVideoProgress(videoName, currentProgress);
+        }else if (todo.equals("save")) {
+            saveVideoProgress(intent.getStringExtra("saveName"), intent.getIntExtra("saveProgress", 0));
         }
 
         stopSelf(); // 停止服务
