@@ -22,21 +22,19 @@ import java.net.URL;
 
 public class SaveGetVideoProgressService extends Service {
     private VideoProgressDBHelper dbHelper;
-    public boolean getSPSet(String item) {
+    public boolean getSPSet(int item) {
         // 获取SharedPreferences对象
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SaveGetVideoProgressService.this);
-        if (item.equals("0")) {
-            boolean switchState1 = sharedPreferences.getBoolean("switch_state_0", false);
-            return switchState1;
-        } else if (item.equals("1")) {
-            boolean switchState2 = sharedPreferences.getBoolean("switch_state_1", false);
-            return switchState2;
-        } else if (item.equals("1.display")){
-            boolean switchState3 = sharedPreferences.getBoolean("switch_state_display1", false);
-            return switchState3;
-        } else if (item.equals("3")) {
-            boolean single_touch = sharedPreferences.getBoolean("switch_state_2", false);
-            return single_touch;
+        if (item == 0) {
+            return sharedPreferences.getBoolean("switch_state_0", false);
+        } else if (item == 1) {
+            return sharedPreferences.getBoolean("switch_state_1", false);
+        } else if (item == 4){
+            return sharedPreferences.getBoolean("switch_state_display1", false);
+        } else if (item == 3) {
+            return sharedPreferences.getBoolean("switch_state_2", false);
+        } else if (item == 5) {
+            return sharedPreferences.getBoolean("switch_state_display3",false);
         }
         throw new IllegalArgumentException("Invalid item: " + item);
     }
@@ -60,14 +58,15 @@ public class SaveGetVideoProgressService extends Service {
                 else VideoProgress = intent.getIntExtra("progress",0);
                 if (intent.getStringExtra("cookie") != null) playIntent.putExtra("cookie", intent.getStringExtra("cookie"));
                 playIntent.putExtra("activity", intent.getBooleanExtra("activity", false));
-                playIntent.putExtra("set", getSPSet(String.valueOf(0)));
-                playIntent.putExtra("backright", getSPSet(String.valueOf(1)));
+                playIntent.putExtra("set", getSPSet(0));
+                playIntent.putExtra("backright", getSPSet(1));
                 playIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 playIntent.putExtra("getVideoProgress", VideoProgress);
                 playIntent.putExtra("videoName", intent.getStringExtra("videoName"));
                 playIntent.putExtra("getVideoPath", getVideoPath);
-                playIntent.putExtra("displayland", getSPSet("1.display"));
-                playIntent.putExtra("single_touch", getSPSet("3"));
+                playIntent.putExtra("displayland", getSPSet(4));
+                playIntent.putExtra("single_touch", getSPSet(3));
+                playIntent.putExtra("volume_hide", getSPSet(5));
                 playIntent.putExtra("internet", intent.getBooleanExtra("internet", false));
                 startActivity(playIntent);
                 if (VideoProgress > 0) Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();

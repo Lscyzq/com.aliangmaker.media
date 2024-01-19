@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -29,7 +28,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <TextView
                     android:id="@+id/textView24"
                     android:layout_width="match_parent"
@@ -39,7 +37,7 @@
                     android:layout_marginEnd="4dp"
                     android:ellipsize="end"
                     android:textColor="#FFFFFF"
-                    android:text="1.新增1.25倍速播放功能\n2.新增音量控制\n3.新增精准进度条开关（播放设置中）\n4.修复弹幕缓冲时提前加载问题\n5.修复弹幕不加载问题\n6.修复后台返回后画面消失问题\n7.修复退出后台后听播问题（也可用于单独听）\n8.修复弹幕开关状态不记录问题\n9.优化更新界面\n10.开发者支持接入视频进度\n11.项目开源，新增开源信息（“关于”中）"
+                    android:text="1.修复第三方（网络类）APP调用播放时视频进度不记录问题\n2.新增音量键隐藏开关（“显示设置”中）"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView23" />
@@ -48,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="奔赴山海|为你而来"
+                android:text="除旧迎新|继往开来"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +64,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
             <TextView
+                    android:id="@+id/tV86"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_shallow_border"
+                    android:text="3.12.9"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            <TextView
+                    android:id="@+id/tV87"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:text="1.新增1.25倍速播放功能\n2.新增音量控制\n3.新增精准进度条开关（播放设置中）\n4.修复弹幕缓冲时提前加载问题\n5.修复弹幕不加载问题\n6.修复后台返回后画面消失问题\n7.修复退出后台后听播问题（也可用于单独听）\n8.修复弹幕开关状态不记录问题\n9.优化更新界面\n10.开发者支持接入视频进度\n11.项目开源，新增开源信息（“关于”中）"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tV86" />
+            <TextView
                     android:id="@+id/textView84"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +99,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                    app:layout_constraintTop_toBottomOf="@+id/tV87" />
             <TextView
                     android:id="@+id/textView85"
                     android:layout_width="match_parent"
@@ -239,8 +262,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="梦幻交织中，我们仿佛正经历由云朵掉下的童话，共赴幻境之旅，遇见你～真好！克服一切困难，开发平板生产力，只为～更早地相遇。I am willing to postpone the time I meet with you,only wishing that you can see the better me.\n凉腕播放器于2023.9.30决定恢复更新！"
                 android:textColor="#FFFFFF"
+                android:text="“寻常一样窗前月，才有梅花便不同” 2024别开生面，有太多的乐趣值得我们去品味。感谢小可爱一路以来对凉腕播放器的支持，请相信我们将会做地更好！凉腕播放器4.0即将焕然出新，期待遇见更好的你～"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />

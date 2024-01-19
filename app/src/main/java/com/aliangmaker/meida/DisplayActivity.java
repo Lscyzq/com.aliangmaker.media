@@ -52,6 +52,7 @@ public class DisplayActivity extends AppCompatActivity {
         itemList.add(new Item("列表小字"));
         itemList.add(new Item("默认横屏"));
         itemList.add(new Item("夜间模式"));
+        itemList.add(new Item("音量隐藏"));
         // 设置ListView适配器
         listView.setAdapter(adapter);
     }
@@ -61,10 +62,11 @@ public class DisplayActivity extends AppCompatActivity {
         public CustomAdapter() {
             super(DisplayActivity.this, 0, itemList);
             // 初始化每个条目的文字
-            itemTexts = new String[3];
+            itemTexts = new String[4];
             itemTexts[0] = "减小列表字号以显示更多内容";
             itemTexts[1] = "视频默认横屏播放";
             itemTexts[2] = "降低屏幕亮度";
+            itemTexts[3] = "隐藏播放界面音量按钮";
         }
 
         @Override

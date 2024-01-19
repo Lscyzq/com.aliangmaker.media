@@ -51,7 +51,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private SeekBar seekBar;
     private int currentProgress,screenWidth;
     private String videoName,videoPath,danmakuInternetUrl;
-    private boolean speed = false,isMoving = false, backlight,isGone,isLandscape = true,firstin = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
+    private boolean speed = false,isMoving = false,volume_hide,backlight,isGone,isLandscape = true,firstin = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
     private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView,tvPlaybackSpeed;
     private View topOverlayView,bottomOverlayView;
     private ImageView screen,back,textRegain,play_pause,danmaku,lock,volume_up,volume_down;
@@ -72,8 +72,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        getSet();
         findView();
+        getSet();
         setListener();
         initialDanmaku();
         choose_surface(surface_choose);
@@ -481,10 +481,11 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         danmakuInternetUrl = getIntent().getStringExtra("danmakuInternetUrl");
         videoName = getIntent().getStringExtra("videoName");
         backlight = getIntent().getBooleanExtra("backright", false);
-        boolean diplayland = getIntent().getBooleanExtra("displayland", false);
         single_touch = getIntent().getBooleanExtra("single_touch", false);
         currentProgress = getIntent().getIntExtra("getVideoProgress",0);
-        if (diplayland) {
+        volume_hide = getIntent().getBooleanExtra("volume_hide",false);
+        if (volume_hide) {volume_up.setVisibility(View.GONE);volume_down.setVisibility(View.GONE);}
+        if (getIntent().getBooleanExtra("displayland", false)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             isLandscape = false;
         }
@@ -707,8 +708,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             params.bottomMargin = dpToPx(36);
             seekBar.setLayoutParams(params);
             textRegain.setVisibility(View.VISIBLE);
-            volume_up.setVisibility(View.VISIBLE);
-            volume_down.setVisibility(View.VISIBLE);
+            if (!volume_hide) {volume_up.setVisibility(View.VISIBLE);volume_down.setVisibility(View.VISIBLE);}
             scrollText.setVisibility(View.VISIBLE);
             if (danmakuTrue) danmaku.setVisibility(View.VISIBLE);
             topOverlayView.setVisibility(View.VISIBLE);
@@ -737,8 +737,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             textRegain.setVisibility(View.GONE);
             topOverlayView.setVisibility(View.GONE);
             bottomOverlayView.setVisibility(View.GONE);
-            volume_down.setVisibility(View.GONE);
-            volume_up.setVisibility(View.GONE);
+            if (!volume_hide){volume_down.setVisibility(View.GONE);volume_up.setVisibility(View.GONE);}
             screen.setVisibility(View.GONE);
             currentTimeTextView2.setVisibility(View.GONE);
             danmaku.setVisibility(View.GONE);
@@ -852,8 +851,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                 lock.setImageResource(R.drawable.lock);
             }
         });
-        volume_up.setOnClickListener(this);
-        volume_down.setOnClickListener(this);
+        if (!volume_hide) {
+            volume_up.setOnClickListener(this);
+            volume_down.setOnClickListener(this);
+        }
     }
     private void initialDanmaku(){
         if (danmakuTrue) {
@@ -917,8 +918,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     }
                 });
                 task.execute(danmakuInternetUrl,"danmaku.xml");
-                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
-            }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
+                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 BiliDroid/1.1.1 (bbcallen@gmail.com)");            }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
                 mDanmakuView.prepare(createParser(danmakuInternetUrl), mContext);
             }else {
                 mDanmakuView.prepare(createParser(getFilePathInFolder(videoPath, "danmaku.xml")), mContext);
@@ -938,21 +938,20 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         else if (id == R.id.volume_up) adjustVolume(true);
     }
     private void adjustVolume(boolean increase) {
-        AudioManager audioManager;
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        // 获取当前音量
-        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        // 获取系统最大音量
-        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        // 计算新的音量值
-        int newVolume;
-        if (increase) {
-            newVolume = Math.min(currentVolume + 1, maxVolume);
-        } else {
-            newVolume = Math.max(currentVolume - 1, 0);
+        if (!volume_hide) {
+            AudioManager audioManager;
+            audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            // 获取当前音量
+            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            int newVolume;
+            if (increase) {
+                newVolume = Math.min(currentVolume + 1, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+            } else {
+                newVolume = Math.max(currentVolume - 1, 0);
+            }
+            // 设置新的音量值
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
         }
-        // 设置新的音量值
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
     }
     private class ScaleListener extends SimpleOnScaleGestureListener {
         @Override
