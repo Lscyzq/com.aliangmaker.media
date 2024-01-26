@@ -692,12 +692,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             handler.postDelayed(resetVideoViewPosition, 600);
         });
         ijkMediaPlayer.setOnCompletionListener(iMediaPlayer -> {
-            Toast.makeText(VideoPlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
             if (sharedPreferences_play_set.getBoolean("restart",false)){
                 ijkMediaPlayer.start();
                 Toast.makeText(this, "重新循环播放", Toast.LENGTH_SHORT).show();
             } else {
+                Toast.makeText(VideoPlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
                 if (getIntent().getBooleanExtra("set", false)) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                     finish();
