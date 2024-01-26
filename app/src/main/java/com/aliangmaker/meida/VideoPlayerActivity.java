@@ -65,6 +65,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     ConstraintLayout videoLayout;
     private DanmakuContext mContext;
     private IDanmakuView mDanmakuView;
+    AudioManager audioManager;
     SharedPreferences sharedPreferences_play_set,sharedPreferences_display;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -109,7 +110,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         } else
             intent.putExtra("saveProgress", currentProgress);
         intent.putExtra("play", "save");
-        if (danmakuInternetUrl.startsWith("http")) videoPath = videoName;
+        if (danmakuInternetUrl != null && danmakuInternetUrl.startsWith("http")) videoPath = videoName;
         intent.putExtra("saveName", videoPath);
         startService(intent);
         handler.removeCallbacks(updateSeekBar);
@@ -161,7 +162,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         videoLayout.setOnTouchListener(new View.OnTouchListener() {
             private float startX;
             private float startY;
-
             private boolean isScaling = false;
             private long lastClickTime = 0;
             private boolean isSwipeBack = false;
@@ -347,7 +347,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }else {
             textureView = null;
             textureView = new TextureView(this);
-            textureView.setSurfaceTextureListener((TextureView.SurfaceTextureListener) VideoPlayerActivity.this);
+            textureView.setSurfaceTextureListener(VideoPlayerActivity.this);
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.gravity = Gravity.CENTER;
             textureView.setLayoutParams(layoutParams);
@@ -473,6 +473,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }
     };
     private void getSet(){
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         sharedPreferences_play_set = getSharedPreferences("play_set", MODE_PRIVATE);
         if (sharedPreferences_play_set.getString("view","surface").equals("texture")) surface_choose = false;
         CurrentSpeed = getDanmakuSet("danmakuSpeed");
@@ -494,6 +495,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             findViewById(R.id.dark).setVisibility(View.VISIBLE);
         }
         videoPath = getIntent().getStringExtra("getVideoPath");
+        if (getIntent().getBooleanExtra("start_low",false)){
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        }
     }
     private void findView(){
         volume_down = findViewById(R.id.volume_down);
@@ -592,6 +596,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     }
 
     private void ijkInitial(){
+
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         if (sharedPreferences_play_set.getBoolean("jump_play", true)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
@@ -689,13 +694,18 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         ijkMediaPlayer.setOnCompletionListener(iMediaPlayer -> {
             Toast.makeText(VideoPlayerActivity.this, "视频播放结束", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
-            if (getIntent().getBooleanExtra("set", false)) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                finish();
+            if (sharedPreferences_play_set.getBoolean("restart",false)){
+                ijkMediaPlayer.start();
+                Toast.makeText(this, "重新循环播放", Toast.LENGTH_SHORT).show();
+            } else {
+                if (getIntent().getBooleanExtra("set", false)) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                    finish();
+                }
+                ijkMediaPlayer.pause();
+                mDanmakuView.pause();
+                play_pause.setImageResource(R.drawable.pause);
             }
-            ijkMediaPlayer.pause();
-            mDanmakuView.pause();
-            play_pause.setImageResource(R.drawable.pause);
         });
     }
     private Runnable setVisibilityVISIBLE = new Runnable() {
@@ -938,9 +948,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         else if (id == R.id.volume_up) adjustVolume(true);
     }
     private void adjustVolume(boolean increase) {
-        if (!volume_hide) {
-            AudioManager audioManager;
-            audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             // 获取当前音量
             int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             int newVolume;
@@ -951,7 +958,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             }
             // 设置新的音量值
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-        }
     }
     private class ScaleListener extends SimpleOnScaleGestureListener {
         @Override

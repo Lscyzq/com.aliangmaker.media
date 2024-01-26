@@ -35,6 +35,8 @@ public class SaveGetVideoProgressService extends Service {
             return sharedPreferences.getBoolean("switch_state_2", false);
         } else if (item == 5) {
             return sharedPreferences.getBoolean("switch_state_display3",false);
+        } else if (item == 6) {
+            return sharedPreferences.getBoolean("switch_state_3",false);
         }
         throw new IllegalArgumentException("Invalid item: " + item);
     }
@@ -67,6 +69,7 @@ public class SaveGetVideoProgressService extends Service {
                 playIntent.putExtra("displayland", getSPSet(4));
                 playIntent.putExtra("single_touch", getSPSet(3));
                 playIntent.putExtra("volume_hide", getSPSet(5));
+                playIntent.putExtra("start_low",getSPSet(6));
                 playIntent.putExtra("internet", intent.getBooleanExtra("internet", false));
                 startActivity(playIntent);
                 if (VideoProgress > 0) Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();
@@ -82,7 +85,6 @@ public class SaveGetVideoProgressService extends Service {
         stopSelf(); // 停止服务
         return super.onStartCommand(intent, flags, startId);
     }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;

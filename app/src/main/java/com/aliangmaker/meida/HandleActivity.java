@@ -7,18 +7,12 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.TextView;
-
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.aliangmaker.meida.databinding.ActivityHandleBinding;
 
 import java.util.ArrayList;
@@ -63,6 +57,7 @@ public class HandleActivity extends AppCompatActivity {
         itemList.add(new Item("播完返回"));
         itemList.add(new Item("右滑返回"));
         itemList.add(new Item("单指缩放"));
+        itemList.add(new Item("静音开播"));
 
         // 设置ListView适配器
         listView.setAdapter(adapter);
@@ -73,10 +68,11 @@ public class HandleActivity extends AppCompatActivity {
         public CustomAdapter() {
             super(HandleActivity.this, 0, itemList);
             // 初始化每个条目的文字
-            itemTexts = new String[3];
+            itemTexts = new String[4];
             itemTexts[0] = "视频播放完毕将自动返回";
             itemTexts[1] = "视频播放界面可右滑返回";
             itemTexts[2] = "特殊手势可实现单指缩放";
+            itemTexts[3] = "开始播放时会将手表静音";
         }
 
         @Override
@@ -95,13 +91,10 @@ public class HandleActivity extends AppCompatActivity {
             if (position == 2 && !getSPSet("2")) {
                 imageView.setVisibility(View.VISIBLE);
             }
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(HandleActivity.this, EmptyActivity.class);
-                    intent.putExtra("layout", "activity_single_touch");
-                    startActivity(intent);
-                }
+            imageView.setOnClickListener(v -> {
+                Intent intent = new Intent(HandleActivity.this, EmptyActivity.class);
+                intent.putExtra("layout", "activity_single_touch");
+                startActivity(intent);
             });
             final Switch switchView = convertView.findViewById(R.id.switch_item);
 
@@ -116,12 +109,9 @@ public class HandleActivity extends AppCompatActivity {
             switchView.setChecked(switchState);
 
             // 设置开关点击监听器
-            switchView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 保存开关状态到SharedPreferences
-                    sharedPreferences.edit().putBoolean("switch_state_" + position, switchView.isChecked()).apply();
-                }
+            switchView.setOnClickListener(v -> {
+                // 保存开关状态到SharedPreferences
+                sharedPreferences.edit().putBoolean("switch_state_" + position, switchView.isChecked()).apply();
             });
 
             return convertView;

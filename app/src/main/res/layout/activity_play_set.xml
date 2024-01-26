@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:text="默认使用AudioTrack，音画问题请选择OpenSL"
+                    android:text="默认使用AudioTrack，音画不同步问题请选择OpenSL"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -243,6 +243,40 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/jump" />
+
+            <TextView
+                    android:id="@+id/restart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="5dp"
+                    android:text="循环播放"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pt3" />
+            <Switch
+                    android:id="@+id/restart_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/custom_switch_thumb_dif"
+                    android:track="@drawable/custom_switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pt3" />
+            <TextView
+                    android:id="@+id/restart_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="视频播放完毕后自动重头回播（会覆盖播完返回功能）"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/restart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

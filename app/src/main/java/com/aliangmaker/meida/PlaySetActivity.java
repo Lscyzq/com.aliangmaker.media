@@ -74,6 +74,7 @@ public class PlaySetActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("jump_play", true)) {
             binding.jumpSwitch.setChecked(true);
         }else binding.jumpSwitch.setChecked(false);
+        binding.restartSwitch.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("restart",binding.restartSwitch.isChecked()).apply());
         binding.jumpSwitch.setOnClickListener(v -> sharedPreferences.edit().putBoolean("jump_play", binding.jumpSwitch.isChecked()).apply());
     }
 }

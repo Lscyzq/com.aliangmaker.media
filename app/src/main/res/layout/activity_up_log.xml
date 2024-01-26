@@ -37,7 +37,7 @@
                     android:layout_marginEnd="4dp"
                     android:ellipsize="end"
                     android:textColor="#FFFFFF"
-                    android:text="1.修复第三方（网络类）APP调用播放时视频进度不记录问题\n2.新增音量键隐藏开关（“显示设置”中）"
+                    android:text="1.修复第三方（网络类）APP调用播放时视频进度不记录问题\n2.新增音量键隐藏开关（“显示设置”中）\n3.向下兼容至安卓4.4设备\n4.新增静音开播（“操作设置”中）\n5.新增循环播放（“播放设置”中）"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView23" />
@@ -263,7 +263,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:textColor="#FFFFFF"
-                android:text="“寻常一样窗前月，才有梅花便不同” 2024别开生面，有太多的乐趣值得我们去品味。感谢小可爱一路以来对凉腕播放器的支持，请相信我们将会做地更好！凉腕播放器4.0即将焕然出新，期待遇见更好的你～"
+                android:text="“寻常一样窗前月，才有梅花便不同” 2024别开生面，有太多的乐趣值得我们去品味。感谢小可爱一路以来对凉腕播放器的支持，请相信我们将会做地更好！一段故事、一句誓言、一个梦想、一生奋斗，不忘初心，方得始终。凉腕播放器4.0即将焕然出新，期待遇见更好的你～"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
