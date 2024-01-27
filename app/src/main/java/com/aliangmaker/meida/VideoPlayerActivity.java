@@ -499,7 +499,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }
     }
     private void findView(){
-
+        delay = findViewById(R.id.delay);
         forward = findViewById(R.id.forward);
         volume_down = findViewById(R.id.volume_down);
         volume_up = findViewById(R.id.volume_up);
@@ -524,7 +524,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         thumb = seekBar.getThumb();
         textRegain = findViewById(R.id.imageView13);
         tvPlaybackSpeed = findViewById(R.id.tvPlaybackSpeed);
-        tvPlaybackSpeed.setText("倍速");
         lock = findViewById(R.id.lc);
         progressBar = findViewById(R.id.progressBar3);
         currentTimeTextView3 = findViewById(R.id.current_time38);
@@ -532,7 +531,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         textView.setVisibility(View.GONE);
         mDanmakuView = (IDanmakuView) findViewById(R.id.danmakuSurfaceView);
         videoLayout = findViewById(R.id.video_layout);
-        scrollText.setText(videoName);
     }
     private Runnable updateSeekBar = new Runnable() {
         @Override
@@ -597,7 +595,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     }
 
     private void ijkInitial(){
-
+        tvPlaybackSpeed.setText("倍速");
+        scrollText.setText(videoName);
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         if (sharedPreferences_play_set.getBoolean("jump_play", true)) ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
@@ -729,6 +728,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             back.setVisibility(View.VISIBLE);
             play_pause.setVisibility(View.VISIBLE);
             currentTimeTextView.setVisibility(View.VISIBLE);
+            delay.setVisibility(View.VISIBLE);
+            forward.setVisibility(View.VISIBLE);
             screen.setVisibility(View.VISIBLE);
             if(!isLocked){
                 lock.setVisibility(View.VISIBLE);
@@ -757,7 +758,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             scrollText.setVisibility(View.GONE);
             play_pause.setVisibility(View.GONE);
             currentTimeTextView.setVisibility(View.GONE);
-            videoLayout.requestLayout();
+            delay.setVisibility(View.GONE);
+            forward.setVisibility(View.GONE);
             if(!isLocked){
                 lock.setVisibility(View.GONE);
             }
@@ -780,8 +782,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         return dateFormat.format(new Date());
     }
     private void setListener(){
-        findViewById(R.id.forward).setOnClickListener(this);
-        findViewById(R.id.delay).setOnClickListener(this);
+        delay.setOnClickListener(this);
+        forward.setOnClickListener(this);
         screen.setOnClickListener(v -> {
             if (!isLandscape) {
                 // 切换为竖屏
@@ -931,7 +933,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
                     }
                 });
                 task.execute(danmakuInternetUrl,"danmaku.xml");
-                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 BiliDroid/1.1.1 (bbcallen@gmail.com)");            }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
+                ijkMediaPlayer.setOption(ijkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", "Mozilla/5.0 BiliDroid/1.1.1 (bbcallen@gmail.com)");
+            }else if(danmakuInternetUrl != null && !danmakuInternetUrl.startsWith("http")){
                 mDanmakuView.prepare(createParser(danmakuInternetUrl), mContext);
             }else {
                 mDanmakuView.prepare(createParser(getFilePathInFolder(videoPath, "danmaku.xml")), mContext);
@@ -943,14 +946,15 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
             mDanmakuView.enableDanmakuDrawingCache(true);//弹幕缓存
         } else danmaku.setVisibility(View.GONE);
     }
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if(id == R.id.volume_down) adjustVolume(false);
         else if (id == R.id.volume_up) adjustVolume(true);
-        else if (id == R.id.delay) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()-10);
-        else if (id == R.id.forward) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()+10);
+        else if (id == R.id.delay) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()-10000);
+        else if (id == R.id.forward) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()+10000);
+        handler.removeCallbacks(setVisibilityGONE);
+        handler.postDelayed(setVisibilityGONE,3500);
     }
     private void adjustVolume(boolean increase) {
             // 获取当前音量

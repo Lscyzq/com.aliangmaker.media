@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/video_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -82,7 +81,7 @@
                 android:id="@+id/volume_up"
                 android:layout_width="30dp" android:layout_height="30dp"
                 android:src="@drawable/volume_up"/>
-        <ImageView android:layout_width="35dp" android:layout_height="32dp"
+        <ImageView android:layout_width="38dp" android:layout_height="38dp"
                      android:id="@+id/volume_down"
                      android:src="@drawable/volume_down"/>
     </LinearLayout>
@@ -94,7 +93,7 @@
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toTopOf="@+id/lc"/>
 
-    <ImageView android:layout_width="35dp" android:layout_height="32dp"
+    <ImageView android:layout_width="30dp" android:layout_height="30dp"
                android:id="@+id/forward"
                android:src="@drawable/forward"
                android:layout_marginTop="4dp"

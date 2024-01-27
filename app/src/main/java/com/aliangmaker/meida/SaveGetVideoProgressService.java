@@ -52,6 +52,7 @@ public class SaveGetVideoProgressService extends Service {
                 int VideoProgress;
                 Intent playIntent = new Intent(this, VideoPlayerActivity.class);
                 String danmakuInternetUrl = intent.getStringExtra("danmakuInternetUrl");
+                playIntent.putExtra("getVideoPath", getVideoPath);
                 if (danmakuInternetUrl != null) {
                     playIntent.putExtra("danmakuInternetUrl", danmakuInternetUrl);
                     getVideoPath = intent.getStringExtra("videoName");
@@ -62,19 +63,20 @@ public class SaveGetVideoProgressService extends Service {
                 playIntent.putExtra("activity", intent.getBooleanExtra("activity", false));
                 playIntent.putExtra("set", getSPSet(0));
                 playIntent.putExtra("backright", getSPSet(1));
-                playIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 playIntent.putExtra("getVideoProgress", VideoProgress);
                 playIntent.putExtra("videoName", intent.getStringExtra("videoName"));
-                playIntent.putExtra("getVideoPath", getVideoPath);
                 playIntent.putExtra("displayland", getSPSet(4));
                 playIntent.putExtra("single_touch", getSPSet(3));
                 playIntent.putExtra("volume_hide", getSPSet(5));
                 playIntent.putExtra("start_low",getSPSet(6));
                 playIntent.putExtra("internet", intent.getBooleanExtra("internet", false));
+                playIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(playIntent);
                 if (VideoProgress > 0) Toast.makeText(this, "继续上一次播放", Toast.LENGTH_SHORT).show();
             }else {
-                startActivity(new Intent(SaveGetVideoProgressService.this,PlaySetActivity.class));
+                Intent intentSet = new Intent(this, PlaySetActivity.class);
+                intentSet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentSet);
                 Toast.makeText(this, "请选择视图", Toast.LENGTH_SHORT).show();
             }
             new developer().execute();
@@ -203,7 +205,6 @@ public class SaveGetVideoProgressService extends Service {
                     values
             );
         }
-
         if (cursor != null) {
             cursor.close();
         }
