@@ -54,7 +54,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     private boolean speed = false,isMoving = false,volume_hide,backlight,isGone,isLandscape = true,firstin = true,first = true,isLocked = false,single_touch,surface_choose = true,danmakuTrue;
     private TextView currentTimeTextView3,textRun,currentTimeTextView2,scrollText,currentTimeTextView,textView,tvPlaybackSpeed;
     private View topOverlayView,bottomOverlayView;
-    private ImageView screen,back,textRegain,play_pause,danmaku,lock,volume_up,volume_down;
+    private ImageView screen,back,textRegain,play_pause,danmaku,lock,volume_up,volume_down,delay,forward;
     private Drawable thumb;
     private IjkMediaPlayer ijkMediaPlayer;
     int videoWidth,screenHeight,videoHeight;
@@ -68,7 +68,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
     AudioManager audioManager;
     SharedPreferences sharedPreferences_play_set,sharedPreferences_display;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -500,6 +499,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         }
     }
     private void findView(){
+
+        forward = findViewById(R.id.forward);
         volume_down = findViewById(R.id.volume_down);
         volume_up = findViewById(R.id.volume_up);
         scrollText = findViewById(R.id.textView34);
@@ -779,6 +780,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         return dateFormat.format(new Date());
     }
     private void setListener(){
+        findViewById(R.id.forward).setOnClickListener(this);
+        findViewById(R.id.delay).setOnClickListener(this);
         screen.setOnClickListener(v -> {
             if (!isLandscape) {
                 // 切换为竖屏
@@ -946,6 +949,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements TextureVie
         int id = view.getId();
         if(id == R.id.volume_down) adjustVolume(false);
         else if (id == R.id.volume_up) adjustVolume(true);
+        else if (id == R.id.delay) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()-10);
+        else if (id == R.id.forward) ijkMediaPlayer.seekTo(ijkMediaPlayer.getCurrentPosition()+10);
     }
     private void adjustVolume(boolean increase) {
             // 获取当前音量

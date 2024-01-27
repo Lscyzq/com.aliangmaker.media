@@ -37,7 +37,7 @@
                     android:layout_marginEnd="4dp"
                     android:ellipsize="end"
                     android:textColor="#FFFFFF"
-                    android:text="1.新增循环播放（“播放设置”中）\n2.新增音量键隐藏开关（“显示设置”中）\n3.新增静音开播（“操作设置”中）\n4.向下兼容至安卓4.4设备\n5.修复第三方（网络类）APP调用播放时视频进度不记录问题"
+                    android:text="1.新增循环播放（“播放设置”中）\n2.新增音量键隐藏开关（“显示设置”中）\n3.新增快进/退10s功能\n4.新增静音开播（“操作设置”中）\n5.向下兼容至安卓4.4设备\n6.修复第三方（网络类）APP调用播放时视频进度不记录问题\n7.增大播放界面按钮，使其便于点击"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView23" />
