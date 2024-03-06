@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@color/black">
+
+    <ProgressBar
+            android:id="@+id/pb"
+            style="?android:attr/progressBarStyle"
+            android:visibility="invisible"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <com.aliangmaker.media.control.RollStatueScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="35dp"
+                    android:text="当你确保手表已经成功连接到了互联网（不建议通过蓝牙共享手机网络），你可以在下方输入播放视频链接，点击“播放URL”来进行播放。"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="50dp"
+                    android:textColor="#99FFFFFF"
+                    android:textSize="12sp"
+                    android:text="*你可以通过第三方资源嗅探来获取链接\n*下载内容保存到/sdcard/Movies/目录下\n*建议您先尝试播放此链接后再尝试下载，成功率更高"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonUrl" />
+
+            <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ba_round_grey2"
+                    android:gravity="top|left"
+                    android:hint="此处留空直接点击“播放URL”有惊喜噢！（彩蛋更新会在首页进行提示）"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:padding="6dp"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView46" />
+            <Button
+                    android:id="@+id/buttonDownload"
+                    android:layout_width="40dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/ba_round_grey2"
+                    android:text="下载"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editText" />
+            <Button
+                    android:id="@+id/buttonUrl"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ba_round_green"
+                    android:text="播放URL"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/buttonDownload"
+                    app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.aliangmaker.media.control.RollStatueScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

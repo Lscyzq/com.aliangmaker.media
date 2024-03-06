@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/bvp_cl2">
+    <com.aliangmaker.media.control.RollStatueScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/more_cl_bili"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/more_im_bili"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_bili"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/more_tv_bili"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="腕上哔哩"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/more_im_bili"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/more_cl_url"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/more_cl_bili">
+
+                <ImageView
+                    android:id="@+id/more_im_url"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_url"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/more_tv_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="播放URL"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/more_im_url"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/more_cl_uplog"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/more_cl_url">
+
+                <ImageView
+                    android:id="@+id/more_im_uplog"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_uplog"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/more_tv_uplog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="更新日志"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/more_im_uplog"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/more_cl_help"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/more_cl_uplog">
+
+                <ImageView
+                    android:id="@+id/more_im_help"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_money"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/more_tv_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="赞助我们"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/more_im_help"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/more_cl_infor"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/more_cl_help">
+
+                <ImageView
+                    android:id="@+id/more_im_infor"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_infor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/more_tv_infor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="应用信息"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/more_im_infor"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.aliangmaker.media.control.RollStatueScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
