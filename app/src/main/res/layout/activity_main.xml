@@ -4,46 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="horizontal">
+    tools:context=".MainActivity">
 
-    <TextView
-
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="凉腕播放器"
-        android:textColor="@android:color/holo_green_light"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewTime1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="7dp"
-        android:text="TextView"
-        android:textColor="#FEFEFE"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ListView
-        android:id="@+id/listvideo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/background"
-        android:divider="@drawable/divider"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/main_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.viewpager2.widget.ViewPager2>
+    <FrameLayout
+        android:id="@+id/main_fl"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <LinearLayout
+        android:id="@+id/main_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <fragment
+            android:id="@+id/main_fg_title"
+            android:name="com.aliangmaker.media.fragment.TitleFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/main_im0"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="2dp"
+            app:srcCompat="@drawable/ba_vp_select" />
+
+        <ImageView
+            android:id="@+id/main_im1"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="2dp"
+
+            app:srcCompat="@drawable/ba_vp_inselect" />
+
+        <ImageView
+            android:id="@+id/main_im2"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ba_vp_inselect" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

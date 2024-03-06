@@ -3,48 +3,47 @@ plugins {
 }
 
 android {
-    namespace 'com.aliangmaker.meida'
+    namespace 'com.aliangmaker.media'
     compileSdk 33
     lintOptions {
         disable 'ExpiredTargetSdkVersion'
     }
-    viewBinding {
-        enabled true
-    }
     defaultConfig {
-        applicationId 'com.aliangmaker.media'
+        applicationId "com.aliangmaker.media"
         minSdk 19
-        //noinspection ExpiredTargetSdkVersion
         targetSdk 26
         versionCode 15
-        versionName "3.14.10"
-        resConfigs("cn")
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        // 仅保留两种架构的 so 库
+        versionName "4.0.0-debug"
         ndk {
             abiFilters "armeabi-v7a"
         }
     }
-
+    viewBinding {
+        enabled true
+    }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug{
+            minifyEnabled = false
+            shrinkResources = false
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.14.+'
-    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
-    api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
-    api'com.github.ctiao:dfm:0.5.5'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 }

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#27000000" /> <!-- 设置填充颜色为灰色 -->
-    <corners android:radius="6dp" /> <!-- 设置圆角半径为8dp，您可以根据需要调整这个值 -->
-</shape>

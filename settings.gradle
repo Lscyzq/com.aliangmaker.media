@@ -21,5 +21,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "meida"
+
+rootProject.name = "Media-4.0"
 include ':app'
