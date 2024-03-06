@@ -18,7 +18,6 @@ import java.net.URL;
 public class PostService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("aaaaaaa", decrypt("http://aliangmaker.top/com.media/detail.json"));
         SharedPreferences sharedPreferences = getSharedPreferences("main", Context.MODE_PRIVATE);
         int count = sharedPreferences.getInt("count", 0);
         if (count >= 4) {
@@ -52,23 +51,5 @@ public class PostService extends Service {
     }
 
     // 加密方法
-    private static String encrypt(String plainText) {
-        StringBuilder encryptedText = new StringBuilder();
-        int offset = 3; // 加密偏移量，可以根据需要更改
-        for (char c : plainText.toCharArray()) {
-            int encryptedChar = (c + offset) % 256; // 加密字符
-            encryptedText.append((char) encryptedChar);
-        }
-        return encryptedText.toString();
-    }
 
-    private static String decrypt(String encryptedText) {
-        StringBuilder decryptedText = new StringBuilder();
-        int offset = 3;
-        for (char c : encryptedText.toCharArray()) {
-            int decryptedChar = (c - offset + 256) % 256;
-            decryptedText.append((char) decryptedChar);
-        }
-        return decryptedText.toString();
-    }
 }

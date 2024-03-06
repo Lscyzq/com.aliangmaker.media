@@ -24,7 +24,6 @@ public class ServerRequest {
     }
     OkHttpClient okHttpClient = new OkHttpClient();
     String urlUpdate = decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7}xli|m6r{wv");
-    String urlUrl = "http://aliangmaker.top/com.media/detail.json";
     public void getVersion(versionCallBack serverCallBack) {
         okHttpClient.newCall(new Request.Builder()
                 .url(urlUpdate)
