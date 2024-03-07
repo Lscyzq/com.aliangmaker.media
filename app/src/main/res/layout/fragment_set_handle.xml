@@ -284,7 +284,37 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sh_rg_scale_mode" />
-
+            <TextView
+                    android:id="@+id/sv_tv14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="5dp"
+                    android:text="禁用返回"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sv_tv8" />
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sh_sw_watch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/switch_thumb"
+                    app:track="@drawable/switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/sv_tv14" />
+            <TextView
+                    android:id="@+id/sv_tv15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="播放视频时禁用手表物理返回键"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sv_tv14" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

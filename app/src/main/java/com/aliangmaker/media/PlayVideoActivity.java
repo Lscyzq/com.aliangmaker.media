@@ -10,12 +10,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -35,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -58,6 +61,7 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import master.flame.danmaku.ui.widget.DanmakuView;
+import org.jetbrains.annotations.NotNull;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {
@@ -99,14 +103,23 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         if (getIntent().getStringExtra("danmaku") != null) initDanmaku();
         startService(new Intent(this, PostService.class));//上传数据
         initOthersView();
+
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && playSet.getBoolean("watch_back",false)) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            adjustPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
+        }
     }
 
     private void adjustAudio(int way) {
@@ -134,7 +147,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                     Toast.makeText(context, "蓝牙已连接", Toast.LENGTH_SHORT).show();
                     ijkMediaPlayer.start();
-                    danmakuView.start();
+                    danmakuView.resume();
                     binding.pvImPause.setImageResource(R.drawable.ic_pause);
                 }
             }
@@ -327,7 +340,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 binding.pvImPause.setImageResource(R.drawable.ic_play);
             } else {
                 ijkMediaPlayer.start();
-                danmakuView.start();
+                danmakuView.resume();
                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
             }
         } else if (id == R.id.pv_tv_speed) {
@@ -340,7 +353,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 horizon = true;
             }
-            adjustPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
         }
     }
 
@@ -375,7 +387,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (canPlay) {
-                    danmakuView.start();
+                    danmakuView.resume();
                     ijkMediaPlayer.start();
                 }
             }
@@ -436,7 +448,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                         binding.pvPb.setVisibility(View.INVISIBLE);
                     } else {
                         ijkMediaPlayer.start();
-                        danmakuView.start();
+                        danmakuView.resume();
                         binding.pvImPause.setImageResource(R.drawable.ic_pause);
                         handler.removeCallbacks(setINVISIBLE);
                         handler.postDelayed(setINVISIBLE, 2000);
@@ -569,10 +581,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
 
     private void adjustPlayView(int videoWith, int videoHeight) {
         ViewGroup.LayoutParams params;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         if (videoWith >= videoHeight)
-            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((float) videoHeight / videoWith * binding.pvCl.getWidth()), Gravity.CENTER);
+            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((float) videoHeight / videoWith * displayMetrics.widthPixels), Gravity.CENTER);
         else
-            params = new FrameLayout.LayoutParams(binding.pvCl.getHeight() * videoWith / videoHeight, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+            params = new FrameLayout.LayoutParams((displayMetrics.heightPixels * videoWith / videoHeight), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         if (playSet.getBoolean("view", true)) {
             surfaceView.setLayoutParams(params);
         } else textureView.setLayoutParams(params);

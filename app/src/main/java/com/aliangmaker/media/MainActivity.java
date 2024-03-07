@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
         binding.mainVp.setAdapter(viewPageAdapter);
         SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
+
         new ServerRequest(this).getVersion(new ServerRequest.versionCallBack() {
             @Override
             public void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion) {
-                if (Integer.getInteger(lastedVersion.replaceAll("\\.", "")) > Integer.getInteger(getString(R.string.version).replaceAll("\\.", ""))) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
-                }
+                if (canUpdate(getString(R.string.version),lastedVersion)) getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
             }
 
             @Override
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             binding.mainIm1.setVisibility(View.GONE);
             binding.mainIm2.setVisibility(View.GONE);
         }
+
         binding.mainVp.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -86,6 +86,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+    private static boolean canUpdate(String current, String lasted) {
+        String[] v1Numbers = current.split("\\.");
+        String[] v2Numbers = lasted.split("\\.");
+
+        for (int i = 0; i < Math.max(v1Numbers.length, v2Numbers.length); i++) {
+            int v1Part = i < v1Numbers.length ? Integer.parseInt(v1Numbers[i]) : 0;
+            int v2Part = i < v2Numbers.length ? Integer.parseInt(v2Numbers[i]) : 0;
+            if (v1Part < v2Part) return true;
+        }
+        return false;
     }
 
     @Override

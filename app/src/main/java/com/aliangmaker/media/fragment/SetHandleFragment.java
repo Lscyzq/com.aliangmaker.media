@@ -30,7 +30,7 @@ public class SetHandleFragment extends Fragment {
         if (sharedPreferences.getBoolean("background", false)) binding.shSwCt.setChecked(true);
         if (sharedPreferences.getBoolean("no_border",false)) binding.shSwBorder.setChecked(true);
         if (sharedPreferences.getBoolean("deep",false)) binding.shSwDeep.setChecked(true);
-
+        if (sharedPreferences.getBoolean("watch_back",false)) binding.shSwWatch.setChecked(true);
         if (!sharedPreferences.getBoolean("tap_scale",false)) binding.shRbTwo.setChecked(true);
         else binding.shRbTap.setChecked(true);
         return binding.getRoot();
@@ -53,6 +53,7 @@ public class SetHandleFragment extends Fragment {
         binding.shSwBorder.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("no_border",b).apply());
         binding.shSwAudio.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("none_start",b).apply());
         binding.shSwCt.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("background",b).apply());
+        binding.shSwWatch.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("watch_back",b).apply());
         binding.shSwCanBack.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("back_gesture",b).apply());
         binding.sdSwFinishBack.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("back_finish",b).apply());
         binding.shSwRestart.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("restart",b).apply());

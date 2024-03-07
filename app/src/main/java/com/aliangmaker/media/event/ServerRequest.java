@@ -24,6 +24,7 @@ public class ServerRequest {
     }
     OkHttpClient okHttpClient = new OkHttpClient();
     String urlUpdate = decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7}xli|m6r{wv");
+    String urlUrl = decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7lm|iqt6r{wv");
     public void getVersion(versionCallBack serverCallBack) {
         okHttpClient.newCall(new Request.Builder()
                 .url(urlUpdate)
@@ -71,15 +72,7 @@ public class ServerRequest {
             }
         });
     }
-    private static String decrypt(String encryptedText) {
-        StringBuilder decryptedText = new StringBuilder();
-        int offset = 8;
-        for (char c : encryptedText.toCharArray()) {
-            int decryptedChar = (c - offset + 256) % 256;
-            decryptedText.append((char) decryptedChar);
-        }
-        return decryptedText.toString();
-    }
+
     public interface versionCallBack {
         void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion);
 
