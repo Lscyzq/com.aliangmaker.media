@@ -3,13 +3,11 @@ package com.aliangmaker.media;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
@@ -18,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -37,15 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.aliangmaker.media.databinding.ActivityPlayVideoBinding;
-import com.aliangmaker.media.event.DownloadActivity;
+import com.aliangmaker.media.event.DownloadEvent;
 import com.aliangmaker.media.event.SQLiteOpenHelper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -206,7 +201,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 .preventOverlapping(getDanmakuSet("fold")); //设置防弹幕重叠，null为允许重叠
         String danmakuUrl = getIntent().getStringExtra("danmaku");
         if (danmakuUrl.startsWith("http") || danmakuUrl.startsWith("https")) {
-            new DownloadActivity(danmakuUrl, this, () -> danmakuView.prepare(createParser(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), danmakuContext));
+            new DownloadEvent(danmakuUrl, this, true, () -> danmakuView.prepare(createParser(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), danmakuContext));
         } else danmakuView.prepare(createParser(danmakuUrl), danmakuContext);
         danmakuView.enableDanmakuDrawingCache(true);
         danmakuView.setCallback(new DrawHandler.Callback() {

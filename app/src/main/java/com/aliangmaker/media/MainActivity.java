@@ -2,8 +2,10 @@ package com.aliangmaker.media;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -19,6 +21,8 @@ import com.aliangmaker.media.fragment.TitleFragment;
 import com.aliangmaker.media.fragment.UpdateFragment;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ChangeTitleStatue changeTitleStatue;
@@ -33,11 +37,33 @@ public class MainActivity extends AppCompatActivity {
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
         binding.mainVp.setAdapter(viewPageAdapter);
         SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
-
-        new ServerRequest(this).getVersion(new ServerRequest.versionCallBack() {
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.getVersion(new ServerRequest.versionCallBack() {
+            boolean isUpdate, isNotice;
             @Override
             public void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion) {
-                if (canUpdate(getString(R.string.version),lastedVersion)) getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+                isUpdate = canUpdate(getString(R.string.version),lastedVersion);
+                isNotice = !noticeVersion.equals(sharedPreferences.getString("notice","1"));
+                if (isUpdate || isNotice) {
+                    serverRequest.getUrl(new ServerRequest.urlCallBack() {
+                        @Override
+                        public void getUrlSuccess(String upLog, String noticeDetail, String happyName, String happyUrl) {
+                            if (isUpdate) {
+                                UpdateFragment.setUpdateInfo(upLog);
+                            } else {
+                                UpdateFragment.setUpdateInfo(noticeDetail);
+                                UpdateFragment.isNotice(true);
+                                sharedPreferences.edit().putString("notice", noticeVersion).apply();
+                            }
+                            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+                        }
+
+                        @Override
+                        public void getUrlFail() {
+
+                        }
+                    });
+                }
             }
 
             @Override
@@ -88,16 +114,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private static boolean canUpdate(String current, String lasted) {
-        String[] v1Numbers = current.split("\\.");
-        String[] v2Numbers = lasted.split("\\.");
-
-        for (int i = 0; i < Math.max(v1Numbers.length, v2Numbers.length); i++) {
-            int v1Part = i < v1Numbers.length ? Integer.parseInt(v1Numbers[i]) : 0;
-            int v2Part = i < v2Numbers.length ? Integer.parseInt(v2Numbers[i]) : 0;
-            if (v1Part < v2Part) return true;
+    private boolean canUpdate(String current, String lasted) {
+        if (current.equals(lasted)) return false;
+        String[] cur = current.split("\\.");
+        String[] las = lasted.split("\\.");
+        for (int i = 0; i < 2; i++) {
+            if (Integer.parseInt(cur[i]) > Integer.parseInt(las[i])) return false;
         }
-        return false;
+        return true;
     }
 
     @Override

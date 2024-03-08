@@ -1,15 +1,12 @@
 package com.aliangmaker.meida;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aliangmaker.media.PlayVideoActivity;
-import com.aliangmaker.media.event.DownloadActivity;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

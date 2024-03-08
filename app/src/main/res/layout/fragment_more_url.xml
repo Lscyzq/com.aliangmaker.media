@@ -3,6 +3,7 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
+                                                   android:clickable="true"
                                                    android:background="@color/black">
 
     <ProgressBar
@@ -51,7 +52,7 @@
                     android:layout_marginBottom="50dp"
                     android:textColor="#99FFFFFF"
                     android:textSize="12sp"
-                    android:text="*你可以通过第三方资源嗅探来获取链接\n*下载内容保存到/sdcard/Movies/目录下\n*建议您先尝试播放此链接后再尝试下载，成功率更高"
+                    android:text="*你可以通过第三方资源嗅探来获取链接\n*建议使用via浏览器配置凉腕为默认播放器后直接调用播放。"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +68,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/ba_round_grey2"
                     android:gravity="top|left"
-                    android:hint="此处留空直接点击“播放URL”有惊喜噢！（彩蛋更新会在首页进行提示）"
+                    android:hint="填写“我爱阿凉”点击“播放URL”有惊喜噢!"
                     android:inputType="textMultiLine"
                     android:lines="5"
                     android:padding="6dp"
@@ -75,16 +76,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView46" />
-            <Button
-                    android:id="@+id/buttonDownload"
-                    android:layout_width="40dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/ba_round_grey2"
-                    android:text="下载"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText" />
+
             <Button
                     android:id="@+id/buttonUrl"
                     android:layout_width="0dp"
@@ -95,7 +87,7 @@
                     android:background="@drawable/ba_round_green"
                     android:text="播放URL"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/buttonDownload"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/editText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

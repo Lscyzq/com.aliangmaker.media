@@ -1,6 +1,7 @@
 package com.aliangmaker.media.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class MoreUrlFragment extends Fragment {
         binding.buttonUrl.setOnClickListener(view -> {
             binding.pb.setVisibility(View.VISIBLE);
             String text = editText.getText().toString().trim();
-            if (text.isEmpty()) {
+            if (text.equals("我爱阿凉")) {
                 new ServerRequest(getActivity()).getUrl(new ServerRequest.urlCallBack() {
                     @Override
                     public void getUrlSuccess(String upLog, String noticeDetail, String happyName, String happyUrl) {
@@ -51,14 +52,15 @@ public class MoreUrlFragment extends Fragment {
                     }
                     @Override
                     public void getUrlFail() {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "服务器请求失败", Toast.LENGTH_SHORT).show());
-                        binding.pb.setVisibility(View.INVISIBLE);
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(getContext(), "服务器请求失败", Toast.LENGTH_SHORT).show();
+                            binding.pb.setVisibility(View.INVISIBLE);
+                        });
                     }
                 });
             } else if (text.startsWith("http")){
                 Intent intent = new Intent(getContext(), PlayVideoActivity.class);
-                intent.putExtra("name", text);
-                intent.putExtra("path", text);
+                intent.setData(Uri.parse(text));
                 binding.pb.setVisibility(View.INVISIBLE);
                 startActivity(intent);
             } else Toast.makeText(getContext(), "请输入正确的链接", Toast.LENGTH_SHORT).show();

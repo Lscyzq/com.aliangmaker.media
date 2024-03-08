@@ -38,7 +38,7 @@
         android:paddingHorizontal="4dp"
         android:background="@drawable/ba_double_round"
         android:text="@string/stage"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/ic"
         app:layout_constraintStart_toEndOf="@+id/ic"
         app:layout_constraintTop_toTopOf="@+id/ic"
@@ -72,19 +72,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:visibility="invisible"
+        android:background="@drawable/ba_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <View
-            android:id="@+id/wel_im1"
-            android:layout_width="156dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ba_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/wel_tv0"

@@ -5,7 +5,6 @@ import android.content.Context;
 import java.io.*;
 import java.util.zip.Inflater;
 
-import android.util.Log;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -15,9 +14,9 @@ import okio.BufferedSink;
 import okio.Okio;
 import okio.Sink;
 
-public class DownloadActivity {
+public class DownloadEvent {
     Context context;
-    public DownloadActivity(String path, Context context, DownloadCallback downloadCallback) {
+    public DownloadEvent(String path, Context context, Boolean isDanmaku, DownloadCallback downloadCallback) {
         this.context = context;
         Request request = new Request.Builder()
                 .url(path) // 替换为你要下载的文件的URL
@@ -33,8 +32,12 @@ public class DownloadActivity {
                 Sink sink;
                 BufferedSink bufferedSink = null;
                 try {
-                    File danmakuFile = context.getExternalFilesDir("danmaku");
-                    sink = Okio.sink(new File(danmakuFile + "/danmaku.xml"));
+                    if (isDanmaku){
+                        File danmakuFile = context.getExternalFilesDir("danmaku");
+                        sink = Okio.sink(new File(danmakuFile + "/danmaku.xml"));
+                    } else {
+                        sink = Okio.sink(new File("/sdcard/Download/凉腕播放器.apk"));
+                    }
                     byte[] decompressBytes = decompress(response.body().bytes());//调用解压函数进行解压，返回包含解压后数据的byte数组
                     bufferedSink = Okio.buffer(sink);
                     bufferedSink.write(decompressBytes);

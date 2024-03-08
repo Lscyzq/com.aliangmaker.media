@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/black"
+        android:clickable="true"
         tools:context=".fragment.SetDisplayFragment">
     <com.aliangmaker.media.control.RollStatueScrollView android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -253,7 +254,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sv_tv6">
+                app:layout_constraintTop_toBottomOf="@+id/sv_tv15">
 
                 <RadioButton
                     android:id="@+id/sh_rb_two"
@@ -294,7 +295,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sv_tv8" />
+                    app:layout_constraintTop_toBottomOf="@+id/sv_tv6" />
             <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sh_sw_watch"
                     android:layout_width="wrap_content"

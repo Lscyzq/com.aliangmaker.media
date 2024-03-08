@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".fragment.MoreBiliFragment">
+                                                   android:clickable="true"
+                                                   tools:context=".fragment.MoreBiliFragment">
 
 
     <com.aliangmaker.media.control.RollStatueScrollView

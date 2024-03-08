@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:clickable="true"
         android:background="@color/black"
         tools:context=".fragment.SetDisplayFragment">
     <com.aliangmaker.media.control.RollStatueScrollView android:layout_width="match_parent"
