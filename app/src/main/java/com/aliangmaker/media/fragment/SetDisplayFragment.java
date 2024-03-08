@@ -29,6 +29,7 @@ public class SetDisplayFragment extends Fragment {
         binding.sdSwSize.setChecked(sharedPreferences.getBoolean("small_tv", false));
         binding.sdSwLand.setChecked(sharedPreferences.getBoolean("horizon", false));
         binding.sdSwGone.setChecked(sharedPreferences.getBoolean("wipe", false));
+        if (sharedPreferences.getBoolean("dp_hd",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
         binding.sdSwDark.setChecked(dark);
         if (dark) {
@@ -49,6 +50,11 @@ public class SetDisplayFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        binding.title.setOnLongClickListener(view -> {
+            sharedPreferences.edit().putBoolean("dp_hd",true).apply();
+            binding.title.setVisibility(View.GONE);
+            return true;
+        });
         binding.sdTvDark.setText(sharedPreferences.getInt("dark_pg", 0) + "");
         binding.sdSwSize.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("small_tv", b).apply());
         binding.sdSwLand.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("horizon", b).apply());

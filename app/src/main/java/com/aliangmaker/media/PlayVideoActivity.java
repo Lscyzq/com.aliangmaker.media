@@ -96,6 +96,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         }
         initBluetooth();
         if (getIntent().getStringExtra("danmaku") != null) initDanmaku();
+        else binding.pvImDanmaku.setVisibility(View.GONE);
         startService(new Intent(this, PostService.class));//上传数据
         initOthersView();
 
@@ -137,12 +138,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                     Toast.makeText(context, "蓝牙断开", Toast.LENGTH_SHORT).show();
                     ijkMediaPlayer.pause();
-                    danmakuView.pause();
+                    if (danmakuView != null) danmakuView.pause();
                     binding.pvImPause.setImageResource(R.drawable.ic_play);
                 } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                     Toast.makeText(context, "蓝牙已连接", Toast.LENGTH_SHORT).show();
                     ijkMediaPlayer.start();
-                    danmakuView.resume();
+                    if (danmakuView != null)danmakuView.resume();
                     binding.pvImPause.setImageResource(R.drawable.ic_pause);
                 }
             }
@@ -228,7 +229,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             public void drawingFinished() {
             }
         });
-
+        binding.pvImDanmaku.setOnClickListener(this);
+        if (!playSet.getBoolean("hd_dan", false)) {
+            binding.pvImDanmaku.setImageResource(R.drawable.ic_danmaku_green);
+        } else danmakuView.hide();
     }
 
     private BaseDanmakuParser createParser(String stream) {
@@ -323,19 +327,19 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         } else if (id == R.id.pv_tv_len0) {
             long pos = ijkMediaPlayer.getCurrentPosition() - 10000;
             ijkMediaPlayer.seekTo(pos);
-            danmakuView.seekTo(pos);
+            if (danmakuView != null)danmakuView.seekTo(pos);
         } else if (id == R.id.pv_tv_len1) {
             long pos = ijkMediaPlayer.getCurrentPosition() + 10000;
             ijkMediaPlayer.seekTo(pos);
-            danmakuView.seekTo(pos);
+            if (danmakuView != null)danmakuView.seekTo(pos);
         } else if (id == R.id.pv_im_pause) {
             if (ijkMediaPlayer.isPlaying()) {
                 ijkMediaPlayer.pause();
-                danmakuView.pause();
+                if (danmakuView != null)danmakuView.pause();
                 binding.pvImPause.setImageResource(R.drawable.ic_play);
             } else {
                 ijkMediaPlayer.start();
-                danmakuView.resume();
+                if (danmakuView != null)danmakuView.resume();
                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
             }
         } else if (id == R.id.pv_tv_speed) {
@@ -347,6 +351,16 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 horizon = true;
+            }
+        } else if (id == R.id.pv_im_danmaku) {
+            if (danmakuView.isShown()) {
+                binding.pvImDanmaku.setImageResource(R.drawable.ic_danmaku);
+                danmakuView.hide();
+                playSet.edit().putBoolean("hd_dan",true).apply();
+            } else {
+                binding.pvImDanmaku.setImageResource(R.drawable.ic_danmaku_green);
+                danmakuView.show();
+                playSet.edit().putBoolean("hd_dan",false).apply();
             }
         }
     }
@@ -376,13 +390,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 if (ijkMediaPlayer.isPlaying()) canPlay = true;
                 else canPlay = false;
                 ijkMediaPlayer.pause();
-                danmakuView.pause();
+                if (danmakuView != null)danmakuView.pause();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (canPlay) {
-                    danmakuView.resume();
+                    if (danmakuView != null)danmakuView.resume();
                     ijkMediaPlayer.start();
                 }
             }
@@ -436,14 +450,14 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 } else if (speedACan[1] && clickCount[0] == 2) {
                     if (ijkMediaPlayer.isPlaying()) {
                         ijkMediaPlayer.pause();
-                        danmakuView.pause();
+                        if (danmakuView != null)danmakuView.pause();
                         binding.pvImPause.setImageResource(R.drawable.ic_play);
                         handler.removeCallbacks(setINVISIBLE);
                         binding.pvVg.setVisibility(View.VISIBLE);
                         binding.pvPb.setVisibility(View.INVISIBLE);
                     } else {
                         ijkMediaPlayer.start();
-                        danmakuView.resume();
+                        if (danmakuView != null)danmakuView.resume();
                         binding.pvImPause.setImageResource(R.drawable.ic_pause);
                         handler.removeCallbacks(setINVISIBLE);
                         handler.postDelayed(setINVISIBLE, 2000);
@@ -566,7 +580,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (playSet.getBoolean("restart", false)) {
                 Toast.makeText(PlayVideoActivity.this, "循环播放", Toast.LENGTH_SHORT).show();
                 ijkMediaPlayer.start();
-                danmakuView.start(0);
+                if (danmakuView != null)danmakuView.start(0);
             } else if (playSet.getBoolean("back_finish", true)) {
                 Toast.makeText(PlayVideoActivity.this, "播放结束", Toast.LENGTH_SHORT).show();
                 finish();

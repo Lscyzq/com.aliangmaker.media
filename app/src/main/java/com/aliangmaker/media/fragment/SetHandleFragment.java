@@ -22,15 +22,16 @@ public class SetHandleFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentSetHandleBinding.inflate(getLayoutInflater(),container,false);
         sharedPreferences = getActivity().getSharedPreferences("play_set", Context.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("restart", false)) binding.shSwRestart.setChecked(true);
-        if (sharedPreferences.getBoolean("back_gesture", true)) binding.shSwCanBack.setChecked(true);
-        if (sharedPreferences.getBoolean("back_finish", true)) binding.sdSwFinishBack.setChecked(true);
-        if (sharedPreferences.getBoolean("tap_scale", false)) binding.shRbTap.setChecked(true);
-        if (sharedPreferences.getBoolean("none_start", false)) binding.shSwAudio.setChecked(true);
-        if (sharedPreferences.getBoolean("background", false)) binding.shSwCt.setChecked(true);
-        if (sharedPreferences.getBoolean("no_border",false)) binding.shSwBorder.setChecked(true);
-        if (sharedPreferences.getBoolean("deep",false)) binding.shSwDeep.setChecked(true);
-        if (sharedPreferences.getBoolean("watch_back",false)) binding.shSwWatch.setChecked(true);
+        binding.shSwRestart.setChecked(sharedPreferences.getBoolean("restart", false));
+        binding.shSwCanBack.setChecked(sharedPreferences.getBoolean("back_gesture", true));
+        binding.sdSwFinishBack.setChecked(sharedPreferences.getBoolean("back_finish", true));
+        binding.shRbTap.setChecked(sharedPreferences.getBoolean("tap_scale", false));
+        binding.shSwAudio.setChecked(sharedPreferences.getBoolean("none_start", false));
+        binding.shSwCt.setChecked(sharedPreferences.getBoolean("background", false));
+        binding.shSwBorder.setChecked(sharedPreferences.getBoolean("no_border",false));
+        binding.shSwDeep.setChecked(sharedPreferences.getBoolean("deep",false));
+        binding.shSwWatch.setChecked(sharedPreferences.getBoolean("watch_back",false));
+        if (sharedPreferences.getBoolean("hd_hd",false)) binding.title.setVisibility(View.GONE);
         if (!sharedPreferences.getBoolean("tap_scale",false)) binding.shRbTwo.setChecked(true);
         else binding.shRbTap.setChecked(true);
         return binding.getRoot();
@@ -49,6 +50,11 @@ public class SetHandleFragment extends Fragment {
         binding.shRgScaleMode.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.sh_rb_tap) sharedPreferences.edit().putBoolean("tap_scale", true).apply();
             else sharedPreferences.edit().putBoolean("tap_scale", false).apply();
+        });
+        binding.title.setOnLongClickListener(view -> {
+            sharedPreferences.edit().putBoolean("hd_hd",true).apply();
+            binding.title.setVisibility(View.GONE);
+            return true;
         });
         binding.shSwBorder.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("no_border",b).apply());
         binding.shSwAudio.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("none_start",b).apply());

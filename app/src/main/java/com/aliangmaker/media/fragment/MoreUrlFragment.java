@@ -63,7 +63,10 @@ public class MoreUrlFragment extends Fragment {
                 intent.setData(Uri.parse(text));
                 binding.pb.setVisibility(View.INVISIBLE);
                 startActivity(intent);
-            } else Toast.makeText(getContext(), "请输入正确的链接", Toast.LENGTH_SHORT).show();
+            } else {
+                binding.pb.setVisibility(View.INVISIBLE);
+                Toast.makeText(getContext(), "请输入正确的链接", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
