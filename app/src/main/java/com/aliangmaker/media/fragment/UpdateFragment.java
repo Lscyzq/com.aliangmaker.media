@@ -36,8 +36,10 @@ public class UpdateFragment extends Fragment {
             new DownloadEvent(decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7itqivo5umlqi6ixs"), getContext(), false, new DownloadEvent.DownloadCallback() {
                 @Override
                 public void onDownloadFinished() {
-                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "开始安装", Toast.LENGTH_SHORT).show());
-                    installUpdate();
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "开始安装", Toast.LENGTH_SHORT).show();
+                        installUpdate();
+                    });
                 }
             });
         });

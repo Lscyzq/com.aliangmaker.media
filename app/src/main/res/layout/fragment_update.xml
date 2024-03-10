@@ -5,7 +5,14 @@
         android:clickable="true"
         android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/black">
-
+    <com.aliangmaker.media.control.RollStatueScrollView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ud_im"
         android:layout_width="55dp"
@@ -25,6 +32,9 @@
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/ud_im"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.aliangmaker.media.control.RollStatueScrollView>
     <com.aliangmaker.media.control.ScaleViewConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
