@@ -8,6 +8,6 @@
 
     <!-- 设置滑块的大小 -->
     <size
-            android:width="17dp"
-            android:height="17dp" />
+            android:width="15dp"
+            android:height="15dp" />
 </shape>

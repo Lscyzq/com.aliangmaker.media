@@ -28,6 +28,7 @@ public class SetVideoFragment extends Fragment {
     public void onPause() {
         super.onPause();
         TitleFragment.setBackGone(true);
+        TitleFragment.setTitle("设置");
     }
 
     @Override

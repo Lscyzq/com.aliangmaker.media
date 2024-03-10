@@ -40,10 +40,13 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
         this.frameLayout = frameLayout;
         this.sharedPreferences = context.getSharedPreferences("play_set", Context.MODE_PRIVATE);
         tapScale = sharedPreferences.getBoolean("tap_scale", false);
-        noBorder = sharedPreferences.getBoolean("no_border",false);
+        noBorder = sharedPreferences.getBoolean("no_border", false);
         canScale = true;
     }
 
+    public void setScale(boolean canScale) {
+        this.canScale = canScale;
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!canScale) {
@@ -70,16 +73,17 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 secondPoint.set(event.getX(1), event.getY(1));
                 return true;
             case MotionEvent.ACTION_MOVE:
-
-                if (event.getPointerCount() >= 2 && !tapScale) {
-                    frameLayout.getLocationInWindow(viewLocation);
+                if (event.getPointerCount() >= 2) {
                     zoomInMode = TowFingerZoom;
-                    float scale = (float) (frameLayout.getScaleX() + (float) 0.003 * (-(Math.sqrt(Math.pow((firstPoint.x - secondPoint.x), 2) + Math.pow(firstPoint.y - secondPoint.y, 2))) + (Math.sqrt(Math.pow(event.getX() - event.getX(1), 2) + Math.pow(event.getY() - event.getY(1), 2)))));
-                    if (scale >= 1 && scale < scaleZoom) {
-                        frameLayout.setScaleX(scale);
-                        frameLayout.setScaleY(scale);
+                    if (!tapScale) {
+                        frameLayout.getLocationInWindow(viewLocation);
+                        float scale = (float) (frameLayout.getScaleX() + (float) 0.0035 * (-(Math.sqrt(Math.pow((firstPoint.x - secondPoint.x), 2) + Math.pow(firstPoint.y - secondPoint.y, 2))) + (Math.sqrt(Math.pow(event.getX() - event.getX(1), 2) + Math.pow(event.getY() - event.getY(1), 2)))));
+                        if (scale >= 1 && scale < scaleZoom) {
+                            frameLayout.setScaleX(scale);
+                            frameLayout.setScaleY(scale);
+                        }
+                        secondPoint.set(event.getX(1), event.getY(1));
                     }
-                    secondPoint.set(event.getX(1), event.getY(1));
                 } else if (zoomInMode != TowFingerZoom) {
                     frameLayout.getLocationInWindow(viewLocation);
                     frameLayout.setTranslationX(adjustX(event.getX() - firstPoint.x, viewLocation[0]));
@@ -100,7 +104,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (y < 0) y = 0;
             }
         }
-        return frameLayout.getTranslationY() + y;
+        return frameLayout.getTranslationY() + y*1.25f;
     }
 
     private float adjustX(float x, int viewLocationX) {
@@ -112,6 +116,6 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (x < 0) x = 0;
             }
         }
-        return frameLayout.getTranslationX() + x;
+        return frameLayout.getTranslationX() + x*1.25f;
     }
 }

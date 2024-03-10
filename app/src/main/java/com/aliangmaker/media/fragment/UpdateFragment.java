@@ -53,7 +53,15 @@ public class UpdateFragment extends Fragment {
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         startActivity(intent);
     }
-
+    private static String decrypt(String encryptedText) {
+        StringBuilder decryptedText = new StringBuilder();
+        int offset = 8;
+        for (char c : encryptedText.toCharArray()) {
+            int decryptedChar = (c - offset + 256) % 256;
+            decryptedText.append((char) decryptedChar);
+        }
+        return decryptedText.toString();
+    }
     @Override
     public void onPause() {
         super.onPause();

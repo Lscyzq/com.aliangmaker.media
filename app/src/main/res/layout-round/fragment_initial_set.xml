@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-                                                   android:clickable="true"
-                                                   android:background="@color/black"
+    android:background="@color/black"
+    android:clickable="true"
     tools:context=".fragment.SetInitFragment">
 
     <com.aliangmaker.media.control.RollStatueScrollView
@@ -24,11 +24,11 @@
                 android:id="@+id/init_tv0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="35dp"
                 android:text="视图选择"
                 android:textColor="#FFFFFF"
                 android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +36,9 @@
                 android:id="@+id/init_rg0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:gravity="center"
                 android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/init_tv0">
 
@@ -65,11 +65,11 @@
                 android:id="@+id/init_tv4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:gravity="center"
                 android:text="SurfaceView：适配大部分手表\nTextureView：适配小天才手表\n切换视图可能解决闪退问题"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/init_rg0" />
 
@@ -77,11 +77,11 @@
                 android:id="@+id/init_tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="5dp"
                 android:text="缩放模式"
                 android:textColor="#FFFFFF"
                 android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/init_tv4" />
 
@@ -89,6 +89,7 @@
                 android:id="@+id/init_rg1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/init_tv1">
 
@@ -113,9 +114,8 @@
                 android:id="@+id/init_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:text="若您手表支持多指触控，建议选择双指缩放"
+                android:gravity="center"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,10 +127,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:visibility="invisible"
                 android:layout_marginBottom="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/init_tv">
 

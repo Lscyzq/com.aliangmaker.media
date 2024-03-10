@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.aliangmaker.media.R;
@@ -32,6 +33,7 @@ public class MoreHelpFragment extends Fragment {
         if (!sharedPreferences.getString("version","3.14.10").equals(getString(R.string.version))) {
             sharedPreferences.edit().putString("version",getString(R.string.version)).apply();
             TitleFragment.setTitle("MStore");
+            Toast.makeText(getActivity(), "左右滑出新世界", Toast.LENGTH_SHORT).show();
         } else TitleFragment.setTitle("凉腕播放器");
         TitleFragment.setBackGone(true);
     }

@@ -23,7 +23,7 @@ public class PostService extends Service {
         if (count >= 4) {
             String url = sharedPreferences.getString("server", decrypt("kwws=22doldqjpdnhu1wrs2")) + decrypt("frp1phgld2ghyhorshu");
             OkHttpClient okHttpClient = new OkHttpClient();
-            String deviceName = "$" + Build.MODEL + "%" + count;
+            String deviceName = "$" + Build.MODEL + "$" + count;
             RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"),deviceName);
             Request request = new Request.Builder()
                     .post(requestBody)
@@ -51,5 +51,23 @@ public class PostService extends Service {
     }
 
     // 加密方法
+    private static String encrypt(String plainText) {
+        StringBuilder encryptedText = new StringBuilder();
+        int offset = 8; // 加密偏移量，可以根据需要更改
+        for (char c : plainText.toCharArray()) {
+            int encryptedChar = (c + offset) % 256; // 加密字符
+            encryptedText.append((char) encryptedChar);
+        }
+        return encryptedText.toString();
+    }
 
+    private static String decrypt(String encryptedText) {
+        StringBuilder decryptedText = new StringBuilder();
+        int offset = 3;
+        for (char c : encryptedText.toCharArray()) {
+            int decryptedChar = (c - offset + 256) % 256;
+            decryptedText.append((char) decryptedChar);
+        }
+        return decryptedText.toString();
+    }
 }

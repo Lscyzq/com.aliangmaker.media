@@ -55,7 +55,7 @@ public class SetDisplayFragment extends Fragment {
             binding.title.setVisibility(View.GONE);
             return true;
         });
-        binding.sdTvDark.setText(sharedPreferences.getInt("dark_pg", 0) + "");
+        binding.sdTvDark.setText(sharedPreferences.getInt("dark_pg", 125) + "");
         binding.sdSwSize.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("small_tv", b).apply());
         binding.sdSwLand.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("horizon", b).apply());
         binding.sdSwGone.setOnCheckedChangeListener((compoundButton, b) ->
@@ -67,7 +67,7 @@ public class SetDisplayFragment extends Fragment {
             if (b) {
                 sharedPreferences.edit().putBoolean("dark", true).apply();
                 binding.sdClSb.setVisibility(View.VISIBLE);
-                binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 0));
+                binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 125));
                 TranslateAnimation translateAnim = new TranslateAnimation(0f, 0f, -70, 0f);
                 translateAnim.setDuration(350);
                 translateAnim.setFillAfter(true);

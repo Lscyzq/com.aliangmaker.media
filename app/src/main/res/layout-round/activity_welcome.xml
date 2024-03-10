@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@color/black"
+                                                   tools:context=".WelcomeActivity">
+
+    <ImageView
+            android:id="@+id/ic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_main" />
+
+    <TextView
+            android:id="@+id/wel_tv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:gravity="center"
+            android:text="凉腕播放器"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ic" />
+
+    <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:paddingHorizontal="4dp"
+            android:background="@drawable/ba_double_round"
+            android:text="@string/stage"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ic"
+            app:layout_constraintStart_toEndOf="@+id/ic"
+            app:layout_constraintTop_toTopOf="@+id/ic"
+            app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+            android:id="@+id/wel_tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="方寸之间   大千世界"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/wel_co0"
+            app:layout_constraintEnd_toEndOf="@+id/wel_tv_main"
+            app:layout_constraintStart_toStartOf="@+id/wel_tv_main" />
+
+    <ImageView
+        android:id="@+id/wel_im2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="28dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <com.aliangmaker.media.control.ScaleViewConstraintLayout
+        android:id="@+id/wel_co0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/wel_im1"
+            android:layout_width="156dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ba_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/wel_tv0"
+            android:layout_width="79dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="18dp"
+            android:text="轻触开始"
+            android:textSize="19sp"
+            app:layout_constraintBottom_toBottomOf="@+id/wel_im1"
+            app:layout_constraintStart_toStartOf="@+id/wel_im1"
+            app:layout_constraintTop_toTopOf="@+id/wel_im1" />
+
+        <ImageView
+            android:id="@+id/wel_im0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintBottom_toBottomOf="@+id/wel_im1"
+            app:layout_constraintEnd_toEndOf="@+id/wel_im1"
+            app:layout_constraintTop_toTopOf="@+id/wel_im1"
+            app:srcCompat="@drawable/ic_forward" />
+
+    </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+    <TextView
+            android:id="@+id/wel_tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="bilibili@凉生初霜"
+            android:textColor="#99CCCCCC"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -72,7 +72,15 @@ public class ServerRequest {
             }
         });
     }
-
+    private static String decrypt(String encryptedText) {
+        StringBuilder decryptedText = new StringBuilder();
+        int offset = 8;
+        for (char c : encryptedText.toCharArray()) {
+            int decryptedChar = (c - offset + 256) % 256;
+            decryptedText.append((char) decryptedChar);
+        }
+        return decryptedText.toString();
+    }
     public interface versionCallBack {
         void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion);
 

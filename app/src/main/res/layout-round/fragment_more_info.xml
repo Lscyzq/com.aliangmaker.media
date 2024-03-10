@@ -48,11 +48,11 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
-                android:textSize="17sp"
-                android:textColor="@color/main"
                 android:text="个人开发者"
+                android:textColor="@color/main"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/wel_tv_main" />
 
@@ -60,11 +60,11 @@
                 android:id="@+id/textView222"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
+                android:text="开源项目地址"
                 android:textColor="@color/main"
                 android:textSize="17sp"
-                android:text="开源项目地址"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
@@ -72,7 +72,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:text="接入播放器"
                 android:textColor="@color/main"
@@ -151,11 +151,11 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
+                android:text="特别鸣谢"
                 android:textColor="@color/main"
                 android:textSize="17sp"
-                android:text="特别鸣谢"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
@@ -177,7 +177,9 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
+                android:layout_marginBottom="50dp"
                 android:text="https://lscyzq.github.io/access/com.aliangmaker.media.txt"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView222"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />

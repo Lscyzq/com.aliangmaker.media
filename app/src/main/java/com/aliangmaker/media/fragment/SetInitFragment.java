@@ -77,7 +77,6 @@ public class SetInitFragment extends Fragment {
         binding.initCl.setOnClickListener(v -> {
             getActivity().getSharedPreferences("main",Context.MODE_PRIVATE).edit().putBoolean("signed", true).apply();
             startActivity(new Intent(getActivity(), MainActivity.class));
-            Toast.makeText(getActivity(), "左右滑出新世界", Toast.LENGTH_SHORT).show();
             getActivity().finish();
         });
     }
