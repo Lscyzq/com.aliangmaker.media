@@ -25,7 +25,7 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="50dp"
                 android:ellipsize="end"
-                android:text="1.重构底层代码\n2.重构上层界面\n3.重构操作逻辑\n4.重构应用主图标\n5.新增平移边界\n6.新增无界平移\n7.新增无极调音\n8.新增大量动画\n9.新增双击缩放\n10.新增蓝牙断开停播\n11.新增深度扫描\n12.新增对.avi、.mkv、.mov、wmv等视频格式支持（需先开启“深度扫描”）\n13.新增导航栏（附隐藏功能）\n14.新增夜间模式按压调节（需先开启“夜间模式”）\n15.新增状态栏沉浸\n16.新增禁用手表物理返回键设置选项\n17.修复了视频显示不完整问题\n18.修复了部分页面掉帧问题\n19.修复了改变弹幕倍速时的漂移问题\n20.修复了部分设备旋转屏幕时不正常拉伸问题\n21.修复了播放界面预览条显示问题\n22.优化了视频列表加载等待时间（异步任务）\n23.优化了弹幕播放精准度\n24.放弃了在“播放Url”中“下载”功能的维护\n25.向下兼容至安卓4.4\n\n1.修复了默认横屏播放时的闪退问题\n2.修复了播放界面锁的显示问题\n3.修复了显示设置中按压进度条数值问题\n4.修复了播放界面操作问题\n5.修复初始设置显示问题"
+                android:text="\n4.0.0：1.重构底层代码\n2.重构上层界面\n3.重构操作逻辑\n4.重构应用主图标\n5.新增平移边界\n6.新增无界平移\n7.新增无极调音\n8.新增大量动画\n9.新增双击缩放\n10.新增蓝牙断开停播\n11.新增深度扫描\n12.新增对.avi、.mkv、.mov、wmv等视频格式支持（需先开启“深度扫描”）\n13.新增导航栏（附隐藏功能）\n14.新增夜间模式按压调节（需先开启“夜间模式”）\n15.新增状态栏沉浸\n16.新增禁用手表物理返回键设置选项\n17.修复了视频显示不完整问题\n18.修复了部分页面掉帧问题\n19.修复了改变弹幕倍速时的漂移问题\n20.修复了部分设备旋转屏幕时不正常拉伸问题\n21.修复了播放界面预览条显示问题\n22.优化了视频列表加载等待时间（异步任务）\n23.优化了弹幕播放精准度\n24.放弃了在“播放Url”中“下载”功能的维护\n25.向下兼容至安卓4.4\n4.0.1：\n1.修复了默认横屏播放时的闪退问题\n2.修复了播放界面锁的显示问题\n3.修复了显示设置中按压进度条数值问题\n4.修复了播放界面操作问题\n5.修复初始设置显示问题\n4.0.2：\n1.修复了倍速后声音问题\n2.修复了缩放困难问题\n3.修复了播放分辨率较高视频的卡顿问题"
                 android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +70,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/ul_tv_side"
+                      android:background="@drawable/ba_double_round"
+                      android:layout_marginHorizontal="4dp"
+                      android:textSize="17sp"
+                      android:text="4.0.x"
+                      app:layout_constraintStart_toEndOf="@id/textView23"
+                      app:layout_constraintTop_toTopOf="@id/textView23"
+                      app:layout_constraintBottom_toBottomOf="@id/textView23"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
