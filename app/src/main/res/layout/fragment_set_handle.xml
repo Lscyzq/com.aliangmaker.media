@@ -34,7 +34,7 @@
                     android:layout_marginHorizontal="4dp"
                     android:layout_marginVertical="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="进度条左上方时间单击可音量-，长按快退10s;右上方时间单击可音量-，长按快进10s（长按不再显示此Tip）。"
+                    android:text="进度条左上方时间单击可音量-，长按快退10s;右上方时间单击可音量+，长按快进10s（长按不再显示此Tip）。"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

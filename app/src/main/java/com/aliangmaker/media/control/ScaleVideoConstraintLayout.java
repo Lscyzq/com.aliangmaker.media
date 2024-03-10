@@ -77,7 +77,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                     zoomInMode = TowFingerZoom;
                     if (!tapScale) {
                         frameLayout.getLocationInWindow(viewLocation);
-                        float scale = (float) (frameLayout.getScaleX() + (float) 0.0045 * (-(Math.sqrt(Math.pow((firstPoint.x - secondPoint.x), 2) + Math.pow(firstPoint.y - secondPoint.y, 2))) + (Math.sqrt(Math.pow(event.getX() - event.getX(1), 2) + Math.pow(event.getY() - event.getY(1), 2)))));
+                        float scale = (float) (frameLayout.getScaleX() + (float) 0.0055 * (-(Math.sqrt(Math.pow((firstPoint.x - secondPoint.x), 2) + Math.pow(firstPoint.y - secondPoint.y, 2))) + (Math.sqrt(Math.pow(event.getX() - event.getX(1), 2) + Math.pow(event.getY() - event.getY(1), 2)))));
                         if (scale >= 1 && scale < scaleZoom) {
                             frameLayout.setScaleX(scale);
                             frameLayout.setScaleY(scale);
@@ -104,7 +104,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (y < 0) y = 0;
             }
         }
-        return frameLayout.getTranslationY() + y*1.35f;
+        return frameLayout.getTranslationY() + y*1.4f;
     }
 
     private float adjustX(float x, int viewLocationX) {
@@ -116,6 +116,6 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (x < 0) x = 0;
             }
         }
-        return frameLayout.getTranslationX() + x*1.35f;
+        return frameLayout.getTranslationX() + x*1.4f;
     }
 }
