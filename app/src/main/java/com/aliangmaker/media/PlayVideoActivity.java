@@ -75,6 +75,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private SurfaceView surfaceView;
     private TextureView textureView;
     private DanmakuView danmakuView;
+    Runnable lockSetInvisible = () -> runOnUiThread(() -> binding.pvImLc.setVisibility(View.INVISIBLE));
+
     private int CVolume;
     private boolean canPlayDanmaku = false, danmakuPlayed = false, horizon = false, lock = false, playDanmaku = false;
 
@@ -491,11 +493,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     clickCount[0] = 0;
                 }, 320);
             } else {
-                Runnable runnable = () -> runOnUiThread(() -> binding.pvImLc.setVisibility(View.INVISIBLE));
-                handler.removeCallbacks(runnable);
+                handler.removeCallbacks(lockSetInvisible);
                 if (binding.pvImLc.getVisibility() != View.VISIBLE) {
                     binding.pvImLc.setVisibility(View.VISIBLE);
-                    handler.postDelayed(runnable, 2000);
+                    handler.postDelayed(lockSetInvisible, 2000);
                 } else binding.pvImLc.setVisibility(View.INVISIBLE);
             }
         });
@@ -566,8 +567,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initIjk() throws IOException {
-
-
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", getIntent().getStringExtra("agent"));
@@ -581,7 +580,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_clear", 1); //dns 清理
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "flush_packets");
-        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 2);
+        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 0);
         if (playSet.getBoolean("sharp", false))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
