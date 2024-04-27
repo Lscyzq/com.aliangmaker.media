@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:progressTint="@color/main"
+        android:secondaryProgressTint="@color/grey"
         android:thumb="@drawable/ba_seekbar_thumb"
         app:layout_constraintBottom_toTopOf="@+id/pv_im_pause"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:progressTint="@color/main"
+        android:secondaryProgressTint="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +118,7 @@
         android:marqueeRepeatLimit="-1"
         android:ellipsize="marquee"
         android:layout_marginStart="-23dp"
-        android:layout_marginEnd="-10dp"
+        android:layout_marginEnd="-2dp"
         app:layout_constraintBottom_toBottomOf="@+id/pv_back"
         app:layout_constraintEnd_toStartOf="@+id/pv_tv_speed"
         app:layout_constraintStart_toEndOf="@+id/pv_back"
@@ -208,4 +210,25 @@
             android:layout_width="match_parent" android:layout_height="match_parent"
                  app:layout_constraintTop_toTopOf="parent"
                  app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/pv_pb_buff"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/pv_tv_buff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载中"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pv_pb_buff" />
 </com.aliangmaker.media.control.ScaleVideoConstraintLayout>

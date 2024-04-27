@@ -32,7 +32,7 @@
                     android:layout_marginHorizontal="4dp"
                     android:layout_marginVertical="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="进度条左上方时间单击可音量-，长按快退10s;右上方时间单击可音量+，长按快进10s（长按不再显示此Tip）。"
+                    android:text="@string/handle"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:buttonTint="@color/main"
-                    android:text="双击缩放" />
+                    android:text="单指缩放" />
             </RadioGroup>
 
             <TextView
@@ -306,7 +306,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="50dp"
-                android:text="若您手表支持多指触控，建议选择双指缩放"
+                android:text="若您手表支持多指触控，建议选择双指缩放\n若您选择单指缩放，则可通过双击缩放以及特殊手势进行缩放（单击一次屏幕后快速触摸屏幕并向上/下平移手指，其中向上平移放大，向下平移缩小）"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"

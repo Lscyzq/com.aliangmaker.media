@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-                                                   android:clickable="true"
-                                                   tools:context=".fragment.MoreBiliFragment">
+    android:clickable="true"
+    tools:context=".fragment.MoreBiliFragment">
 
 
     <com.aliangmaker.media.control.RollStatueScrollView
@@ -50,9 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:textSize="17sp"
-                android:textColor="@color/main"
                 android:text="个人开发者"
+                android:textColor="@color/main"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/wel_tv_main" />
 
@@ -62,9 +62,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
+                android:text="开源项目地址"
                 android:textColor="@color/main"
                 android:textSize="17sp"
-                android:text="开源项目地址"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
@@ -153,9 +153,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
+                android:text="特别鸣谢"
                 android:textColor="@color/main"
                 android:textSize="17sp"
-                android:text="特别鸣谢"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 

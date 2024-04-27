@@ -12,34 +12,23 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.aliangmaker.media.MainActivity;
 import com.aliangmaker.media.R;
 import com.aliangmaker.media.databinding.FragmentInitialSetBinding;
-import com.aliangmaker.media.event.Bean0;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class SetInitFragment extends Fragment {
     private FragmentInitialSetBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentInitialSetBinding.inflate(getLayoutInflater());
+        binding = FragmentInitialSetBinding.inflate(getLayoutInflater(),container,false);
         binding.initTv1.setVisibility(View.GONE);
         binding.initRg1.setVisibility(View.GONE);
         binding.initTv.setVisibility(View.GONE);
-        return binding.getRoot();
-    }
-    private boolean view = false,volume = false;
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        EventBus.getDefault().post(new Bean0(4));
+        TitleFragment.setTitle("基础设置");
         doAnim(binding.initTv0,binding.initRg0,binding.initTv4);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("play_set", Context.MODE_PRIVATE);
         binding.initRg0.setOnCheckedChangeListener((group, checkedId) -> {
@@ -79,8 +68,9 @@ public class SetInitFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         });
+        return binding.getRoot();
     }
-
+    private boolean view = false,volume = false;
     private void doAnim(TextView tv1, RadioGroup rg, TextView tv2) {
         AlphaAnimation alphaAnim = new AlphaAnimation(0f, 1f);
         alphaAnim.setDuration(600);

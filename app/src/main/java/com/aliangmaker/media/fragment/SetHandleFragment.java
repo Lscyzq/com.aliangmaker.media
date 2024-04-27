@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.CompoundButton;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -31,7 +30,7 @@ public class SetHandleFragment extends Fragment {
         binding.shSwBorder.setChecked(sharedPreferences.getBoolean("no_border",false));
         binding.shSwDeep.setChecked(sharedPreferences.getBoolean("deep",false));
         binding.shSwWatch.setChecked(sharedPreferences.getBoolean("watch_back",false));
-        if (sharedPreferences.getBoolean("hd_hd",false)) binding.title.setVisibility(View.GONE);
+        if (sharedPreferences.getBoolean("hd_hd3",false)) binding.title.setVisibility(View.GONE);
         if (!sharedPreferences.getBoolean("tap_scale",false)) binding.shRbTwo.setChecked(true);
         else binding.shRbTap.setChecked(true);
         return binding.getRoot();
@@ -52,7 +51,7 @@ public class SetHandleFragment extends Fragment {
             else sharedPreferences.edit().putBoolean("tap_scale", false).apply();
         });
         binding.title.setOnLongClickListener(view -> {
-            sharedPreferences.edit().putBoolean("hd_hd",true).apply();
+            sharedPreferences.edit().putBoolean("hd_hd2",true).apply();
             binding.title.setVisibility(View.GONE);
             return true;
         });

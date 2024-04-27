@@ -31,7 +31,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
     private int Ordinary = 0, TowFingerZoom = 2, doubleClickZoom = 3, scaleZoom = 8, zoomInMode = Ordinary;
     private PointF firstPoint = new PointF(), secondPoint = new PointF();
     private long doubleClickTimeSpan = 320, lastClickTime = 0;
-    boolean canScale = false, tapScale = false, noBorder = false;
+    boolean canScale = false, tapScale = false, noBorder = false, canTap = false, tapED = false;
     private SharedPreferences sharedPreferences;
     private Context context;
     int[] viewLocation = new int[2];
@@ -47,6 +47,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
     public void setScale(boolean canScale) {
         this.canScale = canScale;
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!canScale) {
@@ -57,16 +58,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 firstPoint.set(event.getX(), event.getY());
                 zoomInMode = Ordinary;
                 if (tapScale && System.currentTimeMillis() - lastClickTime <= doubleClickTimeSpan) {
-                    //双击缩放
-                    if (frameLayout.getScaleX() == 1) {
-                        frameLayout.setPivotX(firstPoint.x * frameLayout.getWidth() / getWidth());
-                        frameLayout.setPivotY(firstPoint.y * frameLayout.getHeight() / getHeight());
-                        frameLayout.animate().scaleX(doubleClickZoom).scaleY(doubleClickZoom).setDuration(100).start();
-                    } else {
-                        //放大状态，再次双击缩小
-                        frameLayout.animate().scaleX(1f).scaleY(1f).setDuration(80).start();
-                    }
-                    return true;
+                    canTap = true;
                 } else if (tapScale) lastClickTime = System.currentTimeMillis();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -78,11 +70,21 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                     if (!tapScale) {
                         frameLayout.getLocationInWindow(viewLocation);
                         float scale = (float) (frameLayout.getScaleX() + (float) 0.0055 * (-(Math.sqrt(Math.pow((firstPoint.x - secondPoint.x), 2) + Math.pow(firstPoint.y - secondPoint.y, 2))) + (Math.sqrt(Math.pow(event.getX() - event.getX(1), 2) + Math.pow(event.getY() - event.getY(1), 2)))));
-                        if (scale >= 1 && scale < scaleZoom) {
+                        if (scale >= 0.7 && scale < scaleZoom) {
                             frameLayout.setScaleX(scale);
                             frameLayout.setScaleY(scale);
                         }
                         secondPoint.set(event.getX(1), event.getY(1));
+                    }
+                } else if (canTap) {
+                    float scale = event.getY() - firstPoint.y;
+                    if (!tapED && Math.abs(scale) > 1) tapED = true;
+                    if (scale < 0) {
+                        scale = frameLayout.getScaleX() + (float) 0.008 * Math.abs(scale);
+                    } else scale = frameLayout.getScaleX() - (float) 0.008 * scale;
+                    if (scale >= 0.7 && scale < scaleZoom) {
+                        frameLayout.setScaleY(scale);
+                        frameLayout.setScaleX(scale);
                     }
                 } else if (zoomInMode != TowFingerZoom) {
                     frameLayout.getLocationInWindow(viewLocation);
@@ -91,6 +93,27 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 }
                 firstPoint.set(event.getX(0), event.getY(0));
                 return true;
+            case MotionEvent.ACTION_UP:
+                if (canTap && !tapED) {
+                    //双击缩放
+                    if (frameLayout.getScaleX() == 1) {
+                        frameLayout.setPivotX(firstPoint.x * frameLayout.getWidth() / getWidth());
+                        frameLayout.setPivotY(firstPoint.y * frameLayout.getHeight() / getHeight());
+                        frameLayout.animate().scaleX(doubleClickZoom).scaleY(doubleClickZoom).setDuration(100).start();
+                    } else {
+                        //放大状态，再次双击缩小
+                        frameLayout.animate().scaleX(1f).scaleY(1f).setDuration(80).start();
+                    }
+                }
+                if (frameLayout.getScaleX() < 1) {
+                    frameLayout.setScaleX(1);
+                    frameLayout.setScaleY(1);
+                    frameLayout.setTranslationX(0);
+                    frameLayout.setTranslationY(0);
+                }
+                tapED = false;
+                canTap = false;
+                break;
         }
         return super.onTouchEvent(event);
     }
@@ -104,7 +127,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (y < 0) y = 0;
             }
         }
-        return frameLayout.getTranslationY() + y*1.4f;
+        return frameLayout.getTranslationY() + y * 1.6f;
     }
 
     private float adjustX(float x, int viewLocationX) {
@@ -116,6 +139,6 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 if (x < 0) x = 0;
             }
         }
-        return frameLayout.getTranslationX() + x*1.4f;
+        return frameLayout.getTranslationX() + x * 1.6f;
     }
 }

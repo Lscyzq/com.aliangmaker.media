@@ -32,7 +32,7 @@
                     android:layout_marginHorizontal="4dp"
                     android:layout_marginVertical="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="播放界面的图标显示虽然小，但是实际可以点击的区域很大，不用担心点击困难问题，若您的操作实在困难，请自行修改应用（网上教程很多）dpi（长按不再显示此Tip）。"
+                    android:text="@string/display"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

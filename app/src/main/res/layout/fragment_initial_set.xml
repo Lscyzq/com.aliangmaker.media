@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:buttonTint="@color/main"
-                    android:text="双击缩放"
+                    android:text="单指缩放"
                     android:textColor="#FFFFFF" />
             </RadioGroup>
 
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="若您手表支持多指触控，建议选择双指缩放"
+                android:text="若您手表支持多指触控，建议选择双指缩放\n若您选择单指缩放，则可通过双击缩放以及特殊手势进行缩放（单击一次屏幕后快速触摸屏幕并向上/下平移手指，其中向上平移放大，向下平移缩小）"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"

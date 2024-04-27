@@ -55,8 +55,6 @@ public  class SetFirstActivity extends AppCompatActivity {
             TitleFragment.setTitle("隐私安全");
         } else if (value ==3) {
             TitleFragment.setTitle("使用协议");
-        } else if (value == 4) {
-            TitleFragment.setTitle("基础设置");
         }
     }
 }

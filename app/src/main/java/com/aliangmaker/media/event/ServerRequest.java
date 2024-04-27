@@ -31,7 +31,10 @@ public class ServerRequest {
                 .build()).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                if (!(context instanceof MainActivity)) context.runOnUiThread(() -> Toast.makeText(context, "请检查网络连接", Toast.LENGTH_SHORT).show());
+                if (!(context instanceof MainActivity)) {
+                    context.runOnUiThread(() -> Toast.makeText(context, "请检查网络连接", Toast.LENGTH_SHORT).show());
+
+                }
             }
 
             @Override
@@ -56,6 +59,7 @@ public class ServerRequest {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 context.runOnUiThread(() -> Toast.makeText(context, "请检查网络连接", Toast.LENGTH_SHORT).show());
+                serverCallBack.getUrlFail();
             }
 
             @Override

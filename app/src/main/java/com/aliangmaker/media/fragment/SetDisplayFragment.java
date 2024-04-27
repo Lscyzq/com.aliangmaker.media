@@ -32,8 +32,8 @@ public class SetDisplayFragment extends Fragment {
         if (sharedPreferences.getBoolean("dp_hd",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
         binding.sdSwDark.setChecked(dark);
+        binding.sdSbDark.setMax(255);
         if (dark) {
-            binding.sdSbDark.setMax(255);
             binding.sdClSb.setVisibility(View.VISIBLE);
             binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 125));
         }
