@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">凉腕播放器</string>
     <string name="stage">正式版</string>
-    <string name="version">4.3.0</string>
+    <string name="version">4.3.1</string>
     <string name="up_title">一载同行|情深意长</string>
     <string name="up_body">春华秋实，日月更替。热烈庆祝凉腕播放器开发一周年！有太多的悲欢离合想与你共享，有太多的浮生踟蹰想与你倾诉。愿未来岁月，依旧携手同行。</string>
     <string name="up_log">1.新增视频倍速记录功能\n2.新增快「进/退」以及音量改变时的交互\n3.新增屏幕中间双击暂停/播放；左侧双击快退10S；右侧双击快进10S\n4.修复了“2S内长按重播”时长计时问题\n5.修复了“倍速”字样的显示问题\n6.修复了视频加载时弹幕提前显示问题\n7.修复了播放界面缓冲圈颜色问题\n8.提升单指缩放的流畅度\n9.放弃了对于播放结束后恢复原系统音量的支持（可能很多人不知道这个是我特意做的功能，大多以为这是bug）</string>

@@ -212,9 +212,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 danmakuView.hide();
                 canPlayDanmaku = true;
                 if (!danmakuPlayed && ijkMediaPlayer.isPlaying()) {
-                    danmakuView.show();
                     danmakuView.start(ijkMediaPlayer.getCurrentPosition());
                     danmakuPlayed = true;
+                    if (!playSet.getBoolean("hd_dan", false)) {
+                        danmakuView.show();
+                        binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
+                    }
                 }
             }
 
@@ -233,9 +236,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             }
         });
         binding.pvImDan.setOnClickListener(this);
-        if (!playSet.getBoolean("hd_dan", false)) {
-            binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
-        } else danmakuView.hide();
     }
 
     private BaseDanmakuParser createParser(String stream) {
@@ -592,13 +592,16 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             } else progress = getIntent().getIntExtra("progress", 0);
             if (progress > 0) {
                 ijkMediaPlayer.seekTo(progress);
-                handler.postDelayed(() -> canRestart = false, 2000);
                 Toast.makeText(this, "2S内长按重播", Toast.LENGTH_SHORT).show();
             }
+            handler.postDelayed(() -> canRestart = false, 2000);
             if (!danmakuPlayed && canPlayDanmaku) {
                 danmakuView.start(progress);
-                danmakuView.show();
                 danmakuPlayed = true;
+                if (!playSet.getBoolean("hd_dan", false)) {
+                    danmakuView.show();
+                    binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
+                }
             }
         });
         ijkMediaPlayer.setOnErrorListener((iMediaPlayer, i, i1) -> {
