@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="SurfaceView：适配大部分手表\nTextureView：适配小天才手表\n切换视图可能解决闪退问题"
+                android:text="SurfaceView：适配大部分手表\nTextureView：旧版安卓以及小天才手表\n旧版安卓请选择TextureView否则「无法缩放」"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"

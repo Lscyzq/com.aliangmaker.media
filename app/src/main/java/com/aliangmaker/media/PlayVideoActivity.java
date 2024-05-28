@@ -79,7 +79,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private DanmakuView danmakuView;
     Runnable lockSetInvisible = () -> runOnUiThread(() -> binding.pvImLc.setVisibility(View.INVISIBLE));
     private long duration;
-    private boolean canPlayDanmaku = false, danmakuPlayed = false, horizon = false, lock = false, playDanmaku = false, tapScale = false, canRestart = true;
+    private boolean choose_suf ,canPlayDanmaku = false, danmakuPlayed = false, horizon = false, lock = false, playDanmaku = false, tapScale = false, canRestart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         playSet = getSharedPreferences("play_set", MODE_PRIVATE);
         currentSpeed = playSet.getFloat("speed", 1.00f);
+        choose_suf = playSet.getBoolean("view", true);
         sqLiteOpenHelper = new SQLiteOpenHelper(this);//初始化数据库
         binding.pvCl.initScale(binding.pvFl);//初始化缩放View
         try {
@@ -465,6 +466,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (canRestart && speedACan[1]) {
                 cl.setHapticFeedbackEnabled(true);
                 ijkMediaPlayer.seekTo(0);
+                if (canPlayDanmaku) danmakuView.seekTo(0L);
             } else if (speedACan[1]) {
                 binding.pvTv0.setText("倍速播放中");
                 binding.pvTv0.setVisibility(View.VISIBLE);
@@ -642,20 +644,26 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
 
     private void adjustPlayView(int videoWith, int videoHeight) {
         ViewGroup.LayoutParams params;
+        if (choose_suf) params = surfaceView.getLayoutParams();
+        else params = textureView.getLayoutParams();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        if (videoWith >= videoHeight)
-            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((float) videoHeight / videoWith * displayMetrics.widthPixels), Gravity.CENTER);
-        else
-            params = new FrameLayout.LayoutParams((displayMetrics.heightPixels * videoWith / videoHeight), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
-        if (playSet.getBoolean("view", true)) {
+        if (videoWith >= videoHeight) {
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.height = (int) ((float) videoHeight / videoWith * displayMetrics.widthPixels);
+        } else{
+            params.width = (displayMetrics.heightPixels * videoWith / videoHeight);
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        if (choose_suf) {
             surfaceView.setLayoutParams(params);
         } else textureView.setLayoutParams(params);
     }
 
     private void initPlayView(int videoWith, int videoHeight) {
-        if (playSet.getBoolean("view", true)) {
+        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+        if (choose_suf) {
             surfaceView = new SurfaceView(this);
-            binding.pvFl.addView(surfaceView);
+            binding.pvFl.addView(surfaceView,params);
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(new SurfaceHolder.Callback() {
                 @Override
@@ -680,7 +688,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             });
         } else {
             textureView = new TextureView(this);
-            binding.pvFl.addView(textureView);
+            binding.pvFl.addView(textureView,params);
             textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
                 @Override
                 public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {

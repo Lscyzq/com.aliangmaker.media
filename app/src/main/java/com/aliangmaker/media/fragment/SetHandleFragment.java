@@ -51,7 +51,7 @@ public class SetHandleFragment extends Fragment {
             else sharedPreferences.edit().putBoolean("tap_scale", false).apply();
         });
         binding.title.setOnLongClickListener(view -> {
-            sharedPreferences.edit().putBoolean("hd_hd2",true).apply();
+            sharedPreferences.edit().putBoolean("hd_hd3",true).apply();
             binding.title.setVisibility(View.GONE);
             return true;
         });

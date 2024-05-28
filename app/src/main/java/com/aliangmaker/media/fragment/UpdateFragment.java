@@ -2,6 +2,7 @@ package com.aliangmaker.media.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,16 +46,22 @@ public class UpdateFragment extends Fragment {
         });
         return binding.getRoot();
     }
-    private void installUpdate() {
-        // 设置APK文件的路径
-        File apk = new File("/sdcard/Download/凉腕播放器.apk");
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Uri uri = FileProvider.getUriForFile(getContext(), "com.aliangmaker.media.fileprovider", apk);
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+    public void installUpdate() {
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        File apkFile = new File("/sdcard/Download/凉腕播放器.apk");
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri apkUri = FileProvider.getUriForFile(getContext(), "com.aliangmaker.media.fileprovider", apkFile);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
         startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());// ??????????apk?????????????
     }
+
     private static String decrypt(String encryptedText) {
         StringBuilder decryptedText = new StringBuilder();
         int offset = 8;
