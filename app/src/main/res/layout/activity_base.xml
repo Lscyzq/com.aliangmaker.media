@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bs_cl"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+            android:id="@+id/fs_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <fragment
+                android:id="@+id/fs_fg_title"
+                android:name="com.aliangmaker.media.fragment.TitleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/bs_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
+    <SeekBar
+            android:id="@+id/bs_sb"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:progressTint="@color/main"
+            android:secondaryProgressTint="@color/grey"
+            android:thumb="@drawable/ba_seekbar_thumb"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bs_tv"
+            tools:targetApi="lollipop" />
+    <TextView
+            android:id="@+id/bs_tv2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@id/bs_sb"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

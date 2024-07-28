@@ -171,7 +171,6 @@
                     android:layout_height="wrap_content"
                     android:text="夜间模式"
                     android:textSize="17sp"
-                    android:background="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/sd_tv5"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="4dp"
@@ -182,7 +181,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:text="降低播放时屏幕亮度"
-                    android:background="@color/black"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -191,14 +189,60 @@
                     android:id="@+id/sd_sw_dark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/black"
                     android:layout_marginEnd="4dp"
                     android:thumb="@drawable/switch_thumb"
                     app:track="@drawable/switch_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sd_tv6" />
+            <TextView
+                    android:id="@+id/sd_tv9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="重置界面"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/sd_cl_sb"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+            <TextView
+                    android:id="@+id/sd_tv10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="重启将会进入界面设置"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv9" />
 
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                    android:id="@+id/sd_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv9">
 
+                <View
+                        android:id="@+id/sf_btn_next"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ba_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/sf_im_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_forward"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

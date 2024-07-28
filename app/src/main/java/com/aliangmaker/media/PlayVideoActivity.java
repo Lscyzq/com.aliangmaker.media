@@ -319,6 +319,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             currentSpeed = Float.parseFloat(speed);
             ijkMediaPlayer.setSpeed(currentSpeed);
             DrawHandler.setSpeed(currentSpeed);
+            popupWindow.dismiss();
         });
     }
 
@@ -348,6 +349,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 if (ijkMediaPlayer.isPlaying()) canPlay = true;
                 else canPlay = false;
                 ijkMediaPlayer.pause();
+                if (playDanmaku) danmakuView.hide();
                 handler.removeCallbacks(setINVISIBLE);
             }
 
@@ -355,13 +357,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             public void onStopTrackingTouch(SeekBar seekBar) {
                 handler.postDelayed(setINVISIBLE, 2000);
                 if (playDanmaku) {
-                    danmakuView.resume();
                     danmakuView.seekTo(pro);
                 }
                 if (canPlay) {
+                    if (playDanmaku) {
+                        danmakuView.show();
+                    }
                     ijkMediaPlayer.start();
-                } else if (playDanmaku) {
-                    danmakuView.pause();
                 }
             }
         });
@@ -439,7 +441,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                 binding.pvTv0.setText("暂停播放");
                             } else {
                                 ijkMediaPlayer.start();
-                                if (playDanmaku && !buffering) danmakuView.resume();
+                                if (playDanmaku && !buffering) {
+                                    danmakuView.resume();
+                                    danmakuView.show();
+                                }
                                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
                                 handler.postDelayed(setINVISIBLE, 0);
                                 binding.pvTv0.setText("继续播放");

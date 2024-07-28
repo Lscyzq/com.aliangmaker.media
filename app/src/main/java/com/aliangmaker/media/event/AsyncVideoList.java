@@ -23,7 +23,8 @@ public class AsyncVideoList {
                 if (f.isDirectory()) {
                     getFiles(f.getAbsolutePath());
                 } else if (isVideo(f.getName().toLowerCase())){
-                    videoInfoList0.add(new String[]{f.getName(),f.getPath()});
+                    String filePath = f.getAbsolutePath().replaceFirst("/sdcard","/storage/emulated/0");
+                    videoInfoList0.add(new String[]{f.getName(),filePath});
                     bitmaps.add(null);
                 }
             }
@@ -34,8 +35,8 @@ public class AsyncVideoList {
     }
     public AsyncVideoList(Context context,boolean strong) {
         new Thread(() -> {
-            if (strong) getFiles("/sdcard/Movies/");
             List<String[]> videoInfoList = videoInfoList0;
+            if (strong) getFiles("/sdcard/Movies/");
             String[] projection = {MediaStore.Video.Media._ID, MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.Thumbnails.DATA};
             Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
             if (cursor.moveToFirst()) {
@@ -43,7 +44,7 @@ public class AsyncVideoList {
                     String[] videoInfo = {
                             cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)),
                             cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))};
-                    if (canAdd(videoInfo[0], strong)) {
+                    if (canAdd(videoInfo[1], strong)) {
                         bitmaps.add(MediaStore.Video.Thumbnails.getThumbnail(
                                 context.getContentResolver(),
                                 Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID))),
@@ -63,7 +64,9 @@ public class AsyncVideoList {
     private boolean canAdd(String path, boolean strong) {
         if (strong) {
             for (String[] item : videoInfoList0) {
-                if (item[0].equals(path)) return false;
+                if (item[1].equals(path)) return false;
+                Log.e("iiii", path);
+                Log.e("aaa", item[1]);
             }
         }
         return true;

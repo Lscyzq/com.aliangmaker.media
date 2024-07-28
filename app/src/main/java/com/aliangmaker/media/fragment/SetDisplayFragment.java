@@ -3,6 +3,7 @@ package com.aliangmaker.media.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class SetDisplayFragment extends Fragment {
         binding.sdSwSize.setChecked(sharedPreferences.getBoolean("small_tv", false));
         binding.sdSwLand.setChecked(sharedPreferences.getBoolean("horizon", false));
         binding.sdSwGone.setChecked(sharedPreferences.getBoolean("wipe", false));
-        if (sharedPreferences.getBoolean("dp_hd",false)) binding.title.setVisibility(View.GONE);
+        if (sharedPreferences.getBoolean("dp_hd1",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
         binding.sdSwDark.setChecked(dark);
         binding.sdSbDark.setMax(255);
@@ -51,7 +52,7 @@ public class SetDisplayFragment extends Fragment {
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding.title.setOnLongClickListener(view -> {
-            sharedPreferences.edit().putBoolean("dp_hd",true).apply();
+            sharedPreferences.edit().putBoolean("dp_hd1",true).apply();
             binding.title.setVisibility(View.GONE);
             return true;
         });
@@ -68,34 +69,19 @@ public class SetDisplayFragment extends Fragment {
                 sharedPreferences.edit().putBoolean("dark", true).apply();
                 binding.sdClSb.setVisibility(View.VISIBLE);
                 binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 125));
-                TranslateAnimation translateAnim = new TranslateAnimation(0f, 0f, -70, 0f);
-                translateAnim.setDuration(350);
-                translateAnim.setFillAfter(true);
-                binding.sdClSb.startAnimation(translateAnim);
             } else {
                 sharedPreferences.edit().putBoolean("dark", false).apply();
-                TranslateAnimation translateAnim = new TranslateAnimation(0f, 0f, 0, -70f);
-                translateAnim.setDuration(300);
-                translateAnim.setFillAfter(false);
-                binding.sdClSb.startAnimation(translateAnim);
-                translateAnim.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        getActivity().runOnUiThread(() -> binding.sdClSb.setVisibility(View.GONE));
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
-
+                getActivity().runOnUiThread(() -> binding.sdClSb.setVisibility(View.GONE));
             }
         });
-
+        binding.sdNext.setOnClickListener(view -> {
+            Toast.makeText(getContext(), "即将重启", Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("display",Context.MODE_PRIVATE);
+            sharedPreferences1.edit().putBoolean("init", false).commit();
+            sharedPreferences1.edit().putFloat("dpi",1.00f).commit();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 500);
+        });
         binding.sdSbDark.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress;
 
