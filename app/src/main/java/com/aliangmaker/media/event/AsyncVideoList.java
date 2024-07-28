@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 
+import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -33,9 +34,8 @@ public class AsyncVideoList {
     }
     public AsyncVideoList(Context context,boolean strong) {
         new Thread(() -> {
-            List<String[]> videoInfoList;
-            videoInfoList = videoInfoList0;
             if (strong) getFiles("/sdcard/Movies/");
+            List<String[]> videoInfoList = videoInfoList0;
             String[] projection = {MediaStore.Video.Media._ID, MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.Thumbnails.DATA};
             Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
             if (cursor.moveToFirst()) {
@@ -43,7 +43,7 @@ public class AsyncVideoList {
                     String[] videoInfo = {
                             cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)),
                             cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))};
-                    if (canAdd(videoInfo[0])) {
+                    if (canAdd(videoInfo[0], strong)) {
                         bitmaps.add(MediaStore.Video.Thumbnails.getThumbnail(
                                 context.getContentResolver(),
                                 Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID))),
@@ -54,15 +54,17 @@ public class AsyncVideoList {
                     }
                 } while (cursor.moveToNext());
             }
+            new VideoBean(videoInfoList, bitmaps);
             EventBus.getDefault().post(new VideoBean(true));
             cursor.close();
-            new VideoBean(videoInfoList, bitmaps);
         }).start();
     }
 
-    private boolean canAdd(String path) {
-        for (String[] item : videoInfoList0) {
-            if (item[0].equals(path)) return false;
+    private boolean canAdd(String path, boolean strong) {
+        if (strong) {
+            for (String[] item : videoInfoList0) {
+                if (item[0].equals(path)) return false;
+            }
         }
         return true;
     }

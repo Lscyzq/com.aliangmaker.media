@@ -2,10 +2,8 @@ package com.aliangmaker.media;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,14 +12,9 @@ import com.aliangmaker.media.adapter.ViewPageAdapter;
 import com.aliangmaker.media.databinding.ActivityMainBinding;
 import com.aliangmaker.media.event.ChangeTitleStatue;
 import com.aliangmaker.media.event.ServerRequest;
-import com.aliangmaker.media.fragment.MoreHelpFragment;
-import com.aliangmaker.media.fragment.MoreUpLogFragment;
-import com.aliangmaker.media.fragment.TitleFragment;
+import com.aliangmaker.media.fragment.*;
 
-import com.aliangmaker.media.fragment.UpdateFragment;
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;

@@ -13,7 +13,7 @@ android {
         minSdk 19
         targetSdk 26
         versionCode 240528
-        versionName "4.3.2"
+        versionName "4.4.0"
         ndk {
             abiFilters "armeabi-v7a"
         }

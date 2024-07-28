@@ -1,10 +1,17 @@
 package com.aliangmaker.media;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -27,7 +34,24 @@ public class WelcomeActivity extends AppCompatActivity {
         binding.welTvMain.setText(Html.fromHtml("<font color='#99CC00'>凉腕</font>播放器"));
         playAnim();
     }
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences SharedPreferencesUtil = newBase.getSharedPreferences("display", MODE_PRIVATE);
+        float dpiTimes = SharedPreferencesUtil.getFloat("dpi", 1.5F);
+        if(dpiTimes != 1.0F) {
+            Resources res = newBase.getResources();
+            Configuration configuration = res.getConfiguration();
+            WindowManager windowManager = (WindowManager) newBase.getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            display.getRealMetrics(metrics);
+            int dpi = metrics.densityDpi;
+            configuration.densityDpi = (int) (dpi * dpiTimes);
+            Context confBase =  newBase.createConfigurationContext(configuration);
+            super.attachBaseContext(confBase);
+        }
+        else super.attachBaseContext(newBase);
+    }
     private void playAnim() {
         //灰度动画
         AlphaAnimation alphaAnim = new AlphaAnimation(0.5f, 1f);

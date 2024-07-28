@@ -3,14 +3,10 @@ package com.aliangmaker.media;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.aliangmaker.media.databinding.ActivityFirstSetBinding;
 import com.aliangmaker.media.event.Bean0;
 import com.aliangmaker.media.event.ChangeTitleStatue;
-import com.aliangmaker.media.fragment.AgreementFragment;
-import com.aliangmaker.media.fragment.SetInitFragment;
-import com.aliangmaker.media.fragment.SafeFragment;
-import com.aliangmaker.media.fragment.TitleFragment;
+import com.aliangmaker.media.fragment.*;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

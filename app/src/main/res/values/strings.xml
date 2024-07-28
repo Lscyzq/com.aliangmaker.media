@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">凉腕播放器</string>
-    <string name="stage">正式版</string>
-    <string name="version">4.3.2</string>
+    <string name="stage">内测版</string>
+    <string name="version">4.4.0</string>
     <string name="up_title">一载同行|情深意长</string>
     <string name="up_body">春华秋实，日月更替。热烈庆祝凉腕播放器开发一周年！有太多的悲欢离合想与你共享，有太多的浮生踟蹰想与你倾诉。愿未来岁月，依旧携手同行。</string>
-    <string name="up_log">1.修复安卓5及以下版本无法正常缩放视频问题\n2.修复了重新播放弹幕不复位问题\n3.修复了“操作说明”无法隐藏问题\n4.对旧版安卓进行应用内更新支持</string>
+    <string name="up_log">1.修复未记录进度视频开始播放时长按重播问题\n2.修复了特殊设备的播放显示裁剪问题\n3.修复了播放时修改音量/快进退提示显示问题\n4.修复了屏锁显示问题\n5.修复了视频缓冲时部分情况弹幕继续播放问题\n6.修复了进入后台时播放暂停按钮的显示问题\n7.修复部分设备闪退问题\n8.新增界面显示大小调节</string>
     <string name="handle">播放界面屏幕双击中间暂停，「左/右」侧双击快「退/进」10S（「单指缩放」用户长按进度条上方的时间可实现相应操作）；进度条「左/右」上方时间，单击音量「-/+」；当缩小后的视频尺寸小于屏幕尺寸后松手可以实现视频的复位（长按不再显示此Tip）。</string>
-    <string name="display">播放界面的图标显示虽然小，但是实际可以点击的区域很大，不用担心点击困难问题，若您的操作实在困难，请自行修改应用（网上教程很多）dpi（长按不再显示此Tip）。</string>
+    <string name="display">播放界面的图标显示虽然小，但是实际可以点击的区域很大，不用担心点击困难问题，若您的操作实在困难，请自行修改应用dpi（网上教程很多）（长按不再显示此Tip）。</string>
 </resources>
