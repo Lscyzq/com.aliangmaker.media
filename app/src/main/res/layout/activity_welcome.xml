@@ -116,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
+            android:textSize="15sp"
             android:text="bilibili@凉生初霜"
             android:textColor="#99CCCCCC"
             android:visibility="gone"

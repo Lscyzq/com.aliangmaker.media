@@ -296,6 +296,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
+                    android:textSize="15sp"
                     android:buttonTint="@color/main"
                     android:text="双指缩放" />
 
@@ -303,6 +304,7 @@
                     android:id="@+id/sh_rb_tap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15sp"
                     android:layout_marginEnd="4dp"
                     android:buttonTint="@color/main"
                     android:text="单指缩放" />

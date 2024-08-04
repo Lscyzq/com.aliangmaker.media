@@ -66,7 +66,6 @@ public class UpdateFragment extends Fragment {
             intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
         }
         startActivity(intent);
-        new Handler().postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 1000);
     }
 
     private static String decrypt(String encryptedText) {

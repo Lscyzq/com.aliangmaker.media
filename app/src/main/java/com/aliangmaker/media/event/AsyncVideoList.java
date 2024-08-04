@@ -65,8 +65,6 @@ public class AsyncVideoList {
         if (strong) {
             for (String[] item : videoInfoList0) {
                 if (item[1].equals(path)) return false;
-                Log.e("iiii", path);
-                Log.e("aaa", item[1]);
             }
         }
         return true;

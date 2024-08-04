@@ -74,6 +74,11 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                             frameLayout.setScaleX(scale);
                             frameLayout.setScaleY(scale);
                         }
+                        if (!canTrans) {
+                            frameLayout.getLocationInWindow(viewLocation);
+                            frameLayout.setTranslationX(adjustX(event.getX() - firstPoint.x, viewLocation[0]));
+                            frameLayout.setTranslationY(adjustY(event.getY() - firstPoint.y, viewLocation[1]));
+                        }
                         secondPoint.set(event.getX(1), event.getY(1));
                     }
                 } else if (canTap) {

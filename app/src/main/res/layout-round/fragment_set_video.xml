@@ -113,6 +113,7 @@
 
                 <RadioButton
                     android:id="@+id/rbxzs"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -121,6 +122,7 @@
 
                 <RadioButton
                     android:id="@+id/rbxzt"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -152,12 +154,14 @@
                 <RadioButton
                     android:id="@+id/rbOpenSL"
                     android:layout_width="wrap_content"
+                    android:textSize="15sp"
                     android:layout_height="wrap_content"
                     android:buttonTint="#99CC00"
                     android:text="OpenSL" />
 
                 <RadioButton
                     android:id="@+id/rbAudioTrack"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@android:color/holo_green_light"
@@ -200,6 +204,7 @@
 
                 <RadioButton
                         android:id="@+id/pr2"
+                        android:textSize="15sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#99CC00"
@@ -207,6 +212,7 @@
 
                 <RadioButton
                         android:id="@+id/pr1"
+                        android:textSize="15sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"

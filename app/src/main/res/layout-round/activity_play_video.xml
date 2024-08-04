@@ -32,14 +32,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
+        android:textSize="15sp"
         android:background="@drawable/ba_round_grey_video"
         android:gravity="center"
         android:text="倍速播放中"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/pv_tv_title" />
 
     <View
         android:id="@+id/pv_top"
@@ -115,6 +116,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:textSize="15sp"
         android:focusableInTouchMode="true"
         android:marqueeRepeatLimit="-1"
         android:ellipsize="marquee"
@@ -201,6 +203,7 @@
         android:layout_width="40dp"
         android:layout_height="30dp"
         android:layout_marginEnd="4dp"
+        android:textSize="15sp"
         android:gravity="right|center_vertical"
         android:text="倍速"
         app:layout_constraintBottom_toBottomOf="@+id/pv_back"

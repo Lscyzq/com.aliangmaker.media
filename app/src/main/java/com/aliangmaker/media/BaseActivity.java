@@ -1,10 +1,12 @@
 package com.aliangmaker.media;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -16,34 +18,54 @@ import android.view.WindowManager;
 
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import com.aliangmaker.media.databinding.ActivityBaseBinding;
 import com.aliangmaker.media.fragment.TitleFragment;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 //以下代码参考开源项目BiliClient并作修改
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends AppCompatActivity {
     private ActivityBaseBinding binding;
     Handler handler = new Handler();
     SharedPreferences sharedPreferences;
     private String dpi = "1.00";
     @Override
     protected void attachBaseContext(Context newBase) {
-        SharedPreferences SharedPreferencesUtil = newBase.getSharedPreferences("display", MODE_PRIVATE);
-        float dpiTimes = SharedPreferencesUtil.getFloat("dpi", 1.00F);
-        if(dpiTimes != 1.00F) {
-            Resources res = newBase.getResources();
-            Configuration configuration = res.getConfiguration();
-            WindowManager windowManager = (WindowManager) newBase.getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            DisplayMetrics metrics = new DisplayMetrics();
-            display.getRealMetrics(metrics);
-            int dpi = metrics.densityDpi;
-            configuration.densityDpi = (int) (dpi * dpiTimes);
-            Context confBase =  newBase.createConfigurationContext(configuration);
-            super.attachBaseContext(confBase);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                @SuppressLint("PrivateApi") Class clsPkgParser = Class.forName("android.content.pm.PackageParser$Package");
+                Constructor constructor = clsPkgParser.getDeclaredConstructor(String.class);
+                constructor.setAccessible(true);
+
+                @SuppressLint("PrivateApi") Class clsActivityThread = Class.forName("android.app.ActivityThread");
+                Method method = clsActivityThread.getDeclaredMethod("currentActivityThread");
+                method.setAccessible(true);
+                Object activityThread = method.invoke(null);
+                Field hiddenApiWarning = clsActivityThread.getDeclaredField("mHiddenApiWarningShown");
+                hiddenApiWarning.setAccessible(true);
+                hiddenApiWarning.setBoolean(activityThread, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        else super.attachBaseContext(newBase);
+        SharedPreferences SharedPreferencesUtil = newBase.getSharedPreferences("display", MODE_PRIVATE);
+        float dpiTimes = SharedPreferencesUtil.getFloat("dpi", 1.0F);
+        if (dpiTimes == 1.0F) super.attachBaseContext(newBase);
+        else try {
+            DisplayMetrics displayMetrics = newBase.getResources().getDisplayMetrics();
+            Configuration configuration = newBase.getResources().getConfiguration();
+            configuration.densityDpi = (int) (displayMetrics.densityDpi * dpiTimes);
+            super.attachBaseContext(newBase.createConfigurationContext(configuration));
+        } catch (Exception e) {
+            super.attachBaseContext(newBase);
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ android {
         applicationId "com.aliangmaker.media"
         minSdk 19
         targetSdk 26
-        versionCode 240802
+        versionCode 240804
         versionName "4.5.0"
         ndk {
             abiFilters "armeabi-v7a"

@@ -13,10 +13,10 @@ import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -45,6 +45,9 @@ import com.aliangmaker.media.event.SQLiteOpenHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,9 +82,9 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private DanmakuView danmakuView;
     private long progress = 0, duration, change, lastClickTime = 0, currentVolume;
     Runnable lockSetInvisible = () -> runOnUiThread(() -> binding.pvImLc.setVisibility(View.INVISIBLE));
-    private int secondLockTouchMode, horizonMode = 0, verticalMode = 1, screenWidth, screenHeight,leftThird, rightThird, currentPos, lockMode = 0;
+    private int secondLockTouchMode = 3, horizonMode = 0, verticalMode = 1, screenWidth, screenHeight,leftThird, rightThird, currentPos, lockMode = 0;
     ;
-    private boolean canSecondLockChange = true, secondLockProgressChanged = false, firstPlay = true, canPlay = true, choose_suf, horizon = false, tapScale = false, canRestart = true;
+    private boolean canSecondLockChange = true, secondLockChanged = false, firstPlay = true, canPlay = true, choose_suf, horizon = false, tapScale = false, canRestart = true;
     private boolean playDanmaku = false, danmakuPrepared = false, danmakuPlayed = false, danmakuReset = false;
 
     @Override
@@ -295,7 +298,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         binding.pvTvLen1.setOnClickListener(this);
         binding.pvImPause.setOnClickListener(this);
         binding.pvTvSpeed.setOnClickListener(this);
-        binding.pvImRotate.setOnClickListener(this);
         binding.pvTvLen0.setOnClickListener(this);
         binding.pvImLc.setOnClickListener(this);
         binding.pvTvLen0.setOnLongClickListener(view -> {
@@ -422,7 +424,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (lockMode != 2) {
                 if (speedACan[1]) clickCount[0]++;
                 handler.postDelayed(() -> {
-                    if (clickCount[0] == 1 && speedACan[1] && !secondLockProgressChanged) {
+                    if (clickCount[0] == 1 && speedACan[1] && !secondLockChanged) {
                         if (binding.pvVg.getVisibility() == View.VISIBLE) {
                             handler.postDelayed(setINVISIBLE, 0);
                         } else {
@@ -488,7 +490,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 ijkMediaPlayer.seekTo(0);
                 if (playDanmaku) danmakuView.seekTo(0L);
                 cl.setHapticFeedbackEnabled(true);
-            } else if (speedACan[1] && !secondLockProgressChanged) {
+            } else if (speedACan[1] && !secondLockChanged) {
                 binding.pvTv0.setText("倍速播放中");
                 binding.pvTv0.setVisibility(View.VISIBLE);
                 ijkMediaPlayer.setSpeed(2);
@@ -519,13 +521,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                         finish();
                     else if (offsetX > 3.5 || offsetX < -3.5 || offsetY > 3.5 || offsetY < -3.5) {
                         handler.postDelayed(setINVISIBLE, 0);
-                        if (lockMode == 1 && speedACan[1] && point[0] >= 25 && canSecondLockChange) {
-                            if (speedACan[0]) {
-                                binding.pvTv0.setVisibility(View.INVISIBLE);
-                                ijkMediaPlayer.setSpeed(currentSpeed);
-                                speedACan[0] = false;
-                                DrawHandler.setSpeed(currentSpeed);
-                            }
+                        if (lockMode == 1 && speedACan[1] && point[0] >= 25 && canSecondLockChange && !speedACan[0]) {
                             if (offsetX > 50 && secondLockTouchMode != verticalMode) {
                                 secondLockTouchMode = horizonMode;
                                 int gap = (int) (((offsetX - 50) / 400) * 23000);
@@ -534,7 +530,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     percent = 100;
                                     gap = (int) (duration - currentPos);
                                 }
-                                secondLockProgressChanged = true;
+                                secondLockChanged = true;
                                 toast("快进" + gap / 1000 + "S（" + percent + "%）");
                                 change = currentPos + gap;
                             } else if (offsetX < -50 && secondLockTouchMode != verticalMode) {
@@ -545,24 +541,31 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     percent = 0;
                                     gap = -currentPos;
                                 }
-                                secondLockProgressChanged = true;
+                                secondLockChanged = true;
                                 toast("快退" + Math.abs(gap) / 1000 + "S（" + percent + "%）");
                                 change = currentPos + gap;
                             } else if (offsetY < -50 && secondLockTouchMode != horizonMode) {
                                 secondLockTouchMode = verticalMode;
-                                secondLockProgressChanged = true;
-                                int gap = (int) (((50 - offsetY) / 400) * maxVolume + currentVolume);
+                                secondLockChanged = true;
+                                int gap = (int) (((-offsetY -50) / 400) * maxVolume + currentVolume);
                                 int percent = (int) (gap * 100 / maxVolume);
                                 if (percent > 100) {
                                     percent = 100;
                                 }
-                                toast("音量" + "（" + percent + "%）");
+                                toast("音量加（" + percent + "%）");
                                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,gap,0);
                             } else if (offsetY > 50 && secondLockTouchMode != horizonMode) {
                                 secondLockTouchMode = verticalMode;
-                                secondLockProgressChanged = true;
-                            } else if (secondLockProgressChanged) {
-                                secondLockProgressChanged = false;
+                                secondLockChanged = true;
+                                int gap = (int) (currentVolume - ((offsetY - 50) / 400) * maxVolume);
+                                int percent = (int) (gap * 100 / maxVolume);
+                                if (percent < 0) {
+                                    percent = 0;
+                                }
+                                toast("音量减（" + percent + "%）");
+                                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,gap,0);
+                            } else if (secondLockChanged) {
+                                secondLockTouchMode = 3;
                                 toast("取消操作");
                                 change = currentPos;
                             }
@@ -573,20 +576,21 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     break;
                 case MotionEvent.ACTION_UP:
                     if (tapScale) canSecondLockChange = true;
-                    if (lockMode == 1 && secondLockProgressChanged){
-                        secondLockTouchMode = 3;
-                        secondLockProgressChanged = false;
+                    if (lockMode == 1 && secondLockChanged) {
+                        secondLockChanged = false;
                         speedACan[1] = false;
                         if (secondLockTouchMode == horizonMode) {
                             ijkMediaPlayer.seekTo(change);
                             if (playDanmaku && canPlay) {
                                 danmakuView.seekTo((change));
-                            } else if (playDanmaku){
+                            } else if (playDanmaku) {
                                 danmakuReset = true;
                             }
                         }
                         binding.pvTv0.setVisibility(View.INVISIBLE);
-                    } else if (speedACan[0]) {
+                        secondLockTouchMode = 3;
+                    }
+                    if (speedACan[0]) {
                         binding.pvTv0.setVisibility(View.INVISIBLE);
                         ijkMediaPlayer.setSpeed(currentSpeed);
                         speedACan[0] = false;
@@ -703,6 +707,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(this, "2S内长按重播", Toast.LENGTH_SHORT).show();
             }
             handler.postDelayed(() -> canRestart = false, 2000);
+            if (playSet.getInt("lock_mode", 0) == 1) {
+                binding.pvImLc.setImageResource(R.drawable.ic_second_lock);
+                lockMode = 1;
+            }
             if (!danmakuPlayed && danmakuPrepared) {
                 danmakuView.start(progress);
                 danmakuPlayed = true;
@@ -711,6 +719,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 } else
                     danmakuView.hide();
             }
+            binding.pvImRotate.setOnClickListener(this);
         });
         ijkMediaPlayer.setOnErrorListener((iMediaPlayer, i, i1) -> {
             Toast.makeText(PlayVideoActivity.this, "播放错误", Toast.LENGTH_SHORT).show();
@@ -899,7 +908,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             handler.removeCallbacks(lockSetInvisible);
             if (lockMode == 2) {
                 lockMode = 0;
-                secondLockProgressChanged = false;
+                secondLockChanged = false;
                 binding.pvCl.canScale(true);
                 binding.pvCl.canTrans(true);
                 if (playDanmaku) binding.pvImDan.setVisibility(View.VISIBLE);
@@ -909,19 +918,22 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 binding.pvImLc.setImageResource(R.drawable.ic_unlock);
                 handler.postDelayed(setINVISIBLEExceptLock, 2000);
                 handler.postDelayed(lockSetInvisible, 2000);
+                playSet.edit().putInt("lock_mode", 0).apply();
             } else if (lockMode == 1){
                 lockMode = 2;
-                secondLockProgressChanged = false;
+                secondLockChanged = false;
                 binding.pvVg.setVisibility(View.INVISIBLE);
                 binding.pvPb.setVisibility(View.VISIBLE);
                 binding.pvImDan.setVisibility(View.INVISIBLE);
                 binding.pvCl.canScale(false);
+                playSet.edit().putInt("lock_mode", 2).apply();
                 binding.pvImLc.setImageResource(R.drawable.ic_lock);
                 handler.postDelayed(lockSetInvisible, 2000);
             } else {
                 lockMode = 1;
                 binding.pvCl.canScale(true);
                 binding.pvCl.canTrans(false);
+                playSet.edit().putInt("lock_mode", 1).apply();
                 binding.pvImLc.setImageResource(R.drawable.ic_second_lock);
                 handler.postDelayed(lockSetInvisible, 2000);
             }
@@ -936,4 +948,36 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         rightThird = screenWidth * 3 / 4;
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                @SuppressLint("PrivateApi") Class clsPkgParser = Class.forName("android.content.pm.PackageParser$Package");
+                Constructor constructor = clsPkgParser.getDeclaredConstructor(String.class);
+                constructor.setAccessible(true);
+
+                @SuppressLint("PrivateApi") Class clsActivityThread = Class.forName("android.app.ActivityThread");
+                Method method = clsActivityThread.getDeclaredMethod("currentActivityThread");
+                method.setAccessible(true);
+                Object activityThread = method.invoke(null);
+                Field hiddenApiWarning = clsActivityThread.getDeclaredField("mHiddenApiWarningShown");
+                hiddenApiWarning.setAccessible(true);
+                hiddenApiWarning.setBoolean(activityThread, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        SharedPreferences SharedPreferencesUtil = newBase.getSharedPreferences("display", MODE_PRIVATE);
+        float dpiTimes = SharedPreferencesUtil.getFloat("dpi", 1.0F);
+        if (dpiTimes == 1.0F) super.attachBaseContext(newBase);
+        else try {
+            DisplayMetrics displayMetrics = newBase.getResources().getDisplayMetrics();
+            Configuration configuration = newBase.getResources().getConfiguration();
+            configuration.densityDpi = (int) (displayMetrics.densityDpi * dpiTimes);
+            super.attachBaseContext(newBase.createConfigurationContext(configuration));
+        } catch (Exception e) {
+            super.attachBaseContext(newBase);
+        }
+    }
 }
