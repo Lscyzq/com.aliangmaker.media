@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="35dp"
-                    android:text="未找到视频文件：MStore为检索安卓系统MediaStore中的视频文件，当您的视频文件位置、名称发生改变时，MediaStore会自动更新。若依然显示文件为空，请尝试重启手表或者将视频文件放置/sdcard/Movies目录下后开启“深度扫描”" />
+                    android:text="未找到视频文件：MStore为检索安卓系统MediaStore中的视频文件，当您的视频文件位置、名称发生改变时，MediaStore会自动更新。若依然显示文件为空，请尝试重启手表或者将视频文件放置/sdcard/Movies目录下后开启「深度扫描」" />
             </FrameLayout>
         </com.aliangmaker.media.control.RollStatueScrollView>
 
@@ -213,45 +213,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
                 <com.aliangmaker.media.control.ScaleViewConstraintLayout
-                    android:id="@+id/more_cl_bili"
+                    android:id="@+id/more_cl_url"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="35dp"
                     android:background="@drawable/ba_round_black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/more_im_bili"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="15dp"
-                        android:src="@drawable/ic_bili"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/more_tv_bili"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="腕上哔哩"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/more_im_bili"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </com.aliangmaker.media.control.ScaleViewConstraintLayout>
-
-                <com.aliangmaker.media.control.ScaleViewConstraintLayout
-                    android:id="@+id/more_cl_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/ba_round_black"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/more_cl_bili">
 
                     <ImageView
                         android:id="@+id/more_im_url"

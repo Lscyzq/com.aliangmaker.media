@@ -30,8 +30,8 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
     private FrameLayout frameLayout;
     private int Ordinary = 0, TowFingerZoom = 2, doubleClickZoom = 3, scaleZoom = 8, zoomInMode = Ordinary;
     private PointF firstPoint = new PointF(), secondPoint = new PointF();
-    private long doubleClickTimeSpan = 320, lastClickTime = 0;
-    boolean canScale = false, tapScale = false, noBorder = false, canTap = false, tapED = false;
+    private long  lastClickTime = 0;
+    boolean canTrans = true, canScale = false, tapScale = false, noBorder = false, canTap = false, tapED = false;
     private SharedPreferences sharedPreferences;
     private Context context;
     int[] viewLocation = new int[2];
@@ -44,10 +44,10 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
         canScale = true;
     }
 
-    public void setScale(boolean canScale) {
+    public void canScale(boolean canScale) {
         this.canScale = canScale;
     }
-
+    public void canTrans(boolean canTrans) {this.canTrans = canTrans;}
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!canScale) {
@@ -57,7 +57,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
             case MotionEvent.ACTION_DOWN:
                 firstPoint.set(event.getX(), event.getY());
                 zoomInMode = Ordinary;
-                if (tapScale && System.currentTimeMillis() - lastClickTime <= doubleClickTimeSpan) {
+                if (tapScale && System.currentTimeMillis() - lastClickTime <= 320) {
                     canTap = true;
                 } else if (tapScale) lastClickTime = System.currentTimeMillis();
                 break;
@@ -79,14 +79,12 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                 } else if (canTap) {
                     float scale = event.getY() - firstPoint.y;
                     if (!tapED && Math.abs(scale) > 1) tapED = true;
-                    if (scale < 0) {
-                        scale = frameLayout.getScaleX() + (float) 0.008 * Math.abs(scale);
-                    } else scale = frameLayout.getScaleX() - (float) 0.008 * scale;
+                    scale = frameLayout.getScaleX() - (float) 0.009 * scale;
                     if (scale >= 0.7 && scale < scaleZoom) {
                         frameLayout.setScaleY(scale);
                         frameLayout.setScaleX(scale);
                     }
-                } else if (zoomInMode != TowFingerZoom) {
+                } else if (canTrans && zoomInMode != TowFingerZoom) {
                     frameLayout.getLocationInWindow(viewLocation);
                     frameLayout.setTranslationX(adjustX(event.getX() - firstPoint.x, viewLocation[0]));
                     frameLayout.setTranslationY(adjustY(event.getY() - firstPoint.y, viewLocation[1]));

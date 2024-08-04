@@ -12,8 +12,8 @@ android {
         applicationId "com.aliangmaker.media"
         minSdk 19
         targetSdk 26
-        versionCode 240728
-        versionName "4.4.0"
+        versionCode 240802
+        versionName "4.5.0"
         ndk {
             abiFilters "armeabi-v7a"
         }
@@ -47,5 +47,4 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-    implementation 'com.google.android.material:material:1.8.0'
 }

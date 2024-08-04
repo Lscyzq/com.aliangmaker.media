@@ -18,7 +18,6 @@ import com.aliangmaker.media.R;
 import com.aliangmaker.media.control.RollStatueScrollView;
 import com.aliangmaker.media.event.ChangeTitleStatue;
 import com.aliangmaker.media.event.VideoBean;
-import com.aliangmaker.media.fragment.MoreBiliFragment;
 import com.aliangmaker.media.fragment.MoreHelpFragment;
 import com.aliangmaker.media.fragment.MoreInfoFragment;
 import com.aliangmaker.media.fragment.MoreUpLogFragment;
@@ -47,9 +46,7 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out);
         int id = v.getId();
-        if (id == R.id.more_cl_bili) {
-            fragmentTransaction.add(R.id.bvp_cl2, new MoreBiliFragment()).commit();
-        } else if (id == R.id.set_cl_danmaku) {
+        if (id == R.id.set_cl_danmaku) {
             fragmentTransaction.add(R.id.bvp_cl1, new SetDanmakuFragment()).commit();
         } else if (id == R.id.set_cl_display) {
             fragmentTransaction.add(R.id.bvp_cl1, new SetDisplayFragment()).commit();
@@ -91,7 +88,6 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
             holder.upLog.setOnClickListener(this);
             holder.info.setOnClickListener(this);
             holder.help.setOnClickListener(this);
-            holder.bili.setOnClickListener(this);
             holder.url.setOnClickListener(this);
         }
     }
@@ -107,14 +103,13 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
         ProgressBar progressBar;
         LinearLayout basic;
         List<ConstraintLayout> constraintLayoutList = new ArrayList<>();
-        ConstraintLayout danmaku, display, handle, video, bili, help, info, url, upLog;
+        ConstraintLayout danmaku, display, handle, video, help, info, url, upLog;
         RollStatueScrollView rollStatueScrollView;
         public ViewPageHolder(@NonNull View itemView) {
             super(itemView);
             EventBus.getDefault().register(this);
             recyclerView = itemView.findViewById(R.id.bvp_rv);
             progressBar = itemView.findViewById(R.id.vp_pb);
-            bili = itemView.findViewById(R.id.more_cl_bili);
             help = itemView.findViewById(R.id.more_cl_help);
             info = itemView.findViewById(R.id.more_cl_infor);
             url = itemView.findViewById(R.id.more_cl_url);
@@ -149,7 +144,7 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
         }
 
         private void setAdapter() {
-            recyclerViewAdapter = new RecyclerViewAdapter(itemView.getContext(), true);
+            recyclerViewAdapter = new RecyclerViewAdapter(itemView.getContext());
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
         }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class UpdateFragment extends Fragment {
     private static FragmentUpdateBinding binding;
     private static String value;
     private static boolean isUpdate = true;
+    private  boolean isDownloading = false;
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding = FragmentUpdateBinding.inflate(getLayoutInflater(), container, false);
@@ -33,16 +35,21 @@ public class UpdateFragment extends Fragment {
         }
         binding.udTv.setText(value);
         binding.udBtn.setOnClickListener(view -> {
-            Toast.makeText(getContext(), "开始下载", Toast.LENGTH_SHORT).show();
-            new DownloadEvent(decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7itqivo5umlqi6ixs"), getContext(), false, new DownloadEvent.DownloadCallback() {
-                @Override
-                public void onDownloadFinished() {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "开始安装", Toast.LENGTH_SHORT).show();
-                        installUpdate();
-                    });
-                }
-            });
+            if (isDownloading) {
+                Toast.makeText(getContext(), "下载中...", Toast.LENGTH_LONG).show();
+            } else {
+                isDownloading = true;
+                Toast.makeText(getContext(), "开始下载", Toast.LENGTH_SHORT).show();
+                new DownloadEvent(decrypt("p||xB77itqivouismz6|wx7kwu6umlqi7itqivo5umlqi6ixs"), getContext(), false, new DownloadEvent.DownloadCallback() {
+                    @Override
+                    public void onDownloadFinished() {
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(getContext(), "开始安装", Toast.LENGTH_SHORT).show();
+                            installUpdate();
+                        });
+                    }
+                });
+            }
         });
         return binding.getRoot();
     }
@@ -59,7 +66,7 @@ public class UpdateFragment extends Fragment {
             intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
         }
         startActivity(intent);
-        android.os.Process.killProcess(android.os.Process.myPid());
+        new Handler().postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 1000);
     }
 
     private static String decrypt(String encryptedText) {

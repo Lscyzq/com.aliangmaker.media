@@ -75,7 +75,7 @@ public class SetDisplayFragment extends Fragment {
             }
         });
         binding.sdNext.setOnClickListener(view -> {
-            Toast.makeText(getContext(), "即将重启", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "即将停止", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("display",Context.MODE_PRIVATE);
             sharedPreferences1.edit().putBoolean("init", false).commit();
             sharedPreferences1.edit().putFloat("dpi",1.00f).commit();

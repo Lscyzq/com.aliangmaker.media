@@ -15,18 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliangmaker.media.PlayVideoActivity;
 import com.aliangmaker.media.R;
-import com.aliangmaker.media.event.BiliVideoBean;
 import com.aliangmaker.media.event.VideoBean;
 
-import java.io.File;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
     Context context;
-    private boolean fromMediaStore;
-    public RecyclerViewAdapter(Context context, boolean mediaStore) {
+    public RecyclerViewAdapter(Context context) {
         this.context = context;
-        this.fromMediaStore = mediaStore;
     }
 
     @NonNull
@@ -49,26 +45,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent intent = new Intent(context, PlayVideoActivity.class);
             intent.putExtra("name", video.get(position)[0]);
             intent.putExtra("path", path);
-            if (!fromMediaStore) {
-                File file = new File(path);
-                String parent = file.getParent();
-                intent.putExtra("danmaku", parent + "/danmaku.xml");
-            }
             context.startActivity(intent);
         });
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (getItemViewType(position) == 0) holder.view.setVisibility(View.VISIBLE);
-        if (fromMediaStore) initAdapter(VideoBean.getVideo(),VideoBean.getBitmaps(),holder,position);
-        else initAdapter(BiliVideoBean.getVideo(),BiliVideoBean.getBitmaps(),holder,position);
-
+        initAdapter(VideoBean.getVideo(),VideoBean.getBitmaps(),holder,position);
     }
 
     @Override
     public int getItemCount() {
-        if (fromMediaStore)  return VideoBean.getVideo().size();
-        else return BiliVideoBean.getVideo().size();
+        return VideoBean.getVideo().size();
     }
 
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
