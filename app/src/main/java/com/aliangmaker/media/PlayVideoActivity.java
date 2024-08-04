@@ -710,6 +710,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (playSet.getInt("lock_mode", 0) == 1) {
                 binding.pvImLc.setImageResource(R.drawable.ic_second_lock);
                 lockMode = 1;
+                binding.pvCl.canTrans(false);
             }
             if (!danmakuPlayed && danmakuPrepared) {
                 danmakuView.start(progress);

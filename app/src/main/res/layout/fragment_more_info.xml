@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:clickable="true"
-    tools:context=".fragment.MoreBiliFragment">
+    android:clickable="true">
 
 
     <com.aliangmaker.media.control.RollStatueScrollView
@@ -115,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="bilibili@"
+                android:textSize="15sp"
                 android:textColor="@color/grey"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
@@ -124,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textSize="15sp"
                 android:text="bilibili@"
                 android:textColor="@color/grey"
                 app:layout_constraintStart_toEndOf="@+id/imageView11"
@@ -134,6 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textSize="15sp"
                 android:text="凉生初霜"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView6"
                 app:layout_constraintStart_toEndOf="@+id/imageView6" />
@@ -142,6 +143,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
                 android:layout_marginStart="4dp"
                 android:text="RobinNotBad"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView11"
@@ -163,6 +165,7 @@
                 android:id="@+id/textView12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:text="https://github.com/Lscyzq/com.aliangmaker.media"
@@ -175,6 +178,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:text="https://lscyzq.github.io/access/com.aliangmaker.media.txt"

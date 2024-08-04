@@ -19,6 +19,7 @@
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
+                android:textSize="15sp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
+                android:textSize="15sp"
                 android:layout_marginEnd="4dp"
                 android:text="@string/up_body"
                 android:textColor="#FFFFFF"
