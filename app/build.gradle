@@ -37,6 +37,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                //在这里修改apk文件名
+                outputFileName = "aliang-media.apk"
+            }
+    }
 }
 
 dependencies {

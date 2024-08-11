@@ -29,6 +29,9 @@
             android:usesCleartextTraffic="true"
             tools:targetApi="m">
         <activity
+                android:name=".BaseActivity"
+                android:exported="false"/>
+        <activity
                 android:name=".TestActivity"
                 android:exported="false"/>
 
@@ -78,7 +81,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".BaseActivity"
+                android:name=".InitDpiActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

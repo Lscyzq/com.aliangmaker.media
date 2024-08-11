@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class AgreementFragment extends Fragment {
     private FragmentAgreementBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

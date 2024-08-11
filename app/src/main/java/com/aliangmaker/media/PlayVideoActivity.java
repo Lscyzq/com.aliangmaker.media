@@ -1,6 +1,7 @@
 package com.aliangmaker.media;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -114,7 +116,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -140,6 +141,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         if (progress >= duration - 3000) {
             progress = 0;
         }
+        binding.pvCl.saveScale();
         playSet.edit().putFloat("speed", currentSpeed).apply();
         unregisterReceiver(bluetoothStateReceiver);
         sqLiteOpenHelper.saveVideoProgress(videoPath, progress);
@@ -151,7 +153,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && playSet.getBoolean("watch_back", false)) {
             return true;
-        }
+        } else
+            setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
         return super.onKeyDown(keyCode, event);
     }
 
@@ -517,8 +520,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 case MotionEvent.ACTION_MOVE:
                     float offsetX = event.getX() - point[0]; // X 轴上的移动距离
                     float offsetY = event.getY() - point[1]; // Y 轴上的移动距离
-                    if (backGesture && point[0] < 25 && event.getX() - point[0] > 80)
+                    if (backGesture && point[0] < 25 && event.getX() - point[0] > 80) {
+                        setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
                         finish();
+                    }
                     else if (offsetX > 3.5 || offsetX < -3.5 || offsetY > 3.5 || offsetY < -3.5) {
                         handler.postDelayed(setINVISIBLE, 0);
                         if (lockMode == 1 && speedACan[1] && point[0] >= 25 && canSecondLockChange && !speedACan[0]) {
@@ -661,6 +666,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             ijkMediaPlayer.prepareAsync();
         } else {
             Toast.makeText(this, "未找到该视频", Toast.LENGTH_SHORT).show();
+            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
             finish();
         }
     }
@@ -724,6 +730,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         });
         ijkMediaPlayer.setOnErrorListener((iMediaPlayer, i, i1) -> {
             Toast.makeText(PlayVideoActivity.this, "播放错误", Toast.LENGTH_SHORT).show();
+            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
             finish();
             return true;
         });
@@ -732,7 +739,9 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             binding.pvPb.setSecondaryProgress(buff);
             binding.pvSb.setSecondaryProgress(buff);
         });
-        if (ijkMediaPlayer.getDataSource().startsWith("http")) {
+        String dataSource = ijkMediaPlayer.getDataSource();
+        if (dataSource == null) dataSource = "";
+        if (dataSource.startsWith("http")) {
             ijkMediaPlayer.setOnInfoListener((mp, what, extra) -> {
                 if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
                     if (playDanmaku) danmakuView.pause();
@@ -757,6 +766,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 ijkMediaPlayer.start();
                 if (playDanmaku) danmakuView.start(0);
             } else if (playSet.getBoolean("back_finish", true)) {
+                setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
                 Toast.makeText(PlayVideoActivity.this, "播放结束", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -857,6 +867,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.pv_back) {
+            setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
             finish();
         } else if (id == R.id.pv_tv_len0) {
             handler.removeCallbacks(setINVISIBLE);

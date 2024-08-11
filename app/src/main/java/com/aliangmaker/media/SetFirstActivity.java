@@ -1,7 +1,13 @@
 package com.aliangmaker.media;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.util.DisplayMetrics;
 import androidx.appcompat.app.AppCompatActivity;
 import com.aliangmaker.media.databinding.ActivityFirstSetBinding;
 import com.aliangmaker.media.event.Bean0;
@@ -12,9 +18,44 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 public  class SetFirstActivity extends AppCompatActivity {
     private static ActivityFirstSetBinding binding;
     private ChangeTitleStatue changeTitleStatue;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                @SuppressLint("PrivateApi") Class clsPkgParser = Class.forName("android.content.pm.PackageParser$Package");
+                Constructor constructor = clsPkgParser.getDeclaredConstructor(String.class);
+                constructor.setAccessible(true);
+
+                @SuppressLint("PrivateApi") Class clsActivityThread = Class.forName("android.app.ActivityThread");
+                Method method = clsActivityThread.getDeclaredMethod("currentActivityThread");
+                method.setAccessible(true);
+                Object activityThread = method.invoke(null);
+                Field hiddenApiWarning = clsActivityThread.getDeclaredField("mHiddenApiWarningShown");
+                hiddenApiWarning.setAccessible(true);
+                hiddenApiWarning.setBoolean(activityThread, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        SharedPreferences SharedPreferencesUtil = newBase.getSharedPreferences("display", MODE_PRIVATE);
+        float dpiTimes = SharedPreferencesUtil.getFloat("dpi", 1.0F);
+        if (dpiTimes == 1.0F) super.attachBaseContext(newBase);
+        else try {
+            DisplayMetrics displayMetrics = newBase.getResources().getDisplayMetrics();
+            Configuration configuration = newBase.getResources().getConfiguration();
+            configuration.densityDpi = (int) (displayMetrics.densityDpi * dpiTimes);
+            super.attachBaseContext(newBase.createConfigurationContext(configuration));
+        } catch (Exception e) {
+            super.attachBaseContext(newBase);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

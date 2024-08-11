@@ -5,21 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
 
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import com.aliangmaker.media.databinding.ActivityBaseBinding;
 import com.aliangmaker.media.fragment.TitleFragment;
 
@@ -27,11 +21,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 //以下代码参考开源项目BiliClient并作修改
-public class BaseActivity extends AppCompatActivity {
+public class InitDpiActivity extends AppCompatActivity {
     private ActivityBaseBinding binding;
     Handler handler = new Handler();
     SharedPreferences sharedPreferences;
@@ -114,7 +106,7 @@ public class BaseActivity extends AppCompatActivity {
             handler.postDelayed(() -> {
                 if (clickCount == 2) {
                     sharedPreferences.edit().putFloat("dpi",Float.valueOf(dpi)).apply();
-                    startActivity(new Intent(BaseActivity.this,TestActivity.class));
+                    startActivity(new Intent(InitDpiActivity.this,TestActivity.class));
                 }
                 clickCount = 0;
             }, 330);
@@ -122,7 +114,7 @@ public class BaseActivity extends AppCompatActivity {
         binding.bsCl.setOnLongClickListener(view -> {
             sharedPreferences.edit().putBoolean("init", true).apply();
             sharedPreferences.edit().putFloat("dpi",Float.valueOf(dpi)).apply();
-            BaseActivity.this.recreate();
+            InitDpiActivity.this.recreate();
             return true;
         });
     }
