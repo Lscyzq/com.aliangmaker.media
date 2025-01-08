@@ -56,7 +56,7 @@ public class DownloadEvent {
 
     public static byte[] decompress(byte[] data) {
         byte[] output;
-        Inflater decompresser = new Inflater(true);//这个true是关键
+        Inflater decompresser = new Inflater(true);
         decompresser.reset();
         decompresser.setInput(data);
         ByteArrayOutputStream o = new ByteArrayOutputStream(data.length);
