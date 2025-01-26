@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:clickable="true"
+        android:background="@color/black"
+        tools:context=".fragment.SetDisplayFragment">
+    <com.aliangmaker.media.control.RollStatueScrollView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/ba_round_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/display"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+            <TextView
+                android:id="@+id/sd_tv0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="列表小字"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_goneMarginTop="50dp" />
+            <TextView
+                    android:id="@+id/sd_tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="减小列表字号显示更多内容"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv0" />
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sd_sw_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/switch_thumb"
+                    app:track="@drawable/switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv0" />
+
+            <TextView
+                    android:id="@+id/sd_tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="反向横屏"
+                    app:layout_constraintTop_toBottomOf="@id/sd_tv1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+            <TextView
+                    android:id="@+id/sd_tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="横屏状态下画面反向"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv2" />
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sd_sw_land"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/switch_thumb"
+                    app:track="@drawable/switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv2" />
+
+            <TextView
+                    android:id="@+id/sd_tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="隐藏导航栏"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/sd_tv3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+            <TextView
+                    android:id="@+id/sd_tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="隐藏底部三个白点"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv4" />
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sd_sw_gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/switch_thumb"
+                    app:track="@drawable/switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv4" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sd_cl_sb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv7"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                        android:textSize="17sp"
+                        android:id="@+id/sd_tv8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="4dp"
+                        android:text="暗压程度"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                        android:id="@+id/sd_tv_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/sd_tv8" />
+
+
+                <SeekBar android:id="@+id/sd_sb_dark"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginEnd="4dp"
+                         android:progressTint="@color/main"
+                         android:thumb="@drawable/ba_seekbar_thumb"
+                         app:layout_constraintTop_toBottomOf="@id/sd_tv8"
+                         app:layout_constraintEnd_toEndOf="parent" tools:targetApi="lollipop"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                    android:id="@+id/sd_tv6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="夜间模式"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/sd_tv5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/sd_tv7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="降低播放时屏幕亮度"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv6" />
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sd_sw_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:thumb="@drawable/switch_thumb"
+                    app:track="@drawable/switch_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv6" />
+            <TextView
+                    android:id="@+id/sd_tv9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="重置界面"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/sd_cl_sb"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+            <TextView
+                    android:id="@+id/sd_tv10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="重启将会进入界面设置"
+                    android:textColor="#99CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv9" />
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                    android:id="@+id/sd_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sd_tv9">
+
+                <View
+                        android:id="@+id/sf_btn_next"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ba_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/sf_im_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_forward"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.aliangmaker.media.control.RollStatueScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

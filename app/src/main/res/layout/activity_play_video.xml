@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aliangmaker.media.control.ScaleVideoConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pv_cl"
+    android:layout_width="match_parent"
+    android:keepScreenOn="true"
+    android:layout_height="match_parent"
+    tools:context=".PlayVideoActivity">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pv_fl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/pv_danmaku_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/pv_tv0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="15sp"
+        android:background="@drawable/ba_round_grey_video"
+        android:gravity="center"
+        android:text="倍速播放中"
+        android:visibility="invisible"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pv_tv_title" />
+
+    <View
+        android:id="@+id/pv_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/ba_view_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/pv_bt"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/ba_view_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextClock
+        android:id="@+id/pv_tc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="7dp"
+        android:format12Hour="hh:mm"
+        android:format24Hour="HH:mm"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pv_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pv_back" />
+
+    <SeekBar
+        android:id="@+id/pv_sb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:progressTint="@color/main"
+        android:secondaryProgressTint="@color/grey"
+        android:thumb="@drawable/ba_seekbar_thumb"
+        app:layout_constraintBottom_toTopOf="@+id/pv_im_pause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:targetApi="lollipop" />
+
+    <ProgressBar
+        android:id="@+id/pv_pb"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:progressTint="@color/main"
+        android:secondaryProgressTint="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:targetApi="lollipop" />
+
+    <ImageView
+        android:id="@+id/pv_back"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <TextView
+        android:id="@+id/pv_tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="15sp"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="-1"
+        android:ellipsize="marquee"
+        android:layout_marginStart="-23dp"
+        android:layout_marginEnd="-2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pv_back"
+        app:layout_constraintEnd_toStartOf="@+id/pv_tv_speed"
+        app:layout_constraintStart_toEndOf="@+id/pv_back"
+        app:layout_constraintTop_toTopOf="@+id/pv_back" />
+
+    <TextView
+        android:id="@+id/pv_tv_len0"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="00:00"
+        android:textSize="10sp"
+        android:gravity="left|bottom"
+        app:layout_constraintBottom_toTopOf="@+id/pv_sb"
+        app:layout_constraintStart_toStartOf="@+id/pv_sb" />
+
+    <TextView
+        android:id="@+id/pv_tv_len1"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="00:00"
+        android:textSize="10sp"
+        android:gravity="right|bottom"
+        app:layout_constraintBottom_toTopOf="@+id/pv_sb"
+        app:layout_constraintEnd_toEndOf="@+id/pv_sb" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/pv_vg"
+        app:constraint_referenced_ids="pv_back,pv_tv_title,pv_tv_speed,pv_im_rotate,pv_im_pause,pv_tc,pv_tv_len0,pv_tv_len1,pv_sb,pv_top,pv_bt"
+        android:layout_width="2dp"
+        android:layout_height="2dp" />
+
+    <ImageView
+        android:id="@+id/pv_im_pause"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_pause" />
+
+    <ImageView
+        android:id="@+id/pv_im_rotate"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pv_im_pause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pv_im_pause"
+        app:srcCompat="@drawable/ic_rotation" />
+
+    <ImageView
+        android:id="@+id/pv_im_lc"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pv_tv_len0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pv_back"
+        app:srcCompat="@drawable/ic_unlock" />
+
+    <ImageView
+        android:id="@+id/pv_im_dan"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pv_im_pause"
+        app:layout_constraintEnd_toStartOf="@+id/pv_im_rotate"
+        app:layout_constraintTop_toTopOf="@+id/pv_im_pause"
+        app:srcCompat="@drawable/ic_danmaku" />
+
+    <TextView
+        android:id="@+id/pv_tv_speed"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:textSize="15sp"
+        android:gravity="right|center_vertical"
+        android:text="倍速"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pv_back"
+        app:layout_constraintEnd_toStartOf="@+id/pv_tc"
+        app:layout_constraintTop_toTopOf="@+id/pv_back" />
+
+
+    <ProgressBar
+        android:id="@+id/pv_pb_buff"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/pv_tv_buff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载中"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pv_pb_buff" />
+    <FrameLayout
+            android:id="@+id/pv_fl_dark"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+    </FrameLayout>
+</com.aliangmaker.media.control.ScaleVideoConstraintLayout>

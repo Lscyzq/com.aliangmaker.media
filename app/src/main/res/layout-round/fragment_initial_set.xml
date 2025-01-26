@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:clickable="true"
+    tools:context=".fragment.SetInitFragment">
+
+    <com.aliangmaker.media.control.RollStatueScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/init_tv0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:text="视图选择"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/init_rg0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/init_tv0">
+
+                <RadioButton
+                    android:id="@+id/init_rb00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="4dp"
+                    android:buttonTint="@color/main"
+                    android:text="SurfaceView"
+                    android:textColor="#FFFFFF" />
+
+                <RadioButton
+                    android:id="@+id/init_rb01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="4dp"
+                    android:buttonTint="@color/main"
+                    android:text="TextureView"
+                    android:textColor="#FFFFFF" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/init_tv4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="SurfaceView：适配大部分手表\nTextureView：旧版安卓以及小天才手表\n旧版安卓请选择TextureView否则「无法缩放」"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/init_rg0" />
+
+            <TextView
+                android:id="@+id/init_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="缩放模式"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/init_tv4" />
+
+            <RadioGroup
+                android:id="@+id/init_rg1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/init_tv1">
+
+                <RadioButton
+                    android:id="@+id/init_rb10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:buttonTint="@color/main"
+                    android:text="双指缩放"
+                    android:textColor="#FFFFFF" />
+
+                <RadioButton
+                    android:id="@+id/init_rb11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:buttonTint="@color/main"
+                    android:text="单指缩放"
+                    android:textColor="#FFFFFF" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/init_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="若您手表支持多指触控，建议选择双指缩放\n若您选择单指缩放，则可通过双击缩放以及特殊手势进行缩放（单击一次屏幕后快速触摸屏幕并向上/下平移手指，其中向上平移放大，向下平移缩小）"
+                android:gravity="center"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/init_rg1" />
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/init_cl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="50dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/init_tv">
+
+                <View
+                    android:id="@+id/init_btn"
+                    android:layout_width="156dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ba_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/init_tv2"
+                    android:layout_width="79dp"
+                    android:layout_height="27dp"
+                    android:layout_marginStart="18dp"
+                    android:text="开启4.0"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/init_btn"
+                    app:layout_constraintStart_toStartOf="@+id/init_btn"
+                    app:layout_constraintTop_toTopOf="@+id/init_btn" />
+
+                <ImageView
+                    android:id="@+id/init_im0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/init_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/init_btn"
+                    app:layout_constraintTop_toTopOf="@+id/init_btn"
+                    app:srcCompat="@drawable/ic_forward" />
+
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.aliangmaker.media.control.RollStatueScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
