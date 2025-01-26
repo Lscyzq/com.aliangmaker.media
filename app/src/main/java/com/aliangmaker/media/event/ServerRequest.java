@@ -52,7 +52,7 @@ public class ServerRequest {
         });
     }
 
-    public void getUrl(urlCallBack serverCallBack) {
+    public void getUrl (urlCallBack serverCallBack) {
         okHttpClient.newCall(new Request.Builder()
                 .url(urlUrl)
                 .build()).enqueue(new Callback() {

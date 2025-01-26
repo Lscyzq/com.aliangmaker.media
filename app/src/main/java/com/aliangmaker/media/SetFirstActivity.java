@@ -90,7 +90,7 @@ public  class SetFirstActivity extends AppCompatActivity {
                     .commit();
         } else if (value == 0) {
             TitleFragment.setTitle("隐私安全");
-        } else if (value ==3) {
+        } else if (value == 3) {
             TitleFragment.setTitle("使用协议");
         }
     }

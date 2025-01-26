@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.*;

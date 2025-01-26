@@ -72,7 +72,7 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
     @NonNull
     @Override
     public ViewPageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewPageHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.basic_view_page, parent, false));
+        return new ViewPageHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.basic_view_page, parent, false), fragmentManager);
     }
 
     @Override
@@ -105,7 +105,8 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
         List<ConstraintLayout> constraintLayoutList = new ArrayList<>();
         ConstraintLayout danmaku, display, handle, video, help, info, url, upLog;
         RollStatueScrollView rollStatueScrollView;
-        public ViewPageHolder(@NonNull View itemView) {
+        FragmentManager fragmentManager;
+        public ViewPageHolder(@NonNull View itemView, FragmentManager fragmentManager) {
             super(itemView);
             EventBus.getDefault().register(this);
             recyclerView = itemView.findViewById(R.id.bvp_rv);
@@ -123,6 +124,7 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
             constraintLayoutList.add(itemView.findViewById(R.id.bvp_cl0));
             constraintLayoutList.add(itemView.findViewById(R.id.bvp_cl1));
             constraintLayoutList.add(itemView.findViewById(R.id.bvp_cl2));
+            this.fragmentManager = fragmentManager;
             if (VideoBean.getStatue() && VideoBean.getVideo().isEmpty()) {
                 progressBar.setVisibility(View.GONE);
                 rollStatueScrollView.setVisibility(View.VISIBLE);
@@ -144,7 +146,7 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
         }
 
         private void setAdapter() {
-            recyclerViewAdapter = new RecyclerViewAdapter(itemView.getContext());
+            recyclerViewAdapter = new RecyclerViewAdapter(itemView.getContext(), fragmentManager);
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
         }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +12,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aliangmaker.media.MainActivity;
 import com.aliangmaker.media.PlayVideoActivity;
 import com.aliangmaker.media.R;
 import com.aliangmaker.media.event.VideoBean;
+import com.aliangmaker.media.fragment.DeleteOrRenameFileFragment;
+import com.aliangmaker.media.fragment.UpdateFragment;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
     Context context;
-    public RecyclerViewAdapter(Context context) {
+    FragmentManager fragmentManager;
+    public RecyclerViewAdapter(Context context, FragmentManager fragmentManager) {
         this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -33,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0) return 0;
+        if (position == 0) return 0;
         return 1;
     }
     private void initAdapter(List<String[]> video,List<Bitmap> bitmaps,RecyclerViewHolder holder,int position){
@@ -41,11 +49,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Bitmap bitmap = bitmaps.get(position);
         if (bitmap != null) holder.imageView.setImageBitmap(bitmap);
         holder.itemView.setOnClickListener(v -> {
-            String path = video.get(position)[1];
             Intent intent = new Intent(context, PlayVideoActivity.class);
             intent.putExtra("name", video.get(position)[0]);
-            intent.putExtra("path", path);
+            intent.putExtra("path", video.get(position)[1]);
             context.startActivity(intent);
+        });
+        holder.itemView.setOnLongClickListener(v -> {
+            Fragment fragment = new DeleteOrRenameFileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", video.get(position)[0]);
+            bundle.putString("path", video.get(position)[1]);
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.main_fl, fragment).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+            return false;
         });
     }
     @Override

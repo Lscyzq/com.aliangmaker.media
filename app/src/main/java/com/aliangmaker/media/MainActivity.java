@@ -7,7 +7,9 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ChangeTitleStatue changeTitleStatue;
     private ViewPageAdapter viewPageAdapter;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 @SuppressLint("PrivateApi") Class clsPkgParser = Class.forName("android.content.pm.PackageParser$Package");
                 Constructor constructor = clsPkgParser.getDeclaredConstructor(String.class);
                 constructor.setAccessible(true);
-
                 @SuppressLint("PrivateApi") Class clsActivityThread = Class.forName("android.app.ActivityThread");
                 Method method = clsActivityThread.getDeclaredMethod("currentActivityThread");
                 method.setAccessible(true);
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             super.attachBaseContext(newBase);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             boolean isUpdate, isNotice;
             @Override
             public void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion) {
-                isUpdate = canUpdate(getString(R.string.version),lastedVersion);
-                isNotice = !noticeVersion.equals(sharedPreferences.getString("notice","1"));
+                isUpdate = canUpdate(getString(R.string.version), lastedVersion);
+                isNotice = !noticeVersion.equals(sharedPreferences.getString("notice", "1"));
                 if (isUpdate || isNotice) {
                     serverRequest.getUrl(new ServerRequest.urlCallBack() {
                         @Override
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                 UpdateFragment.isNotice(true);
                                 sharedPreferences.edit().putString("notice", noticeVersion).apply();
                             }
-                            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl, new UpdateFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
                         }
 
                         @Override
@@ -104,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        if (!sharedPreferences.getString("version","3.14.10").equals(getString(R.string.version))) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new MoreHelpFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl,new MoreUpLogFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+        if (!sharedPreferences.getString("version", "3.14.10").equals(getString(R.string.version))) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl, new MoreHelpFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl, new MoreUpLogFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
         }
-        if (getSharedPreferences("play_set",MODE_PRIVATE).getBoolean("wipe", false)) {
+        if (getSharedPreferences("play_set", MODE_PRIVATE).getBoolean("wipe", false)) {
             binding.mainIm0.setVisibility(View.GONE);
             binding.mainIm1.setVisibility(View.GONE);
             binding.mainIm2.setVisibility(View.GONE);
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     private boolean canUpdate(String current, String lasted) {
         if (current.equals(lasted)) return false;
         String[] cur = current.split("\\.");
