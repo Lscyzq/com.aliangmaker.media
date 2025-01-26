@@ -70,7 +70,7 @@ import master.flame.danmaku.ui.widget.DanmakuView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {//
+public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityPlayVideoBinding binding;
     private SharedPreferences playSet;
     private final IjkMediaPlayer ijkMediaPlayer = new IjkMediaPlayer();
