@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -104,13 +105,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         playSet = getSharedPreferences("play_set", MODE_PRIVATE);
         currentSpeed = playSet.getFloat("speed", 1.00f);
         choose_suf = playSet.getBoolean("view", true);
+        sqLiteOpenHelper = new SQLiteOpenHelper(this);//初始化数据库
+
         try {
-            initVideoInfo();
+            initIjk();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        binding.pvCl.initScale(binding.pvFl, videoInfoInSQL[1]);//初始化缩放View
-        initIjk();
         initBluetooth();
         playDanmaku = getIntent().getStringExtra("danmaku") != null;
         if (playDanmaku) initDanmaku();
@@ -677,7 +678,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void initIjk() {
+    private void initIjk() throws IOException {
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", getIntent().getStringExtra("agent"));
@@ -696,6 +697,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         if (playSet.getBoolean("sharp", false))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         ijkMediaPlayer.setKeepInBackground(true);
+        setVideoPath(getIntent().getData());
+        videoInfoInSQL = sqLiteOpenHelper.getVideoInfo(videoPath);
         binding.pvTvTitle.setText(videoName);
         ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
             ijkMediaPlayer.setSpeed(currentSpeed);
@@ -710,6 +713,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             ijkMediaPlayer.setVolume(volume, volume);
             initPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
             initSbPbTimeTv();
+            binding.pvCl.initScale(binding.pvFl, videoInfoInSQL[1]);
             if (getIntent().getIntExtra("progress", 0) == 0) {
                 progress = (long) videoInfoInSQL[0];
             } else progress = getIntent().getIntExtra("progress", 0);
@@ -782,21 +786,15 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private void adjustPlayView(int videoWith, int videoHeight) {
         if (choose_suf) params = surfaceView.getLayoutParams();
         else params = textureView.getLayoutParams();
-        if (screenWidth / screenHeight <= videoWith / videoHeight) {
+        if ((float) screenWidth / screenHeight < (float) videoWith / videoHeight) {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            params.height = (int) ((float) videoHeight / videoWith * screenWidth);
+            params.height = (int) ((float) videoHeight * screenWidth/ videoWith);
         } else{
             params.width = (int) ((float) screenHeight * videoWith / videoHeight);
             params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         if (choose_suf) surfaceView.setLayoutParams(params);
         else textureView.setLayoutParams(params);
-    }
-
-    private void initVideoInfo() throws IOException {
-        setVideoPath(getIntent().getData());
-        sqLiteOpenHelper = new SQLiteOpenHelper(this);//初始化数据库
-        videoInfoInSQL = sqLiteOpenHelper.getVideoInfo(videoPath);
     }
     private void initPlayView(int videoWith, int videoHeight) {
         ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
