@@ -26,7 +26,6 @@ public class DeleteOrRenameFileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.e("ddddd", getArguments().getString("name"));
     }
     @Override
     public void onResume() {

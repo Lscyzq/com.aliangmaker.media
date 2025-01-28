@@ -158,8 +158,10 @@
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
                          android:layout_marginEnd="4dp"
-                         android:progressTint="@color/main"
-                         android:thumb="@drawable/ba_seekbar_thumb"
+                         android:thumb="@null"
+                         android:background="@null"
+                         android:maxHeight="6dp"
+                         android:progressDrawable="@drawable/ba_seekbar"
                          app:layout_constraintTop_toBottomOf="@id/sd_tv8"
                          app:layout_constraintEnd_toEndOf="parent" tools:targetApi="lollipop"/>
 

@@ -187,7 +187,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        // 创建 BroadcastReceiver 的匿名内部类实例
         bluetoothStateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -206,11 +205,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             }
         };
 
-        // 注册 BroadcastReceiver
         registerReceiver(bluetoothStateReceiver, filter);
     }
-
-
 
     private void initDanmaku() {
         danmakuView = binding.pvDanmakuView;
@@ -223,8 +219,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 .setScaleTextSize(getDanmakuSet("danmakuSize"))
                 .setMaximumLines(maxLinesPair) //设置最大显示行数
                 .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW, 1)
+                .setDanmakuTransparency(getDanmakuSet("transparency"))
                 .preventOverlapping(getDanmakuSet("fold")); //设置防弹幕重叠，null为允许重叠
         String danmakuUrl = getIntent().getStringExtra("danmaku");
+
         if (danmakuUrl.startsWith("http") || danmakuUrl.startsWith("https")) {
             new DownloadEvent(danmakuUrl, this, true, () -> danmakuView.prepare(createParser(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), danmakuContext));
         } else danmakuView.prepare(createParser(danmakuUrl), danmakuContext);
@@ -295,6 +293,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             }
         } else if (SPId.equals("danmakuLines")) {
             return (T) (Integer) sharedPreferences.getInt(SPId, 2);
+        } else if (SPId.equals("transparency")) {
+            return (T) (Float) sharedPreferences.getFloat(SPId, 1F);
         }
         throw new IllegalArgumentException("Invalid item: " + SPId);
     }
@@ -364,6 +364,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                binding.pvSb.setScaleY(1.2F);
                 ijkMediaPlayer.pause();
                 if (playDanmaku) {
                     danmakuView.pause();
@@ -375,6 +376,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                binding.pvSb.setScaleY(1);
                 handler.postDelayed(setINVISIBLE, 2000);
                 if (canPlay) {
                     ijkMediaPlayer.start();
@@ -681,7 +683,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private void initIjk() throws IOException {
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "ijk.preload", "10");
+        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "ijk.preload", "8");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", getIntent().getStringExtra("agent"));
         if (playSet.getBoolean("jump_play", true))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
@@ -983,7 +985,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 @SuppressLint("PrivateApi") Class clsPkgParser = Class.forName("android.content.pm.PackageParser$Package");
                 Constructor constructor = clsPkgParser.getDeclaredConstructor(String.class);
                 constructor.setAccessible(true);
-
                 @SuppressLint("PrivateApi") Class clsActivityThread = Class.forName("android.app.ActivityThread");
                 Method method = clsActivityThread.getDeclaredMethod("currentActivityThread");
                 method.setAccessible(true);
