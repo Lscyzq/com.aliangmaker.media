@@ -6,5 +6,5 @@
             <size android:width="40dp" android:height="40dp" /> <!-- 滑块大小 -->
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_forward_red" android:gravity="center" />
+    <item android:drawable="@drawable/ic_back_red" android:gravity="center" />
 </layer-list>

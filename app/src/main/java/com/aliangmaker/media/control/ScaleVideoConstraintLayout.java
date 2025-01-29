@@ -85,8 +85,8 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                                 frameLayout.setScaleY(scale);
                             }
                             frameLayout.getLocationInWindow(viewLocation);
-                            frameLayout.setTranslationX(adjustX(event.getX() - firstPoint.x, viewLocation[0]));
-                            frameLayout.setTranslationY(adjustY(event.getY() - firstPoint.y, viewLocation[1]));
+                            frameLayout.setTranslationX(adjustX((event.getX() - firstPoint.x + event.getX(1) - secondPoint.x) / 2, viewLocation[0]));
+                            frameLayout.setTranslationY(adjustY((event.getY() - firstPoint.y + event.getY(1) - secondPoint.y) / 2, viewLocation[1]));
                         } else if (scale >= 0.7 && scale < scaleZoom) {
                             frameLayout.setScaleX(scale);
                             frameLayout.setScaleY(scale);

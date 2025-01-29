@@ -34,7 +34,7 @@ public class DeleteOrRenameFileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.drTvThrow.setText(Html.fromHtml("滑动<font color='#FF0000'>删除</font>"));
+        binding.drTvThrow.setText(Html.fromHtml("左滑<font color='#FF0000'>删除</font>"));
         binding.drTvName.setText(getArguments().getString("name"));
         binding.drTvPath.setText(getArguments().getString("path"));
         String filePath = binding.drTvPath.getText().toString();

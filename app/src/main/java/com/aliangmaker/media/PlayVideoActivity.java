@@ -173,7 +173,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             initScreenInfo();
-            adjustPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
+            if (!playSet.getBoolean("stuff",false)) adjustPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
         }
     }
 
@@ -357,7 +357,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         binding.pvSb.setOnSteppedSeekBarChangeListener(new SteppedSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekBar.setScaleY(1.2F);
+                seekBar.setScaleY(1.3F);
                 ijkMediaPlayer.pause();
                 if (playDanmaku) {
                     danmakuView.pause();
@@ -684,7 +684,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private void initIjk() throws IOException {
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "ijk.preload", "8");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "user_agent", getIntent().getStringExtra("agent"));
         if (playSet.getBoolean("jump_play", true))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 3);
@@ -698,6 +697,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "flush_packets");
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 0);
+        ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", 666 * 1024);
+
         if (playSet.getBoolean("sharp", false))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         ijkMediaPlayer.setKeepInBackground(true);
