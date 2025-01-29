@@ -297,7 +297,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         } else if (SPId.equals("danmakuLines")) {
             return (T) (Integer) sharedPreferences.getInt(SPId, 2);
         } else if (SPId.equals("transparency")) {
-            return (T) (Float) sharedPreferences.getFloat(SPId, 1F);
+            return (T) (Float) (sharedPreferences.getInt(SPId, 80) / 100F);
         }
         throw new IllegalArgumentException("Invalid item: " + SPId);
     }

@@ -42,9 +42,11 @@ public class SetDanmakuFragment extends Fragment {
         binding.danmakuHoldSwitch.setOnClickListener(v -> setSPSet("fold",binding.danmakuHoldSwitch.isChecked()));
         binding.danmakuSameSwitch.setChecked(getSPSet(2));
         binding.danmakuSameSwitch.setOnClickListener(v -> setSPSet("merge",binding.danmakuSameSwitch.isChecked()));
+
         seekbarAll(binding.danmakuLinesSeekbar,binding.danmakuLinesTv,7,"danmakuLines","显示行数");
         seekbarAll(binding.danmakuSizeSeekbar,binding.danmakuSizeTv,150,"danmakuSize","字号因数");
         seekbarAll(binding.danmakuSpeedSeekbar,binding.danmakuSpeedTv,2,"danmakuSpeed","显示速度");
+        seekbarAll(binding.danmakuSbTransparency,binding.danmakuTvTransparency,100,"transparency","%");
     }
 
     @Override
@@ -66,9 +68,9 @@ public class SetDanmakuFragment extends Fragment {
         if (unit.equals("显示行数")) {
             int value = seekBar.getProgress() + 1;
             textView.setText(unit + ":" + value + "行");
-        }else if (unit.equals("字号因数")) {
+        } else if (unit.equals("字号因数")) {
             textView.setText(unit + ":" + ((seekBar.getProgress() + 50) / 100.0f) + "F");
-        }else if (unit.equals("显示速度")) {
+        } else if (unit.equals("显示速度")) {
             if (seekBar.getProgress() == 2) {
                 textView.setText(unit + "：快");
             }else if (seekBar.getProgress() == 1) {
@@ -76,6 +78,8 @@ public class SetDanmakuFragment extends Fragment {
             }else if (seekBar.getProgress() == 0) {
                 textView.setText(unit + "：慢");
             }
+        } else if (unit.equals("%")) {
+            textView.setText("不透明度：" + seekBar.getProgress() + "%");
         }
     }
     private void seekbarAll(SeekBar seekBarId, TextView textViewId, int max, String SPId, String unit) {
@@ -105,7 +109,10 @@ public class SetDanmakuFragment extends Fragment {
             return sharedPreferences.getInt(item, 50);
         } else if (item.equals("danmakuSpeed")) {
             return sharedPreferences.getInt(item, 1);
-        } else return sharedPreferences.getInt(item, 2);
+        } else if (item.equals("transparency")) {
+            return sharedPreferences.getInt(item, 80);
+        } else
+            return sharedPreferences.getInt(item, 2);
     }
     private void setSPSet(String id,boolean value) {
         sharedPreferences.edit().putBoolean(id, value).apply();

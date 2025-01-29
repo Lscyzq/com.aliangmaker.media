@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         if (!sharedPreferences.getString("version", "3.14.10").equals(getString(R.string.version))) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl, new MoreHelpFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fl, new MoreUpLogFragment()).addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).commit();
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).add(R.id.main_fl, new MoreHelpFragment()).commit();
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).add(R.id.main_fl, new MoreUpLogFragment()).commit();
         }
         if (getSharedPreferences("play_set", MODE_PRIVATE).getBoolean("wipe", false)) {
             binding.mainIm0.setVisibility(View.GONE);

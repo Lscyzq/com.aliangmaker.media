@@ -71,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sh_tv0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/sh_tv0"
                 app:track="@drawable/switch_background" />
@@ -103,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sh_tv2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/sh_tv2"
                 app:track="@drawable/switch_background" />
@@ -125,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/restart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/restart"
                 app:track="@drawable/switch_background" />
@@ -159,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sv_tv8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_tv8"
                 app:track="@drawable/switch_background" />
@@ -194,6 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sv_tv9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_tv9"
                 app:track="@drawable/switch_background" />
@@ -240,6 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sv_tv11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_tv11"
                 app:track="@drawable/switch_background" />
@@ -250,6 +256,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sv_tv5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_tv5"
                 app:track="@drawable/switch_background" />
@@ -271,7 +278,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:text="深度扫描/sdcard/Movies目录下视频文件"
                 android:textColor="#99CCCCCC"
@@ -341,6 +347,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sv_tv14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_tv14"
                 app:track="@drawable/switch_background" />

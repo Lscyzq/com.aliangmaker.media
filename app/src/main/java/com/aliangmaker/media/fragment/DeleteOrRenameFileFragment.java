@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.aliangmaker.media.R;
+import com.aliangmaker.media.adapter.RecyclerViewAdapter;
+import com.aliangmaker.media.adapter.ViewPageAdapter;
 import com.aliangmaker.media.control.ConfirmationSliderSeekBar;
 import com.aliangmaker.media.databinding.FragmentDeleteOrRenameFileBinding;
 
@@ -27,26 +29,53 @@ public class DeleteOrRenameFileFragment extends Fragment {
         if (binding == null) binding = FragmentDeleteOrRenameFileBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
-
+    String info;
+    boolean firstTouch = true;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding.drTvThrow.setText(Html.fromHtml("滑动<font color='#FF0000'>删除</font>"));
         binding.drTvName.setText(getArguments().getString("name"));
         binding.drTvPath.setText(getArguments().getString("path"));
-        binding.drBtnRename.setOnClickListener(v -> {
+        String filePath = binding.drTvPath.getText().toString();
+        File file = new File(filePath);
 
+        binding.drEtRename.setOnClickListener(v -> {
+            if (firstTouch) {
+                String fileName = file.getName();
+                binding.drEtRename.setText(fileName);
+                binding.drEtRename.setSelection(0, fileName.lastIndexOf("."));
+                firstTouch = false;
+            }
+        });
+        binding.drBtnRename.setOnClickListener(v -> {
+            String newName = binding.drEtRename.getText().toString();
+            String newPath = filePath.substring(0, filePath.lastIndexOf("/") + 1) + newName;
+            File newFile = new File(newPath);
+            Log.e("aaaa", newFile.getPath());
+            if (newName.equals("")) {
+                info = "请输入内容";
+            }else if(newFile.exists()) {
+                info = "存在同名文件";
+            } else if (!isValidFileName(newName)) {
+                info = "命名不合法";
+            }else if (file.renameTo(newFile)) {
+                info = "重命名成功";
+                ViewPageAdapter.recyclerViewAdapter.renameItem(getArguments().getInt("pos"), newName, newPath);
+                getActivity().onBackPressed();
+            } else {
+                info = "重命名失败";
+            }
+            Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
         });
         binding.drStcThrow.setOnConfirmationSliderSeekBarChangeListener(() -> {
-            String filePath = (String) binding.drTvPath.getText();
-            File file = new File(filePath); // 创建文件对象
-            String info;
-            if (file.exists()) { // 检查文件是否存在
-                boolean isDeleted = file.delete(); // 删除文件
+            if (file.exists()) {
+                boolean isDeleted = file.delete();
                 if (isDeleted) {
-                    info = "文件删除成功";
+                    info = "删除成功";
+                    ViewPageAdapter.recyclerViewAdapter.removeItem(getArguments().getInt("pos"));
                 } else {
-                    info = "文件删除失败";
+                    info = "删除失败";
                 }
             } else {
                 info = "文件不存在";
@@ -54,6 +83,18 @@ public class DeleteOrRenameFileFragment extends Fragment {
             Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         });
+    }
+    private static boolean isValidFileName(String fileName) {
+        String illegalChars = "/\\:*?\"<>|";
+        for (char c : illegalChars.toCharArray()) {
+            if (fileName.contains(String.valueOf(c))) {
+                return false;
+            }
+        }
+        if (!(fileName.endsWith(".mp4") || fileName.endsWith(".avi") || fileName.endsWith(".mkv") || fileName.endsWith(".mov") || fileName.endsWith(".wmv"))){
+            return false;
+        }
+        return true;
     }
     @Override
     public void onResume() {

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPageHolder> implements View.OnClickListener {
-    private static RecyclerViewAdapter recyclerViewAdapter;
+    public static RecyclerViewAdapter recyclerViewAdapter;
     static boolean setAdapter = false;
     FragmentManager fragmentManager;
 
@@ -96,7 +96,6 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
     public int getItemCount() {
         return 3;
     }
-
 
     static class ViewPageHolder extends RecyclerView.ViewHolder {
         RecyclerView recyclerView;

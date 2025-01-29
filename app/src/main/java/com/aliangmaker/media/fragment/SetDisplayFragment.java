@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class SetDisplayFragment extends Fragment {
         binding.sdSwSize.setChecked(sharedPreferences.getBoolean("small_tv", false));
         binding.sdSwLand.setChecked(sharedPreferences.getBoolean("un_horizon", false));
         binding.sdSwGone.setChecked(sharedPreferences.getBoolean("wipe", false));
+        binding.sdSwStuff.setChecked(sharedPreferences.getBoolean("stuff",false));
         if (sharedPreferences.getBoolean("dp_hd1",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
         binding.sdSwDark.setChecked(dark);
@@ -57,8 +59,12 @@ public class SetDisplayFragment extends Fragment {
             return true;
         });
         binding.sdTvDark.setText(sharedPreferences.getInt("dark_pg", 125) + "");
-        binding.sdSwSize.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("small_tv", b).apply());
+        binding.sdSwSize.setOnCheckedChangeListener((compoundButton, b) -> {
+            sharedPreferences.edit().putBoolean("small_tv", b).apply();
+            Toast.makeText(getContext(), "重启生效", Toast.LENGTH_SHORT).show();
+        });
         binding.sdSwLand.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("un_horizon", b).apply());
+        binding.sdSwStuff.setOnCheckedChangeListener((buttonView, isChecked) -> sharedPreferences.edit().putBoolean("stuff",isChecked).apply());
         binding.sdSwGone.setOnCheckedChangeListener((compoundButton, b) ->
         {
             Toast.makeText(getContext(), "重启生效", Toast.LENGTH_SHORT).show();
