@@ -2,6 +2,7 @@ package com.aliangmaker.media.control;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 import com.aliangmaker.media.event.ChangeTitleStatue;
@@ -36,4 +37,5 @@ public class RollStatueScrollView extends ScrollView {
             invisible = false;
         }
     }
+
 }

@@ -31,6 +31,7 @@ public class ConfirmationSliderSeekBar extends androidx.appcompat.widget.AppComp
     @SuppressLint("ClickableViewAccessibility")
     public void setOnConfirmationSliderSeekBarChangeListener(onCheckedListener listener) {
         setOnTouchListener((view, motionEvent) -> {
+            view.getParent().requestDisallowInterceptTouchEvent(true);
             if (!isEnabled()) {
                 return false;
             }

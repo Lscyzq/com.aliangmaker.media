@@ -39,15 +39,9 @@ public class DeleteOrRenameFileFragment extends Fragment {
         binding.drTvPath.setText(getArguments().getString("path"));
         String filePath = binding.drTvPath.getText().toString();
         File file = new File(filePath);
-
-        binding.drEtRename.setOnClickListener(v -> {
-            if (firstTouch) {
-                String fileName = file.getName();
-                binding.drEtRename.setText(fileName);
-                binding.drEtRename.setSelection(0, fileName.lastIndexOf("."));
-                firstTouch = false;
-            }
-        });
+        String fileName = file.getName();
+        binding.drEtRename.setText(fileName);
+        binding.drEtRename.setSelection(0, fileName.lastIndexOf("."));
         binding.drBtnRename.setOnClickListener(v -> {
             String newName = binding.drEtRename.getText().toString();
             String newPath = filePath.substring(0, filePath.lastIndexOf("/") + 1) + newName;
