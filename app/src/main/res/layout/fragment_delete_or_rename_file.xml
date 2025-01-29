@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-             android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:clickable="true"
     tools:context=".fragment.DeleteOrRenameFileFragment">
     <com.aliangmaker.media.control.RollStatueScrollView
             android:layout_width="match_parent"
@@ -12,6 +14,108 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/dr_tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/main"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dr_tv_path"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dr_tv_name" />
+
+            <com.aliangmaker.media.control.ConfirmationSliderSeekBar
+                android:id="@+id/dr_stc_throw"
+                android:layout_width="156dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:background="@null"
+                android:maxHeight="40dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:progressDrawable="@drawable/ba_slider_seekbar"
+                android:splitTrack="false"
+                android:thumb="@drawable/ba_slider_seekbar_thumb"
+                app:layout_constraintEnd_toEndOf="@+id/dr_btn_rename"
+                app:layout_constraintStart_toStartOf="@+id/dr_btn_rename"
+                app:layout_constraintTop_toBottomOf="@+id/dr_tv_path" />
+
+            <TextView
+                android:id="@+id/dr_tv_throw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/dr_stc_throw"
+                app:layout_constraintStart_toStartOf="@+id/dr_stc_throw"
+                app:layout_constraintTop_toBottomOf="@+id/dr_stc_throw" />
+
+            <EditText
+                android:id="@+id/dr_et_rename"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ba_round_grey2"
+                android:gravity="top|left"
+                android:hint="起个什么名字捏~"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:padding="6dp"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dr_tv_throw" />
+
+            <com.aliangmaker.media.control.ScaleViewConstraintLayout
+                android:id="@+id/dr_btn_rename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dr_et_rename">
+
+                <View
+                    android:id="@+id/wel_im1"
+                    android:layout_width="156dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ba_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/wel_tv0"
+                    android:layout_width="79dp"
+                    android:layout_height="27dp"
+                    android:text="重命名"
+                    android:textSize="19sp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/wel_im1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/wel_im1"
+                    app:layout_constraintTop_toTopOf="@+id/wel_im1" />
+
+            </com.aliangmaker.media.control.ScaleViewConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>
 </FrameLayout>

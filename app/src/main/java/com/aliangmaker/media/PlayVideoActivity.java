@@ -703,8 +703,10 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         ijkMediaPlayer.setKeepInBackground(true);
         setVideoPath(getIntent().getData());
         videoInfoInSQL = sqLiteOpenHelper.getVideoInfo(videoPath);
+        binding.pvCl.initScale(binding.pvFl, videoInfoInSQL[1]);
         binding.pvTvTitle.setText(videoName);
         ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
+            initPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
             ijkMediaPlayer.setSpeed(currentSpeed);
             if(currentSpeed != 1.00) {
                 String speed = currentSpeed+"X";
@@ -715,9 +717,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (playSet.getBoolean("none_start", false)) adjustAudio(0);
             float volume = playSet.getFloat("volume", 100) / 100;
             ijkMediaPlayer.setVolume(volume, volume);
-            initPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
             initSbPbTimeTv();
-            binding.pvCl.initScale(binding.pvFl, videoInfoInSQL[1]);
             if (getIntent().getIntExtra("progress", 0) == 0) {
                 progress = (long) videoInfoInSQL[0];
             } else progress = getIntent().getIntExtra("progress", 0);

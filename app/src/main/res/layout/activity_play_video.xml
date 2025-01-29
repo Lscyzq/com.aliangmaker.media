@@ -75,11 +75,11 @@
     <com.aliangmaker.media.control.SteppedSeekBar
         android:id="@+id/pv_sb"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:thumb="@null"
+        android:layout_height="18dp"
         android:background="@null"
         android:maxHeight="6dp"
         android:progressDrawable="@drawable/ba_seekbar"
+        android:thumb="@null"
         app:layout_constraintBottom_toTopOf="@+id/pv_im_pause"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" /> <!-- 滑块背景颜色 -->
+            <size android:width="40dp" android:height="40dp" /> <!-- 滑块大小 -->
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_forward_red" android:gravity="center" />
+</layer-list>
