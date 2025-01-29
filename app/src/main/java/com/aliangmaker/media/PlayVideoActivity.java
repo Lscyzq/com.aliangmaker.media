@@ -45,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.aliangmaker.media.control.SteppedSeekBar;
 import com.aliangmaker.media.databinding.ActivityPlayVideoBinding;
 import com.aliangmaker.media.event.DownloadEvent;
 import com.aliangmaker.media.event.SQLiteOpenHelper;
@@ -71,6 +72,8 @@ import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import master.flame.danmaku.ui.widget.DanmakuView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+
+import static java.lang.Math.abs;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityPlayVideoBinding binding;
@@ -351,60 +354,59 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         int totalSecondsRemainder = totalSeconds % 60;
         @SuppressLint("DefaultLocale") String totalTime = String.format("%02d:%02d", totalMinutes, totalSecondsRemainder);
         binding.pvTvLen1.setText(totalTime);
-        binding.pvSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            long pro;
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    ijkMediaPlayer.seekTo(progress);
-                    pro = progress;
-                }
-                binding.pvPb.setProgress(progress);
-            }
-
+        binding.pvSb.setOnSteppedSeekBarChangeListener(new SteppedSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                binding.pvSb.setScaleY(1.2F);
+                seekBar.setScaleY(1.2F);
                 ijkMediaPlayer.pause();
                 if (playDanmaku) {
                     danmakuView.pause();
                     danmakuView.clear();
                 }
+                handler.removeCallbacks(updateSeekBar);
                 handler.removeCallbacks(setINVISIBLE);
                 handler.removeCallbacks(setINVISIBLEExceptLock);
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                binding.pvSb.setScaleY(1);
+            public void onProgressChanging(long progress) {
+                ijkMediaPlayer.seekTo(progress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar, long progress) {
+                handler.postDelayed(updateSeekBar, 800);
+                seekBar.setScaleY(1);
                 handler.postDelayed(setINVISIBLE, 2000);
+                ijkMediaPlayer.seekTo(progress);
                 if (canPlay) {
                     ijkMediaPlayer.start();
                     if (playDanmaku)
-                        danmakuView.seekTo(pro);
+                        danmakuView.seekTo(progress);
                 } else if (playDanmaku) {
                     danmakuReset = true;
                 }
             }
         });
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                int currentPosition = (int) ijkMediaPlayer.getCurrentPosition();
-                int currentSeconds = currentPosition / 1000;
-                int minutes = currentSeconds / 60;
-                int seconds = currentSeconds % 60;
-                @SuppressLint("DefaultLocale") String currentTime = String.format("%02d:%02d", minutes, seconds);
-                runOnUiThread(() -> {
-                    binding.pvTvLen0.setText(currentTime);
-                    binding.pvSb.setProgress((int) ijkMediaPlayer.getCurrentPosition());
-                });
-                handler.postDelayed(this, 800);
-            }
-        };
-        handler.postDelayed(runnable, 800);
+        handler.postDelayed(updateSeekBar, 800);
     }
 
+    private Runnable updateSeekBar = new Runnable() {
+        @Override
+        public void run() {
+            int currentPosition = (int) ijkMediaPlayer.getCurrentPosition();
+            int currentSeconds = currentPosition / 1000;
+            int minutes = currentSeconds / 60;
+            int seconds = currentSeconds % 60;
+            @SuppressLint("DefaultLocale") String currentTime = String.format("%02d:%02d", minutes, seconds);
+            runOnUiThread(() -> {
+                binding.pvTvLen0.setText(currentTime);
+                binding.pvSb.setProgress(currentPosition);
+                binding.pvPb.setProgress(currentPosition);
+            });
+            handler.postDelayed(this, 800);
+        }
+    };
     private final Runnable setINVISIBLE = new Runnable() {
         @Override
         public void run() {
@@ -470,7 +472,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                 ijkMediaPlayer.start();
                                 canPlay = true;
                                 if (playDanmaku && danmakuReset) {
-                                    danmakuView.seekTo((long)binding.pvSb.getProgress());
+                                    danmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
                                     danmakuReset = false;
                                 }else if (playDanmaku) danmakuView.resume();
                                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
@@ -532,8 +534,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     if (backGesture && point[0] < 25 && event.getX() - point[0] > 80) {
                         setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
                         finish();
-                    }
-                    else if (offsetX > 3.5 || offsetX < -3.5 || offsetY > 3.5 || offsetY < -3.5) {
+                    } else if (abs(offsetX) > 3.5 || abs(offsetY) > 3.5) {
                         handler.postDelayed(setINVISIBLE, 0);
                         if (lockMode == 1 && speedACan[1] && point[0] >= 25 && canSecondLockChange && !speedACan[0]) {
                             if (offsetX > 50 && secondLockTouchMode != verticalMode) {
@@ -556,7 +557,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     gap = -currentPos;
                                 }
                                 secondLockChanged = true;
-                                toast("快退" + Math.abs(gap) / 1000 + "S（" + percent + "%）");
+                                toast("快退" + abs(gap) / 1000 + "S（" + percent + "%）");
                                 change = currentPos + gap;
                             } else if (offsetY < -50 && secondLockTouchMode != horizonMode) {
                                 secondLockTouchMode = verticalMode;
@@ -749,7 +750,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         ijkMediaPlayer.setOnBufferingUpdateListener((iMediaPlayer, i) -> {
             int buff = (int) (i * duration / 100);
             binding.pvPb.setSecondaryProgress(buff);
-            binding.pvSb.setSecondaryProgress(buff);
         });
         String dataSource = ijkMediaPlayer.getDataSource();
         if (dataSource == null) dataSource = "";
@@ -907,7 +907,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 ijkMediaPlayer.start();
                 canPlay = true;
                 if (playDanmaku && danmakuReset) {
-                    danmakuView.seekTo((long)binding.pvSb.getProgress());
+                    danmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
                     danmakuReset = false;
                 }else if (playDanmaku) danmakuView.resume();
                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
