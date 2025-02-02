@@ -59,7 +59,7 @@ public class SteppedSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
                         toPro = getProgressForX(motionEvent.getX());
                         setProgress((int) toPro);
                     }
-                    listener.onStopTrackingTouch(this,(long) toPro);
+                    listener.onStopTrackingTouch(this, (long) toPro);
                     break;
             }
             return true;

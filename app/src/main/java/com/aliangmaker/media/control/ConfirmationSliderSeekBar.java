@@ -28,7 +28,6 @@ public class ConfirmationSliderSeekBar extends androidx.appcompat.widget.AppComp
         setProgress(20);
     }
     boolean canControl;
-
     @SuppressLint("ClickableViewAccessibility")
     public void setOnConfirmationSliderSeekBarChangeListener(onCheckedListener listener) {
         setOnTouchListener((view, motionEvent) -> {
