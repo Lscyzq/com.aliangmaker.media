@@ -34,7 +34,7 @@ public class MoreUpLogFragment extends Fragment {
         if (!sharedPreferences.getString("version","3.14.10").equals(getString(R.string.version))) {
             sharedPreferences.edit().putString("version",getString(R.string.version)).apply();
             TitleFragment.setTitle("赞助我们");
+            TitleFragment.setBackGone(true);
         } else TitleFragment.setTitle("凉腕播放器");
-        TitleFragment.setBackGone(true);
     }
 }
