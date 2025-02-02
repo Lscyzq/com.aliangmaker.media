@@ -31,7 +31,6 @@ public class MoreHelpFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (!sharedPreferences.getString("version","3.14.10").equals(getString(R.string.version))) {
-            sharedPreferences.edit().putString("version",getString(R.string.version)).apply();
             TitleFragment.setTitle("MStore");
             Toast.makeText(getActivity(), "左右滑出新世界", Toast.LENGTH_SHORT).show();
         } else TitleFragment.setTitle("凉腕播放器");
