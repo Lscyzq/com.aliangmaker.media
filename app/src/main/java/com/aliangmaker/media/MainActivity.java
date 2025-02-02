@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ChangeTitleStatue changeTitleStatue;
     private ViewPageAdapter viewPageAdapter;
-
+    String version;
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
         binding.mainVp.setAdapter(viewPageAdapter);
         SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
+        version = sharedPreferences.getString("version", "3.14.10");
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.getVersion(new ServerRequest.versionCallBack() {
             boolean isUpdate, isNotice;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        if (!sharedPreferences.getString("version", "3.14.10").equals(getString(R.string.version))) {
+        if (!version.equals(getString(R.string.version))) {
             getSupportFragmentManager().beginTransaction().addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).add(R.id.main_fl, new MoreHelpFragment()).commit();
             getSupportFragmentManager().beginTransaction().addToBackStack(null).setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out).add(R.id.main_fl, new MoreUpLogFragment()).commit();
         }
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     binding.mainIm0.setImageResource(R.drawable.ba_vp_select);
                     binding.mainIm1.setImageResource(R.drawable.ba_vp_inselect);
                     binding.mainIm2.setImageResource(R.drawable.ba_vp_inselect);
-                    if (sharedPreferences.getString("version", "3.14.10").equals(getString(R.string.version))) {
+                    if (version.equals(getString(R.string.version))) {
                         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         TitleFragment.setTitle("MStore");
                         TitleFragment.setBackGone(true);
