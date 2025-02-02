@@ -30,7 +30,6 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
     Context context;
     FragmentManager fragmentManager;
-
     public RecyclerViewAdapter(Context context, FragmentManager fragmentManager) {
         this.context = context;
         this.fragmentManager = fragmentManager;
@@ -81,6 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return VideoBean.getVideo().size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void removeItem(int position) {
         VideoBean.getVideo().remove(position);
         VideoBean.getBitmaps().remove(position);

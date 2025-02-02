@@ -534,7 +534,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     if (backGesture && point[0] < 25 && event.getX() - point[0] > 80) {
                         setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
                         finish();
-                    } else if (abs(offsetX) > 3.5 || abs(offsetY) > 3.5) {
+                    } else if (abs(offsetX) > 1 || abs(offsetY) > 1) {
                         handler.postDelayed(setINVISIBLE, 0);
                         if (lockMode == 1 && speedACan[1] && point[0] >= 25 && canSecondLockChange && !speedACan[0]) {
                             if (offsetX > 50 && secondLockTouchMode != verticalMode) {

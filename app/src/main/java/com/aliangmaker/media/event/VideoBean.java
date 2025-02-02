@@ -22,7 +22,7 @@ public class VideoBean {
     public static List<Bitmap> getBitmaps() {
         return bitmaps;
     }
-    public VideoBean(boolean isFinished) {
+    public VideoBean (boolean isFinished) {
         this.isFinished = isFinished;
     }
 

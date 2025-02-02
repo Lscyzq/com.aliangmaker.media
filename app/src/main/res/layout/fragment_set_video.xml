@@ -249,7 +249,7 @@
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pt3" />
-            <SeekBar
+            <com.aliangmaker.media.control.SeekBar
                     android:id="@+id/sv_sb_audio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:text="此调音与系统音量完全隔离，当您觉得系统最低音量依然过高时，可调节此功能以强制调节视频音量"
+                    android:text="@string/none_volume"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"

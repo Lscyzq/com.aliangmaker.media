@@ -165,7 +165,7 @@
                     app:layout_constraintTop_toTopOf="@+id/sd_tv8" />
 
 
-                <SeekBar android:id="@+id/sd_sb_dark"
+                <com.aliangmaker.media.control.SeekBar android:id="@+id/sd_sb_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"

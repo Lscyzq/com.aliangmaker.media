@@ -227,7 +227,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <SeekBar
+            <com.aliangmaker.media.control.SeekBar
                 android:id="@+id/danmaku_speed_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView52" />
 
-            <SeekBar
+            <com.aliangmaker.media.control.SeekBar
                     android:id="@+id/danmaku_size_seekbar"
                     android:layout_width="match_parent"
                     android:thumb="@null"
@@ -251,7 +251,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView51" />
 
-            <SeekBar
+            <com.aliangmaker.media.control.SeekBar
                     android:id="@+id/danmaku_lines_seekbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/danmaku_speed_seekbar" />
 
-            <SeekBar
+            <com.aliangmaker.media.control.SeekBar
                 android:id="@+id/danmaku_sb_transparency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

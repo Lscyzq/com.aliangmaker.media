@@ -38,7 +38,6 @@ public class ViewPageAdapter extends RecyclerView.Adapter<ViewPageAdapter.ViewPa
     public static RecyclerViewAdapter recyclerViewAdapter;
     static boolean setAdapter = false;
     FragmentManager fragmentManager;
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {

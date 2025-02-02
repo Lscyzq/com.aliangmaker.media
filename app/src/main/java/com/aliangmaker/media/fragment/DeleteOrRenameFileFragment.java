@@ -17,6 +17,8 @@ import com.aliangmaker.media.adapter.RecyclerViewAdapter;
 import com.aliangmaker.media.adapter.ViewPageAdapter;
 import com.aliangmaker.media.control.ConfirmationSliderSeekBar;
 import com.aliangmaker.media.databinding.FragmentDeleteOrRenameFileBinding;
+import com.aliangmaker.media.event.ChangeTitleStatue;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -30,30 +32,28 @@ public class DeleteOrRenameFileFragment extends Fragment {
         return binding.getRoot();
     }
     String info;
-    boolean firstTouch = true;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.drTvThrow.setText(Html.fromHtml("左滑<font color='#FF0000'>删除</font>"));
+        binding.drTvThrow.setText(Html.fromHtml("右滑<font color='#FF0000'>删除</font>"));
         binding.drTvName.setText(getArguments().getString("name"));
         binding.drTvPath.setText(getArguments().getString("path"));
         String filePath = binding.drTvPath.getText().toString();
         File file = new File(filePath);
         String fileName = file.getName();
         binding.drEtRename.setText(fileName);
-        binding.drEtRename.setSelection(0, fileName.lastIndexOf("."));
+        //binding.drEtRename.setSelection(0, fileName.lastIndexOf("."));
         binding.drBtnRename.setOnClickListener(v -> {
             String newName = binding.drEtRename.getText().toString();
             String newPath = filePath.substring(0, filePath.lastIndexOf("/") + 1) + newName;
             File newFile = new File(newPath);
-            Log.e("aaaa", newFile.getPath());
-            if (newName.equals("")) {
+            if (newName.equals(fileName)) {
                 info = "请输入内容";
-            }else if(newFile.exists()) {
+            } else if(newFile.exists()) {
                 info = "存在同名文件";
             } else if (!isValidFileName(newName)) {
                 info = "命名不合法";
-            }else if (file.renameTo(newFile)) {
+            } else if (file.renameTo(newFile)) {
                 info = "重命名成功";
                 ViewPageAdapter.recyclerViewAdapter.renameItem(getArguments().getInt("pos"), newName, newPath);
                 getActivity().onBackPressed();
@@ -99,6 +99,7 @@ public class DeleteOrRenameFileFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        EventBus.getDefault().post(new ChangeTitleStatue(false));
         TitleFragment.setBackGone(true);
         TitleFragment.setTitle("MStore");
     }

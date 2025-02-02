@@ -79,8 +79,7 @@ public class ScaleVideoConstraintLayout extends ConstraintLayout {
                         frameLayout.getLocationInWindow(viewLocation);
                         float scale = (float) (frameLayout.getScaleX() + (float) 0.0055 * (-distance(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y) + distance(event.getX(), event.getY(), event.getX(1), event.getY(1))));
                         if (!canTrans) { //二级屏锁
-                            double gap = distance(event.getX(), event.getY(), event.getX(1), event.getY(1)) - distance(initFirstPoint.x, initFirstPoint.y, initSecondPoint.x, initSecondPoint.y);
-                            if ((gap > 60 || gap < -60) && scale >= 0.7 && scale < scaleZoom) {
+                            if (scale >= 0.7 && scale < scaleZoom) {
                                 frameLayout.setScaleX(scale);
                                 frameLayout.setScaleY(scale);
                             }
