@@ -26,15 +26,21 @@ public class MoreHelpFragment extends Fragment {
         TitleFragment.setTitle("赞助我们");
         TitleFragment.setBackGone(false);
     }
-
+    boolean write = false;
     @Override
     public void onPause() {
         super.onPause();
         if (!sharedPreferences.getString("version","3.14.10").equals(getString(R.string.version))) {
-            sharedPreferences.edit().putString("version",getString(R.string.version)).apply();
             TitleFragment.setTitle("MStore");
+            write = true;
             Toast.makeText(getActivity(), "左右滑出新世界", Toast.LENGTH_SHORT).show();
         } else TitleFragment.setTitle("凉腕播放器");
         TitleFragment.setBackGone(true);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (write) sharedPreferences.edit().putString("version",getString(R.string.version)).apply();
     }
 }

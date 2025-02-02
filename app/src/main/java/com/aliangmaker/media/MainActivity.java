@@ -126,11 +126,9 @@ public class MainActivity extends AppCompatActivity {
                     binding.mainIm0.setImageResource(R.drawable.ba_vp_select);
                     binding.mainIm1.setImageResource(R.drawable.ba_vp_inselect);
                     binding.mainIm2.setImageResource(R.drawable.ba_vp_inselect);
-                    if (sharedPreferences.getString("version", "3.14.10").equals(getString(R.string.version))) {
-                        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        TitleFragment.setTitle("MStore");
-                        TitleFragment.setBackGone(true);
-                    }
+                    getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    TitleFragment.setTitle("MStore");
+                    TitleFragment.setBackGone(true);
                 } else if (position == 1) {
                     getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     binding.mainIm0.setImageResource(R.drawable.ba_vp_inselect);
