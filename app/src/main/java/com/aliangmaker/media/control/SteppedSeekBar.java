@@ -49,7 +49,7 @@ public class SteppedSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
                     float currentPro = motionEvent.getX();
                     if (abs(currentPro - touchPro) > 1) {
                         isDrag = true;
-                        toPro = (float) ((getProgressForX(currentPro - touchPro) + firstPro) * 0.75);
+                        toPro = (float) (getProgressForX(currentPro - touchPro) * 0.75 + firstPro);
                         setProgress((int) toPro);
                         listener.onProgressChanging((int) toPro);
                     }
