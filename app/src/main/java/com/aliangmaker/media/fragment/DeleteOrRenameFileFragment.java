@@ -48,7 +48,7 @@ public class DeleteOrRenameFileFragment extends Fragment {
             String newPath = filePath.substring(0, filePath.lastIndexOf("/") + 1) + newName;
             File newFile = new File(newPath);
             if (newName.equals(fileName)) {
-                info = "请输入内容";
+                info = "请修改内容";
             } else if(newFile.exists()) {
                 info = "存在同名文件";
             } else if (!isValidFileName(newName)) {

@@ -193,7 +193,7 @@
                 android:text="撑满屏幕"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sd_tv7" />
+                app:layout_constraintTop_toBottomOf="@+id/sd_cl_sb" />
 
             <TextView
                 android:id="@+id/sd_tv7"
@@ -245,6 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
+
                 android:text="重置界面"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"

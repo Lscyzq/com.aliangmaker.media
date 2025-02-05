@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ChangeTitleStatue changeTitleStatue;
     private ViewPageAdapter viewPageAdapter;
+    boolean common = true;
     String version;
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         binding.mainVp.setAdapter(viewPageAdapter);
         SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
         version = sharedPreferences.getString("version", "3.14.10");
+        if (!version.equals(getString(R.string.version))) common = false;
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.getVersion(new ServerRequest.versionCallBack() {
             boolean isUpdate, isNotice;
@@ -127,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                     binding.mainIm0.setImageResource(R.drawable.ba_vp_select);
                     binding.mainIm1.setImageResource(R.drawable.ba_vp_inselect);
                     binding.mainIm2.setImageResource(R.drawable.ba_vp_inselect);
-                    if (version.equals(getString(R.string.version))) {
+                    if (common) {
                         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         TitleFragment.setTitle("MStore");
                         TitleFragment.setBackGone(true);
-                    }
+                    } else common = true;
                 } else if (position == 1) {
                     getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     binding.mainIm0.setImageResource(R.drawable.ba_vp_inselect);

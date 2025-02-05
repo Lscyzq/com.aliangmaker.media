@@ -74,6 +74,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.floor;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityPlayVideoBinding binding;
@@ -368,14 +369,17 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 handler.removeCallbacks(setINVISIBLEExceptLock);
             }
 
+            @SuppressLint("DefaultLocale")
             @Override
             public void onProgressChanging(long progress) {
                 ijkMediaPlayer.seekTo(progress);
+                long currentSeconds = progress / 1000;
+                binding.pvTvLen0.setText(String.format("%02d:%02d", currentSeconds / 60, currentSeconds % 60));
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar, long progress) {
-                handler.postDelayed(updateSeekBar, 800);
+                handler.postDelayed(updateSeekBar, 888);
                 seekBar.setScaleY(1);
                 handler.postDelayed(setINVISIBLE, 2000);
                 ijkMediaPlayer.seekTo(progress);
@@ -388,23 +392,21 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
-        handler.postDelayed(updateSeekBar, 800);
+        handler.postDelayed(updateSeekBar, 888);
     }
 
     private Runnable updateSeekBar = new Runnable() {
+        @SuppressLint("DefaultLocale")
         @Override
         public void run() {
             int currentPosition = (int) ijkMediaPlayer.getCurrentPosition();
             int currentSeconds = currentPosition / 1000;
-            int minutes = currentSeconds / 60;
-            int seconds = currentSeconds % 60;
-            @SuppressLint("DefaultLocale") String currentTime = String.format("%02d:%02d", minutes, seconds);
             runOnUiThread(() -> {
-                binding.pvTvLen0.setText(currentTime);
+                binding.pvTvLen0.setText(String.format("%02d:%02d", currentSeconds / 60, currentSeconds % 60));
                 binding.pvSb.setProgress(currentPosition);
                 binding.pvPb.setProgress(currentPosition);
             });
-            handler.postDelayed(this, 800);
+            handler.postDelayed(this, 888);
         }
     };
     private final Runnable setINVISIBLE = new Runnable() {

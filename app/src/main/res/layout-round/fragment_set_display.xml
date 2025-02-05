@@ -198,7 +198,7 @@
                 android:text="撑满屏幕"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sd_tv7" />
+                app:layout_constraintTop_toBottomOf="@+id/sd_cl_sb" />
 
             <TextView
                 android:id="@+id/sd_tv7"
