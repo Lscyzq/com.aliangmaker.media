@@ -32,6 +32,8 @@ public class SetDisplayFragment extends Fragment {
         binding.sdSwLand.setChecked(sharedPreferences.getBoolean("un_horizon", false));
         binding.sdSwGone.setChecked(sharedPreferences.getBoolean("wipe", false));
         binding.sdSwStuff.setChecked(sharedPreferences.getBoolean("stuff",false));
+        binding.sdSwInner.setChecked(sharedPreferences.getBoolean("inner_show",false));
+        binding.sdSwBitmap.setChecked(sharedPreferences.getBoolean("bitmap",true));
         if (sharedPreferences.getBoolean("dp_hd1",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
         binding.sdSwDark.setChecked(dark);
@@ -80,6 +82,8 @@ public class SetDisplayFragment extends Fragment {
                 getActivity().runOnUiThread(() -> binding.sdClSb.setVisibility(View.GONE));
             }
         });
+        binding.sdSwBitmap.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("bitmap",b).apply());
+        binding.sdSwInner.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("inner_show",b).apply());
         binding.sdNext.setOnClickListener(view -> {
             Toast.makeText(getContext(), "即将停止", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("display",Context.MODE_PRIVATE);

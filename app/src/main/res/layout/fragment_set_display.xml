@@ -196,6 +196,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/sd_cl_sb" />
 
             <TextView
+                android:id="@+id/sd_tv16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:text="显示预览"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv11" />
+
+            <TextView
+                android:id="@+id/sd_tv12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:text="圆屏内嵌"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv17" />
+
+            <TextView
                 android:id="@+id/sd_tv7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -207,6 +229,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/sd_tv6" />
 
             <TextView
+                android:id="@+id/sd_tv13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="圆屏开启：使画面完整显示在屏幕内"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv12" />
+
+            <TextView
                 android:id="@+id/sd_tv11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,6 +249,17 @@
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sd_tv" />
+
+            <TextView
+                android:id="@+id/sd_tv17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="拖动进度时将显示小窗预览，但会加重功耗"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv16" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sd_sw_dark"
@@ -239,17 +283,39 @@
                 app:layout_constraintTop_toTopOf="@+id/sd_tv"
                 app:track="@drawable/switch_background" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sd_sw_bitmap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sd_tv16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sd_tv16"
+                app:track="@drawable/switch_background" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sd_sw_inner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:thumb="@drawable/switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/sd_tv12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sd_tv12"
+                app:track="@drawable/switch_background" />
+
             <TextView
                 android:id="@+id/sd_tv9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
 
+                android:layout_marginTop="4dp"
                 android:text="重置界面"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sd_tv11" />
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv13" />
             <TextView
                     android:id="@+id/sd_tv10"
                     android:layout_width="match_parent"

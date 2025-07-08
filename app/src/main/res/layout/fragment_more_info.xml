@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -19,28 +20,25 @@
 
             <ImageView
                 android:id="@+id/ic"
-                android:layout_width="100dp"
+                android:layout_width="156dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.455"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_main" />
+                app:srcCompat="@drawable/ic_main_info" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="13dp"
                 android:background="@drawable/ba_double_round"
                 android:paddingHorizontal="4dp"
                 android:text="@string/stage"
                 android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ic"
-                app:layout_constraintStart_toEndOf="@+id/ic"
-                app:layout_constraintTop_toTopOf="@+id/ic"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintBottom_toBottomOf="@+id/wel_tv_main"
+                app:layout_constraintEnd_toEndOf="@+id/ic"
+                app:layout_constraintTop_toTopOf="@+id/wel_tv_main" />
 
             <TextView
                 android:id="@+id/textView"
@@ -67,12 +65,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
             <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="开源项目地址"
+                android:textColor="@color/main"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:text="接入播放器"
+                android:text="联系我们"
                 android:textColor="@color/main"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,11 +110,11 @@
                 android:id="@+id/wel_tv_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:gravity="center"
                 android:text="凉腕播放器"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ic"
                 app:layout_constraintTop_toBottomOf="@+id/ic" />
 
             <TextView
@@ -165,36 +175,46 @@
                 android:id="@+id/textView12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:text="https://github.com/Lscyzq/com.aliangmaker.media"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView222"
                 app:layout_constraintTop_toBottomOf="@+id/textView222" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textView16"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:textSize="15sp"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="https://lscyzq.github.io/access/com.aliangmaker.media.txt"
+                android:text="QQ：443222776"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView222"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="https://lscyzq.github.io/access/com.aliangmaker.media.txt"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView222"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/version"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView3"
-                app:layout_constraintStart_toStartOf="@+id/textView3" />
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ic"
+                app:layout_constraintStart_toStartOf="@+id/ic" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>

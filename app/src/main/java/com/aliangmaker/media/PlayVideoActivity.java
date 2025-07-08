@@ -1,5 +1,9 @@
 package com.aliangmaker.media;
 
+import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_BOTTOM_CENTER;
+import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_SCROLL;
+import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_TOP_CENTER;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -11,17 +15,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.*;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.textclassifier.TextLinks;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListPopupWindow;
@@ -42,39 +44,50 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.aliangmaker.media.control.SteppedSeekBar;
 import com.aliangmaker.media.databinding.ActivityPlayVideoBinding;
+import com.aliangmaker.media.adapter.BiliDanmakuModeHandler;
 import com.aliangmaker.media.event.DownloadEvent;
 import com.aliangmaker.media.event.SQLiteOpenHelper;
 
-import org.jetbrains.annotations.NotNull;
+import com.bytedance.danmaku.render.engine.DanmakuView;
+import com.bytedance.danmaku.render.engine.control.DanmakuConfig;
+import com.bytedance.danmaku.render.engine.control.DanmakuController;
 
+import org.jetbrains.annotations.NotNull;
+import org.xml.sax.SAXException;
+
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.channels.IllegalChannelGroupException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import master.flame.danmaku.controller.DrawHandler;
-import master.flame.danmaku.danmaku.loader.ILoader;
-import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
-import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDisplayer;
-import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
-import master.flame.danmaku.danmaku.parser.IDataSource;
-import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
-import master.flame.danmaku.ui.widget.DanmakuView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.floor;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityPlayVideoBinding binding;
@@ -84,20 +97,20 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     private final Handler handler = new Handler();
     private BroadcastReceiver bluetoothStateReceiver;
     private float currentSpeed;
+    private DanmakuConfig danmakuConfig;
     private ListPopupWindow popupWindow;
     private String videoName, videoPath;
-    private DanmakuContext danmakuContext;
+    private DanmakuController danmakuController;
+    private MediaMetadataRetriever mediaMetadataRetriever1, mediaMetadataRetriever2, mediaMetadataRetriever3, mediaMetadataRetriever4;
     private AudioManager audioManager;
     private SurfaceView surfaceView;
     private TextureView textureView;
-    private DanmakuView danmakuView;
     private long progress = 0, duration, change, lastClickTime = 0, currentVolume;
     Runnable lockSetInvisible = () -> runOnUiThread(() -> binding.pvImLc.setVisibility(View.INVISIBLE));
-    private int secondLockTouchMode = 3, horizonMode = 0, verticalMode = 1, screenWidth, screenHeight,leftThird, rightThird, currentPos, lockMode = 0;
-    ;
-    private boolean canSecondLockChange = true, secondLockChanged = false, firstPlay = true, canPlay = true, choose_suf, horizon = false, tapScale = false, canRestart = true;
-    private boolean playDanmaku = false, danmakuPrepared = false, danmakuPlayed = false, danmakuReset = false;
+    private int secondLockTouchMode = 3, horizonMode = 0, verticalMode = 1, screenWidth, screenHeight, leftThird, rightThird, currentPos, lockMode = 0;
+    private boolean playBitmap, playDanmaku = false, isInterrupted = false, isDanmakuSameSpeed = false, changeDanmakuFromUser = false, canSecondLockChange = true, secondLockChanged = false, firstPlay = true, canPlay = true, choose_suf, horizon = false, tapScale = false, canRestart = true;
     private float[] videoInfoInSQL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,17 +122,27 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         playSet = getSharedPreferences("play_set", MODE_PRIVATE);
         currentSpeed = playSet.getFloat("speed", 1.00f);
         choose_suf = playSet.getBoolean("view", true);
+        playBitmap = playSet.getBoolean("bitmap", true) && !getIntent().getBooleanExtra("live_mode",false);
         sqLiteOpenHelper = new SQLiteOpenHelper(this);//初始化数据库
-
+        playDanmaku = getIntent().getStringExtra("danmaku") != null && !getIntent().getBooleanExtra("live_mode",false);
+        if (playBitmap) {
+            mediaMetadataRetriever1 = new MediaMetadataRetriever();
+            mediaMetadataRetriever2 = new MediaMetadataRetriever();
+            mediaMetadataRetriever3 = new MediaMetadataRetriever();
+            mediaMetadataRetriever4 = new MediaMetadataRetriever();
+        }
         try {
             initIjk();
+            if (playDanmaku) initDanmaku();
+            else binding.pvImDan.setVisibility(View.INVISIBLE);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
             throw new RuntimeException(e);
         }
         initBluetooth();
-        playDanmaku = getIntent().getStringExtra("danmaku") != null;
-        if (playDanmaku) initDanmaku();
-        else binding.pvImDan.setVisibility(View.INVISIBLE);
         initOthers();
         startService(new Intent(this, PostService.class));//上传数据
     }
@@ -132,7 +155,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         if (!playSet.getBoolean("background", false)) {
             ijkMediaPlayer.pause();
             binding.pvImPause.setImageResource(R.drawable.ic_play);
-            if (playDanmaku) danmakuView.pause();
+            if (playDanmaku) danmakuController.pause();
         }
     }
 
@@ -145,7 +168,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (playDanmaku) danmakuView.release();
         int progress = (int) ijkMediaPlayer.getCurrentPosition();
         if (progress >= duration - 3000) {
             progress = 0;
@@ -158,6 +180,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         sqLiteOpenHelper.saveVideoProgress(videoPath, progress, binding.pvCl.getScale());
         handler.removeCallbacksAndMessages(null);
         ijkMediaPlayer.release();
+        isInterrupted = true;
+        if (playBitmap) bitmapHashMap.clear();
     }
 
     @Override
@@ -165,7 +189,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         if (keyCode == KeyEvent.KEYCODE_BACK && playSet.getBoolean("watch_back", false)) {
             return true;
         } else
-            setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+            setResult(Activity.RESULT_OK, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
         return super.onKeyDown(keyCode, event);
     }
 
@@ -174,7 +198,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             initScreenInfo();
-            if (!playSet.getBoolean("stuff",false)) adjustPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
+            if (!playSet.getBoolean("stuff", false))
+                adjustPlayView();
         }
     }
 
@@ -184,7 +209,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         } else if (way == 2) {
             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, 0);
         } else
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,way,0);
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, way, 0);
     }
 
     private void initBluetooth() {
@@ -198,109 +223,53 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                     Toast.makeText(context, "蓝牙断开", Toast.LENGTH_SHORT).show();
                     ijkMediaPlayer.pause();
-                    if (playDanmaku) danmakuView.pause();
+                    if (playDanmaku) danmakuController.pause();
                     binding.pvImPause.setImageResource(R.drawable.ic_play);
                 } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                     Toast.makeText(context, "蓝牙已连接", Toast.LENGTH_SHORT).show();
                     ijkMediaPlayer.start();
-                    if (playDanmaku) danmakuView.resume();
+                    if (playDanmaku) danmakuController.start(ijkMediaPlayer.getCurrentPosition());
                     binding.pvImPause.setImageResource(R.drawable.ic_pause);
                 }
             }
         };
-
         registerReceiver(bluetoothStateReceiver, filter);
     }
 
-    private void initDanmaku() {
-        danmakuView = binding.pvDanmakuView;
-        HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
-        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, (Integer) getDanmakuSet("danmakuLines") + 1);
-        danmakuContext = DanmakuContext.create();
-        danmakuContext.setDuplicateMergingEnabled(getDanmakuSet("same"))//弹幕重复
-                .setFTDanmakuVisibility(getDanmakuSet("style"))//居中弹幕
-                .setScrollSpeedFactor(getDanmakuSet("danmakuSpeed"))
-                .setScaleTextSize(getDanmakuSet("danmakuSize"))
-                .setMaximumLines(maxLinesPair) //设置最大显示行数
-                .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW, 1)
-                .setDanmakuTransparency(getDanmakuSet("transparency"))
-                .preventOverlapping(getDanmakuSet("fold")); //设置防弹幕重叠，null为允许重叠
-        String danmakuUrl = getIntent().getStringExtra("danmaku");
-
-        if (danmakuUrl.startsWith("http") || danmakuUrl.startsWith("https")) {
-            new DownloadEvent(danmakuUrl, this, true, () -> danmakuView.prepare(createParser(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), danmakuContext));
-        } else danmakuView.prepare(createParser(danmakuUrl), danmakuContext);
-        danmakuView.enableDanmakuDrawingCache(true);
-        danmakuView.setCallback(new DrawHandler.Callback() {
-            @Override
-            public void prepared() {
-                danmakuPrepared = true;
-                if (!danmakuPlayed && ijkMediaPlayer.isPlaying()) {
-                    danmakuView.start(progress);
-                    danmakuPlayed = true;
-                    if (!playSet.getBoolean("hd_dan", false)) {
-                        binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
-                    } else
-                        danmakuView.hide();
-                }
-            }
-
-            @Override
-            public void updateTimer(DanmakuTimer timer) {
-
-            }
-
-            @Override
-            public void danmakuShown(BaseDanmaku danmaku) {
-
-            }
-
-            @Override
-            public void drawingFinished() {
-            }
-        });
-        binding.pvImDan.setOnClickListener(this);
-    }
-
-    private BaseDanmakuParser createParser(String stream) {
-        ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
-        loader.load(stream);
-        BaseDanmakuParser parser = new BiliDanmukuParser();
-        IDataSource<?> dataSource = loader.getDataSource();
-        parser.load(dataSource);
-        return parser;
-    }
-
-    private <T> T getDanmakuSet(String SPId) {
+    private void initDanmaku() throws ParserConfigurationException, IOException, SAXException {
         SharedPreferences sharedPreferences = getSharedPreferences("danmaku_set", MODE_PRIVATE);
-        if (SPId.equals("style")) {
-            return (T) (Boolean) sharedPreferences.getBoolean("style", true);
-        } else if (SPId.equals("fold")) {
-            if (sharedPreferences.getBoolean("fold", false)) {
-                HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
-                overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_LR, true);
-                overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_BOTTOM, true);
-                return (T) (Map) overlappingEnablePair;
-            } else return (T) (Map) null;
-        } else if (SPId.equals("same")) {
-            return (T) (Boolean) sharedPreferences.getBoolean("merge", false);
-        } else if (SPId.equals("danmakuSize")) {
-            return (T) (Float) ((float) (sharedPreferences.getInt(SPId, 50) + 40) / 100.0f);
-        } else if (SPId.equals("danmakuSpeed")) {
-            int value = sharedPreferences.getInt(SPId, 1);
-            if (value == 0) {
-                return (T) (Float) 2.83f;
-            } else if (value == 1) {
-                return (T) (Float) 2f;
-            } else if (value == 2) {
-                return (T) (Float) 0.8f;
-            }
-        } else if (SPId.equals("danmakuLines")) {
-            return (T) (Integer) sharedPreferences.getInt(SPId, 2);
-        } else if (SPId.equals("transparency")) {
-            return (T) (Float) (sharedPreferences.getInt(SPId, 80) / 100F);
-        }
-        throw new IllegalArgumentException("Invalid item: " + SPId);
+        basicDanmakuSpeed = 2 * sharedPreferences.getInt("speed", 80) + 20;
+        isDanmakuSameSpeed = sharedPreferences.getBoolean("speed_same", false);
+        DanmakuView danmakuView = findViewById(R.id.pv_danmaku_view);
+        danmakuController = danmakuView.getController();
+        danmakuConfig = danmakuController.getConfig();
+        SAXParser reader = SAXParserFactory.newInstance().newSAXParser();
+        BiliDanmakuModeHandler biliDanmakuModeHandler = new BiliDanmakuModeHandler(sharedPreferences.getBoolean("style", true), this, (sharedPreferences.getInt("size", 45) + 20) / 100.0f, danmakuData -> {
+            danmakuController.setData(danmakuData, 0);
+            danmakuConfig.getCommon().setAlpha((int) ((sharedPreferences.getInt("transparency", 60) + 20) / 100F * 225));
+            int lineCount = sharedPreferences.getInt("danmakuLines", 2) + 1;
+            danmakuConfig.getScroll().setLineCount(lineCount);
+            danmakuConfig.getTop().setLineCount(lineCount);
+            danmakuConfig.getBottom().setLineCount(lineCount);
+            danmakuConfig.getScroll().setMarginTop(sharedPreferences.getInt("top", 0));
+            danmakuConfig.getScroll().setLineMargin(sharedPreferences.getInt("inner", 1));
+            danmakuConfig.getTop().setMarginTop(sharedPreferences.getInt("top", 0));
+            danmakuConfig.getTop().setLineMargin(sharedPreferences.getInt("inner", 0));
+            danmakuConfig.getScroll().setMoveTime((long) (8000L * (1 / (basicDanmakuSpeed / 100F))));
+        });
+        String danmakuUrl = getIntent().getStringExtra("danmaku");
+        if (danmakuUrl.startsWith("http") || danmakuUrl.startsWith("https")) {
+            new DownloadEvent(danmakuUrl, this, true, () -> {
+                try {
+                    reader.parse(new File(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), biliDanmakuModeHandler);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (SAXException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else reader.parse(new File(danmakuUrl), biliDanmakuModeHandler);
+        binding.pvImDan.setOnClickListener(this);
     }
 
     private void initOthers() {
@@ -342,10 +311,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             } else tv.setText(speed + "X");
             currentSpeed = Float.parseFloat(speed);
             ijkMediaPlayer.setSpeed(currentSpeed);
-            DrawHandler.setSpeed(currentSpeed);
+            if (playDanmaku) setDanmakuSpeed(currentSpeed);
             popupWindow.dismiss();
         });
     }
+
+    int bitmapGap = 6000;
 
     private void initSbPbTimeTv() {
         binding.pvSb.setMax((int) duration);
@@ -356,14 +327,18 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         @SuppressLint("DefaultLocale") String totalTime = String.format("%02d:%02d", totalMinutes, totalSecondsRemainder);
         binding.pvTvLen1.setText(totalTime);
         binding.pvSb.setOnSteppedSeekBarChangeListener(new SteppedSeekBar.OnSeekBarChangeListener() {
+            boolean canPlayInSb;
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                changeDanmakuFromUser = true;
                 seekBar.setScaleY(1.3F);
                 ijkMediaPlayer.pause();
                 if (playDanmaku) {
-                    danmakuView.pause();
-                    danmakuView.clear();
+                    danmakuController.pause();
                 }
+                canPlayInSb = canPlay;
+                canPlay = false;
                 handler.removeCallbacks(updateSeekBar);
                 handler.removeCallbacks(setINVISIBLE);
                 handler.removeCallbacks(setINVISIBLEExceptLock);
@@ -372,24 +347,22 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             @SuppressLint("DefaultLocale")
             @Override
             public void onProgressChanging(long progress) {
-                ijkMediaPlayer.seekTo(progress);
                 long currentSeconds = progress / 1000;
+                int bitmapPro = (int) (progress / 1000 * 1000);
+                if (bitmapPro % bitmapGap == 0) {
+                    binding.pvImBitmap.setImageBitmap(bitmapHashMap.get(bitmapPro));
+                }
                 binding.pvTvLen0.setText(String.format("%02d:%02d", currentSeconds / 60, currentSeconds % 60));
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar, long progress) {
+                binding.pvImBitmap.setImageBitmap(null);
                 handler.postDelayed(updateSeekBar, 888);
                 seekBar.setScaleY(1);
                 handler.postDelayed(setINVISIBLE, 2000);
                 ijkMediaPlayer.seekTo(progress);
-                if (canPlay) {
-                    ijkMediaPlayer.start();
-                    if (playDanmaku)
-                        danmakuView.seekTo(progress);
-                } else if (playDanmaku) {
-                    danmakuReset = true;
-                }
+                canPlay = canPlayInSb;
             }
         });
         handler.postDelayed(updateSeekBar, 888);
@@ -427,6 +400,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             binding.pvImDan.setVisibility(View.INVISIBLE);
         }
     };
+
     @SuppressLint("ClickableViewAccessibility")
     private void initCl() {
         final int[] clickCount = {0};
@@ -461,10 +435,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                             if (ijkMediaPlayer.isPlaying()) {
                                 ijkMediaPlayer.pause();
                                 canPlay = false;
-                                if (playDanmaku) {
-                                    danmakuView.pause();
-                                    binding.pvImDan.setVisibility(View.VISIBLE);
-                                }
+                                if (playDanmaku) danmakuController.pause();
                                 binding.pvImPause.setImageResource(R.drawable.ic_play);
                                 binding.pvVg.setVisibility(View.VISIBLE);
                                 binding.pvImLc.setVisibility(View.VISIBLE);
@@ -473,10 +444,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                             } else {
                                 ijkMediaPlayer.start();
                                 canPlay = true;
-                                if (playDanmaku && danmakuReset) {
-                                    danmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
-                                    danmakuReset = false;
-                                }else if (playDanmaku) danmakuView.resume();
+                                if (playDanmaku)
+                                    danmakuController.start(ijkMediaPlayer.getCurrentPosition());
                                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
                                 handler.postDelayed(setINVISIBLE, 0);
                                 binding.pvTv0.setText("继续播放");
@@ -504,13 +473,16 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             cl.setHapticFeedbackEnabled(false);
             if (canRestart && progress > 0 && speedACan[1]) {
                 ijkMediaPlayer.seekTo(0);
-                if (playDanmaku) danmakuView.seekTo(0L);
+                if (playDanmaku) {
+                    danmakuControllerClearAll();
+                    danmakuController.start(0L);
+                }
                 cl.setHapticFeedbackEnabled(true);
             } else if (speedACan[1] && !secondLockChanged) {
                 binding.pvTv0.setText("倍速播放中");
                 binding.pvTv0.setVisibility(View.VISIBLE);
                 ijkMediaPlayer.setSpeed(2);
-                DrawHandler.setSpeed(2f);
+                if (playDanmaku) setDanmakuSpeed(2);
                 speedACan[0] = true;
                 cl.setHapticFeedbackEnabled(true);
             }
@@ -521,20 +493,21 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         cl.setOnTouchListener((v, event) -> {
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
-                    if (lockMode == 1) currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                    if (lockMode == 1)
+                        currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
                     if (tapScale && System.currentTimeMillis() - lastClickTime <= 320) {
                         canSecondLockChange = false;
                     } else if (tapScale) lastClickTime = System.currentTimeMillis();
                     speedACan[1] = true;
                     point[0] = event.getX();
                     point[1] = event.getY();
-                    if (lockMode == 1) currentPos = (int)ijkMediaPlayer.getCurrentPosition();
+                    if (lockMode == 1) currentPos = (int) ijkMediaPlayer.getCurrentPosition();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     float offsetX = event.getX() - point[0]; // X 轴上的移动距离
                     float offsetY = event.getY() - point[1]; // Y 轴上的移动距离
                     if (backGesture && point[0] < 25 && event.getX() - point[0] > 80) {
-                        setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+                        setResult(Activity.RESULT_OK, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
                         finish();
                     } else if (abs(offsetX) > 1 || abs(offsetY) > 1) {
                         handler.postDelayed(setINVISIBLE, 0);
@@ -548,8 +521,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     gap = (int) (duration - currentPos);
                                 }
                                 secondLockChanged = true;
+                                changeDanmakuFromUser = true;
                                 toast("快进" + gap / 1000 + "S（" + percent + "%）");
                                 change = currentPos + gap;
+                                int bitmapPro = (int) (change / 1000 * 1000);
+                                if (bitmapPro % bitmapGap == 0) {
+                                    binding.pvImBitmap.setImageBitmap(bitmapHashMap.get(bitmapPro));
+                                }
                             } else if (offsetX < -50 && secondLockTouchMode != verticalMode) {
                                 secondLockTouchMode = horizonMode;
                                 int gap = (int) (((offsetX + 50) / 400) * 23000);
@@ -559,18 +537,23 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     gap = -currentPos;
                                 }
                                 secondLockChanged = true;
+                                changeDanmakuFromUser = true;
                                 toast("快退" + abs(gap) / 1000 + "S（" + percent + "%）");
                                 change = currentPos + gap;
+                                int bitmapPro = (int) (change / 1000 * 1000);
+                                if (bitmapPro % bitmapGap == 0) {
+                                    binding.pvImBitmap.setImageBitmap(bitmapHashMap.get(bitmapPro));
+                                }
                             } else if (offsetY < -50 && secondLockTouchMode != horizonMode) {
                                 secondLockTouchMode = verticalMode;
                                 secondLockChanged = true;
-                                int gap = (int) (((-offsetY -50) / 400) * maxVolume + currentVolume);
+                                int gap = (int) (((-offsetY - 50) / 400) * maxVolume + currentVolume);
                                 int percent = (int) (gap * 100 / maxVolume);
                                 if (percent > 100) {
                                     percent = 100;
                                 }
                                 toast("音量加（" + percent + "%）");
-                                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,gap,0);
+                                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, gap, 0);
                             } else if (offsetY > 50 && secondLockTouchMode != horizonMode) {
                                 secondLockTouchMode = verticalMode;
                                 secondLockChanged = true;
@@ -580,11 +563,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                                     percent = 0;
                                 }
                                 toast("音量减（" + percent + "%）");
-                                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,gap,0);
+                                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, gap, 0);
                             } else if (secondLockChanged) {
                                 secondLockTouchMode = 3;
                                 toast("取消操作");
                                 change = currentPos;
+                                changeDanmakuFromUser = false;
                             }
                             break;
                         }
@@ -598,11 +582,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                         speedACan[1] = false;
                         if (secondLockTouchMode == horizonMode) {
                             ijkMediaPlayer.seekTo(change);
-                            if (playDanmaku && canPlay) {
-                                danmakuView.seekTo((change));
-                            } else if (playDanmaku) {
-                                danmakuReset = true;
-                            }
+                            binding.pvImBitmap.setImageBitmap(null);
                         }
                         binding.pvTv0.setVisibility(View.INVISIBLE);
                         secondLockTouchMode = 3;
@@ -611,7 +591,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                         binding.pvTv0.setVisibility(View.INVISIBLE);
                         ijkMediaPlayer.setSpeed(currentSpeed);
                         speedACan[0] = false;
-                        DrawHandler.setSpeed(currentSpeed);
+                        if (playDanmaku) setDanmakuSpeed(currentSpeed);
                     }
                     break;
                 case MotionEvent.ACTION_POINTER_DOWN:
@@ -622,27 +602,25 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         });
     }
 
+    int basicDanmakuSpeed;
+
+    private void setDanmakuSpeed(float speed) {
+        danmakuConfig.getCommon().setPlaySpeed((int) (100 * speed));
+        if (!isDanmakuSameSpeed)
+            danmakuConfig.getScroll().setMoveTime((long) (8000L * (1 / (basicDanmakuSpeed / 100F)) / speed));
+    }
+
     private void toNextSeconds() {
         long pos = ijkMediaPlayer.getCurrentPosition() + 10000;
-        if (playDanmaku && canPlay) {
-            danmakuView.seekTo(pos);
-        } else if (playDanmaku) {
-            danmakuView.clear();
-            danmakuReset = true;
-        }
         ijkMediaPlayer.seekTo(pos);
+        changeDanmakuFromUser = true;
         toast("快进10S");
     }
 
     private void toBackSeconds() {
         long pos = ijkMediaPlayer.getCurrentPosition() - 10000;
-        if (playDanmaku && canPlay) {
-            danmakuView.seekTo(pos);
-        } else if (playDanmaku) {
-            danmakuView.clear();
-            danmakuReset = true;
-        }
         ijkMediaPlayer.seekTo(pos);
+        changeDanmakuFromUser = true;
         toast("快退10S");
     }
 
@@ -659,6 +637,9 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             runOnUiThread(() -> binding.pvTv0.setVisibility(View.INVISIBLE));
         }
     };
+    Map<String, String> headers = null;
+    boolean useHeaders = false;
+
     private void setVideoPath(Uri uri) throws IOException {
         videoName = getIntent().getStringExtra("name");
         videoPath = getIntent().getStringExtra("path");
@@ -668,20 +649,28 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             } else if (videoPath != null) {
                 videoName = videoPath;
             } else videoName = videoPath = String.valueOf(uri);
-            Map<String, String> headers = (Map<String, String>) getIntent().getSerializableExtra("cookie");
+            headers = (Map<String, String>) getIntent().getSerializableExtra("cookie");
             if (headers != null) {
                 ijkMediaPlayer.setDataSource(this, uri, headers);
-            } else ijkMediaPlayer.setDataSource(this, uri);
-            ijkMediaPlayer.prepareAsync();
+                headers.put("User-Agent", getIntent().getStringExtra("agent"));
+                ijkMediaPlayer.prepareAsync();
+                useHeaders = true;
+            } else {
+                ijkMediaPlayer.setDataSource(this, uri);
+                ijkMediaPlayer.prepareAsync();
+            }
         } else if (videoPath != null) {
             ijkMediaPlayer.setDataSource(videoPath);
             ijkMediaPlayer.prepareAsync();
         } else {
             Toast.makeText(this, "未找到该视频", Toast.LENGTH_SHORT).show();
-            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
             finish();
         }
     }
+
+    int videoWidth, videoHeight;
+    private HashMap<Integer, Bitmap> bitmapHashMap = new HashMap<>();
 
     private void initIjk() throws IOException {
         IjkMediaPlayer.loadLibrariesOnce(null);
@@ -700,7 +689,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "reconnect", 1);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 0);
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", 666 * 1024);
-
         if (playSet.getBoolean("sharp", false))
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         ijkMediaPlayer.setKeepInBackground(true);
@@ -709,10 +697,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         binding.pvCl.initScale(binding.pvFl, videoInfoInSQL[1]);
         binding.pvTvTitle.setText(videoName);
         ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
-            initPlayView(ijkMediaPlayer.getVideoWidth(), ijkMediaPlayer.getVideoHeight());
+            String dataSource = ijkMediaPlayer.getDataSource();
+            videoWidth = ijkMediaPlayer.getVideoWidth();
+            videoHeight = ijkMediaPlayer.getVideoHeight();
+            initPlayView(dataSource);
             ijkMediaPlayer.setSpeed(currentSpeed);
-            if(currentSpeed != 1.00) {
-                String speed = currentSpeed+"X";
+            if (currentSpeed != 1.00) {
+                String speed = currentSpeed + "X";
                 toast(speed);
                 binding.pvTvSpeed.setText(speed);
             }
@@ -734,19 +725,23 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 lockMode = 1;
                 binding.pvCl.canTrans(false);
             }
-            if (!danmakuPlayed && danmakuPrepared) {
-                danmakuView.start(progress);
-                danmakuPlayed = true;
-                if (!playSet.getBoolean("hd_dan", false)) {
-                    binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
-                } else
-                    danmakuView.hide();
+            if (!playSet.getBoolean("hd_dan", false)) {
+                binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
+            } else
+                binding.pvDanmakuView.setVisibility(View.INVISIBLE);
+            if (dataSource == null) dataSource = "";
+            if (!dataSource.startsWith("http")) {
+                binding.pvTvBuff.setVisibility(View.GONE);
+                binding.pvPbBuff.setVisibility(View.GONE);
             }
             binding.pvImRotate.setOnClickListener(this);
+            if (playBitmap) {
+                startBitmapAsync(dataSource);
+            }
         });
         ijkMediaPlayer.setOnErrorListener((iMediaPlayer, i, i1) -> {
             Toast.makeText(PlayVideoActivity.this, "播放错误", Toast.LENGTH_SHORT).show();
-            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+            setResult(Activity.RESULT_CANCELED, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
             finish();
             return true;
         });
@@ -754,71 +749,184 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             int buff = (int) (i * duration / 100);
             binding.pvPb.setSecondaryProgress(buff);
         });
-        String dataSource = ijkMediaPlayer.getDataSource();
-        if (dataSource == null) dataSource = "";
-        if (dataSource.startsWith("http")) {
-            ijkMediaPlayer.setOnInfoListener((mp, what, extra) -> {
-                if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
-                    if (playDanmaku) danmakuView.pause();
-                    handler.postDelayed(updateSpeedRunnable, 0); // 启动定时器
-                    binding.pvPbBuff.setVisibility(View.VISIBLE);
-                    binding.pvTvBuff.setVisibility(View.VISIBLE);
-                } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END || what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
-                    binding.pvTvBuff.setVisibility(View.GONE);
-                    binding.pvPbBuff.setVisibility(View.GONE);
-                    handler.removeCallbacks(updateSpeedRunnable);
-                    if (playDanmaku && canPlay) danmakuView.resume();
+        ijkMediaPlayer.setOnInfoListener((mp, what, extra) -> {
+            if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                if (playDanmaku) danmakuController.pause();
+                handler.postDelayed(updateSpeedRunnable, 0); // 启动定时器
+                binding.pvPbBuff.setVisibility(View.VISIBLE);
+                binding.pvTvBuff.setVisibility(View.VISIBLE);
+            } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END || what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                binding.pvTvBuff.setVisibility(View.GONE);
+                binding.pvPbBuff.setVisibility(View.GONE);
+                handler.removeCallbacks(updateSpeedRunnable);
+                if (playDanmaku) {
+                    if (changeDanmakuFromUser) danmakuControllerClearAll();
+                    if (canPlay) danmakuController.start(ijkMediaPlayer.getCurrentPosition());
+                    changeDanmakuFromUser = false;
                 }
-                return false;
-            });
-        } else {
-            binding.pvTvBuff.setVisibility(View.GONE);
-            binding.pvPbBuff.setVisibility(View.GONE);
-        }
+                if (canPlay) ijkMediaPlayer.start();
+            }
+            return false;
+        });
         ijkMediaPlayer.setOnCompletionListener(iMediaPlayer -> {
             if (playSet.getBoolean("restart", false)) {
                 Toast.makeText(PlayVideoActivity.this, "循环播放", Toast.LENGTH_SHORT).show();
                 ijkMediaPlayer.start();
-                if (playDanmaku) danmakuView.start(0);
+                if (playDanmaku) danmakuController.start(0);
             } else if (playSet.getBoolean("back_finish", true)) {
-                setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+                setResult(Activity.RESULT_OK, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
                 Toast.makeText(PlayVideoActivity.this, "播放结束", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
 
+    private void startBitmapAsync(String path) {
+        Runnable bitmapFail = () -> toast("预览加载失败");
+        int bitmapWidth, bitmapHeight;
+        float m = (float) videoWidth / videoHeight;
+        boolean http = path.startsWith("http");
+        if (videoWidth > videoHeight) {
+            bitmapWidth = 250;
+            bitmapHeight = (int) (250 / m);
+        } else {
+            bitmapHeight = 250;
+            bitmapWidth = (int) (250 * m);
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    if (useHeaders) mediaMetadataRetriever1.setDataSource(path, headers);
+                    else if (http) mediaMetadataRetriever1.setDataSource(path, new HashMap<>());
+                    else mediaMetadataRetriever1.setDataSource(path);
+                    for (int i = 0; i <= duration / 4; i += bitmapGap) {
+                        if (!isInterrupted) {
+                            bitmapHashMap.put(i, Bitmap.createScaledBitmap(mediaMetadataRetriever1.getFrameAtTime(i * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC), bitmapWidth, bitmapHeight, false));
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    runOnUiThread(bitmapFail);
+                }
+                try {
+                    mediaMetadataRetriever1.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    if (useHeaders) mediaMetadataRetriever2.setDataSource(path, headers);
+                    else if (http) mediaMetadataRetriever2.setDataSource(path, new HashMap<>());
+                    else mediaMetadataRetriever2.setDataSource(path);
+                    for (int i = (int) (duration / 4 / bitmapGap) * bitmapGap; i <= duration / 2; i += bitmapGap) {
+                        if (!isInterrupted) {
+                            bitmapHashMap.put(i, Bitmap.createScaledBitmap(mediaMetadataRetriever2.getFrameAtTime(i * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC), bitmapWidth, bitmapHeight, false));
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    runOnUiThread(bitmapFail);
+                }
+                try {
+                    mediaMetadataRetriever2.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    if (useHeaders) mediaMetadataRetriever3.setDataSource(path, headers);
+                    else if (http) mediaMetadataRetriever3.setDataSource(path, new HashMap<>());
+                    else mediaMetadataRetriever3.setDataSource(path);
+                    for (int i = (int) (duration / 4 / bitmapGap) * bitmapGap * 2; i <= duration / 4 * 3; i += bitmapGap) {
+                        if (!isInterrupted) {
+                            bitmapHashMap.put(i, Bitmap.createScaledBitmap(mediaMetadataRetriever3.getFrameAtTime(i * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC), bitmapWidth, bitmapHeight, false));
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    runOnUiThread(bitmapFail);
+                }
+
+                try {
+                    mediaMetadataRetriever3.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    if (useHeaders) mediaMetadataRetriever4.setDataSource(path, headers);
+                    else if (http) mediaMetadataRetriever4.setDataSource(path, new HashMap<>());
+                    else mediaMetadataRetriever4.setDataSource(path);
+                    for (int i = (int) (duration / 4 / bitmapGap) * bitmapGap * 3; i <= duration; i += bitmapGap) {
+                        if (!isInterrupted) {
+                            bitmapHashMap.put(i, Bitmap.createScaledBitmap(mediaMetadataRetriever4.getFrameAtTime(i * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC), bitmapWidth, bitmapHeight, false));
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    runOnUiThread(bitmapFail);
+                }
+
+                try {
+                    mediaMetadataRetriever4.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
+    }
+
     ViewGroup.LayoutParams params;
-    private void adjustPlayView(int videoWith, int videoHeight) {
+
+    private void adjustPlayView() {
         if (choose_suf) params = surfaceView.getLayoutParams();
         else params = textureView.getLayoutParams();
-        if ((float) screenWidth / screenHeight < (float) videoWith / videoHeight) {
+        if (playSet.getBoolean("inner_show", false)) {
+            float m = (float) videoWidth / videoHeight;
+            float r = screenWidth < screenHeight ? (float) screenWidth / 2 : (float) screenHeight / 2;
+            int showHeight = (int) Math.sqrt(4 * r * r / (1 + m * m));
+            params.height = showHeight;
+            params.width = (int) (showHeight * m);
+        } else if ((float) screenWidth / screenHeight < (float) videoWidth / videoHeight) {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            params.height = (int) ((float) videoHeight * screenWidth/ videoWith);
-        } else{
-            params.width = (int) ((float) screenHeight * videoWith / videoHeight);
+            params.height = (int) ((float) videoHeight * screenWidth / videoWidth);
+        } else {
+            params.width = (int) ((float) screenHeight * videoWidth / videoHeight);
             params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         if (choose_suf) surfaceView.setLayoutParams(params);
         else textureView.setLayoutParams(params);
     }
-    private void initPlayView(int videoWith, int videoHeight) {
+
+    private void initPlayView(String dataSource) {
         ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         if (choose_suf) {
             surfaceView = new SurfaceView(this);
-            binding.pvFl.addView(surfaceView,params);
+            binding.pvFl.addView(surfaceView, params);
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(new SurfaceHolder.Callback() {
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
                     if (playSet.getBoolean("horizon", false)) {
-                        if (playSet.getBoolean("un_horizon",false)) {
+                        if (playSet.getBoolean("un_horizon", false)) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-                        }
-                        else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                         horizon = true;
                     }
-                    if (!playSet.getBoolean("stuff",false)) adjustPlayView(videoWith, videoHeight);
+                    if (!playSet.getBoolean("stuff", false)) adjustPlayView();
                     ijkMediaPlayer.setDisplay(holder);
                     if (firstPlay) {
                         firstPlay = false;
@@ -837,18 +945,17 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             });
         } else {
             textureView = new TextureView(this);
-            binding.pvFl.addView(textureView,params);
+            binding.pvFl.addView(textureView, params);
             textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
                 @Override
                 public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
                     if (playSet.getBoolean("horizon", false)) {
-                        if (playSet.getBoolean("un_horizon",false)) {
+                        if (playSet.getBoolean("un_horizon", false)) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-                        }
-                        else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                         horizon = true;
                     }
-                    if (!playSet.getBoolean("stuff",false)) adjustPlayView(videoWith, videoHeight);
+                    if (!playSet.getBoolean("stuff", false)) adjustPlayView();
                     ijkMediaPlayer.setSurface(new Surface(surface));
                     if (firstPlay) {
                         firstPlay = false;
@@ -886,7 +993,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.pv_back) {
-            setResult(Activity.RESULT_OK, new Intent().putExtra("progress",(int) ijkMediaPlayer.getCurrentPosition()));
+            setResult(Activity.RESULT_OK, new Intent().putExtra("progress", (int) ijkMediaPlayer.getCurrentPosition()));
             finish();
         } else if (id == R.id.pv_tv_len0) {
             handler.removeCallbacks(setINVISIBLE);
@@ -904,15 +1011,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             if (ijkMediaPlayer.isPlaying()) {
                 ijkMediaPlayer.pause();
                 canPlay = false;
-                if (playDanmaku) danmakuView.pause();
+                if (playDanmaku) danmakuController.pause();
                 binding.pvImPause.setImageResource(R.drawable.ic_play);
             } else {
                 ijkMediaPlayer.start();
                 canPlay = true;
-                if (playDanmaku && danmakuReset) {
-                    danmakuView.seekTo(ijkMediaPlayer.getCurrentPosition());
-                    danmakuReset = false;
-                }else if (playDanmaku) danmakuView.resume();
+                if (playDanmaku) danmakuController.start(ijkMediaPlayer.getCurrentPosition());
                 binding.pvImPause.setImageResource(R.drawable.ic_pause);
             }
         } else if (id == R.id.pv_tv_speed) {
@@ -922,19 +1026,21 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 horizon = false;
             } else {
-                if (playSet.getBoolean("un_horizon",false)) {
+                if (playSet.getBoolean("un_horizon", false)) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
                 } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 horizon = true;
             }
         } else if (id == R.id.pv_im_dan) {
-            if (danmakuView.isShown()) {
+            if (binding.pvDanmakuView.getVisibility() == View.VISIBLE) {
                 binding.pvImDan.setImageResource(R.drawable.ic_danmaku);
-                danmakuView.hide();
+                danmakuControllerClearAll();
+                binding.pvDanmakuView.setVisibility(View.INVISIBLE);
                 playSet.edit().putBoolean("hd_dan", true).apply();
             } else {
                 binding.pvImDan.setImageResource(R.drawable.ic_danmaku_green);
-                danmakuView.show();
+                if (canPlay) danmakuController.start(ijkMediaPlayer.getCurrentPosition());
+                binding.pvDanmakuView.setVisibility(View.VISIBLE);
                 playSet.edit().putBoolean("hd_dan", false).apply();
             }
         } else if (id == R.id.pv_im_lc) {
@@ -952,7 +1058,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 handler.postDelayed(setINVISIBLEExceptLock, 2000);
                 handler.postDelayed(lockSetInvisible, 2000);
                 playSet.edit().putInt("lock_mode", 0).apply();
-            } else if (lockMode == 1){
+            } else if (lockMode == 1) {
                 lockMode = 2;
                 secondLockChanged = false;
                 binding.pvVg.setVisibility(View.INVISIBLE);
@@ -972,6 +1078,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
+
+    private void danmakuControllerClearAll() {
+        danmakuController.clear(LAYER_TYPE_SCROLL);
+        danmakuController.clear(LAYER_TYPE_BOTTOM_CENTER);
+        danmakuController.clear(LAYER_TYPE_TOP_CENTER);
+    }
+
     private void initScreenInfo() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

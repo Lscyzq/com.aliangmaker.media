@@ -99,14 +99,14 @@
                 app:layout_constraintTop_toTopOf="@+id/wel_im1" />
 
         <ImageView
-                android:id="@+id/wel_im0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/wel_im1"
-                app:layout_constraintEnd_toEndOf="@+id/wel_im1"
-                app:layout_constraintTop_toTopOf="@+id/wel_im1"
-                app:srcCompat="@drawable/ic_forward" />
+            android:id="@+id/wel_im0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/wel_im1"
+            app:layout_constraintEnd_toEndOf="@+id/wel_im1"
+            app:layout_constraintTop_toTopOf="@+id/wel_im1"
+            app:srcCompat="@drawable/ic_forward" />
 
     </com.aliangmaker.media.control.ScaleViewConstraintLayout>
 

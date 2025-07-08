@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
-    <master.flame.danmaku.ui.widget.DanmakuView
+    <com.bytedance.danmaku.render.engine.DanmakuView
         android:id="@+id/pv_danmaku_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -229,6 +229,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pv_pb_buff" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pv_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pv_top"
+        app:layout_constraintVertical_bias="0.45">
+        <ImageView
+            android:id="@+id/pv_im_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
+
+
     <FrameLayout
             android:id="@+id/pv_fl_dark"
             android:layout_width="match_parent" android:layout_height="match_parent"

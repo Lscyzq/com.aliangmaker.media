@@ -41,8 +41,8 @@ public class DownloadEvent {
                     byte[] decompressBytes = decompress(response.body().bytes());//调用解压函数进行解压，返回包含解压后数据的byte数组
                     bufferedSink = Okio.buffer(sink);
                     bufferedSink.write(decompressBytes);
-                    downloadCallback.onDownloadFinished();
                     bufferedSink.close();
+                    downloadCallback.onDownloadFinished();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

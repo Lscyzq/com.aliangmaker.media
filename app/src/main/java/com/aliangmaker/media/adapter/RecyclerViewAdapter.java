@@ -22,8 +22,7 @@ import com.aliangmaker.media.PlayVideoActivity;
 import com.aliangmaker.media.R;
 import com.aliangmaker.media.event.VideoBean;
 import com.aliangmaker.media.fragment.DeleteOrRenameFileFragment;
-import com.aliangmaker.media.fragment.SetDanmakuFragment;
-import com.aliangmaker.media.fragment.UpdateFragment;
+
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private void initAdapter(List<String[]> video, List<Bitmap> bitmaps, RecyclerViewHolder holder, int position) {
         holder.textView.setText(video.get(position)[0]);
         Bitmap bitmap = bitmaps.get(position);
-        if (bitmap != null) holder.imageView.setImageBitmap(bitmap);
+        holder.imageView.setImageBitmap(bitmap);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, PlayVideoActivity.class);
             intent.putExtra("name", video.get(position)[0]);
@@ -96,7 +95,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View view;
         TextView textView;
         ImageView imageView;
-
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView.findViewById(R.id.vl_v);

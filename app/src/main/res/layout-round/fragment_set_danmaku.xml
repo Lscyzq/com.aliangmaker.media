@@ -25,64 +25,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="9dp"
-                android:textSize="17sp"
+                android:layout_marginTop="4dp"
                 android:text="显示行数"
                 android:textColor="#FFFFFF"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
             <TextView
                 android:id="@+id/danmaku_size_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginEnd="4dp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView51"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/danmaku_lines_seekbar" />
+                app:layout_constraintTop_toTopOf="@+id/textView51" />
 
             <TextView
                 android:id="@+id/danmaku_speed_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginEnd="4dp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView52"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/danmaku_size_seekbar" />
+                app:layout_constraintTop_toTopOf="@+id/textView52" />
 
             <TextView
                 android:id="@+id/danmaku_lines_tv"
                 android:layout_width="wrap_content"
-                android:textSize="15sp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
                 android:layout_marginEnd="4dp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView50"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                app:layout_constraintTop_toTopOf="@+id/textView50" />
 
             <TextView
-                android:textSize="17sp"
                 android:id="@+id/textView51"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="5dp"
                 android:text="字体大小"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/danmaku_lines_seekbar" />
 
             <TextView
                 android:id="@+id/textView52"
-                android:textSize="17sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="5dp"
                 android:text="弹幕速度"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/danmaku_size_seekbar" />
 
@@ -101,14 +101,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="弹幕合并"
+                    android:text="弹幕恒速"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/danmaku_same_switch"
+                    android:id="@+id/danmaku_speed_same_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="重复的弹幕将会被合并"
+                    android:text="在视频速度改变时，通过改变弹幕密度使弹幕在速度恒定基础上依然保持与视频内容同步"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="75dp"
                     android:text="居中弹幕"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
@@ -169,60 +169,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="居中排列弹幕类型可显示"
+                    android:text="关闭后将会把居中弹幕转化为滚动弹幕进行展示"
                     android:textColor="#99CCCCCC"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/i6" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/i10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="弹幕重叠"
-                    android:textColor="#FFFFFF"
-                    android:textSize="17sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/danmaku_hold_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:thumb="@drawable/switch_thumb"
-                    app:layout_constraintBottom_toBottomOf="@+id/i10"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:track="@drawable/switch_background" />
-
-                <TextView
-                    android:id="@+id/i12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="弹幕可重叠显示"
-                    android:textColor="#99CCCCCC"
-                    android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/i10" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -274,11 +226,57 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/danmaku_speed_seekbar" />
 
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
+                android:text="顶部间距"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/danmaku_sb_transparency" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
+                android:text="行内间距"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/danmaku_sb_top_margin" />
+
             <com.aliangmaker.media.control.SeekBar
                 android:id="@+id/danmaku_sb_transparency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
+                android:background="@null"
+                android:maxHeight="6dp"
+                android:progressDrawable="@drawable/ba_seekbar"
+                android:thumb="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <com.aliangmaker.media.control.SeekBar
+                android:id="@+id/danmaku_sb_top_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxHeight="6dp"
+                android:progressDrawable="@drawable/ba_seekbar"
+                android:thumb="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <com.aliangmaker.media.control.SeekBar
+                android:id="@+id/danmaku_sb_inner_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="75dp"
                 android:background="@null"
                 android:maxHeight="6dp"
                 android:progressDrawable="@drawable/ba_seekbar"
@@ -286,17 +284,37 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/danmaku_tv_transparency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginEnd="4dp"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/danmaku_speed_seekbar" />
+                app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+            <TextView
+                android:id="@+id/danmaku_tv_top_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/danmaku_tv_inner_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView14" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.aliangmaker.media.control.RollStatueScrollView>

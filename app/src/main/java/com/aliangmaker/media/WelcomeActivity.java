@@ -78,7 +78,7 @@ public class WelcomeActivity extends AppCompatActivity {
         alphaAnim.setFillAfter(true);
         binding.getRoot().startAnimation(alphaAnim);
         SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
-        boolean stage = sharedPreferences.getBoolean("signed", false);
+        boolean stage = sharedPreferences.getBoolean("signed5", false);
         if (stage) {
             binding.welTv3.setVisibility(View.VISIBLE);
             new AsyncVideoList(this,getSharedPreferences("play_set",MODE_PRIVATE).getBoolean("deep",false));
@@ -101,7 +101,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                 translateAnim2.setDuration(600);
                                 translateAnim2.setFillAfter(true);
                                 binding.welCo0.startAnimation(translateAnim2);
-                                TranslateAnimation translateAnim3 = new TranslateAnimation(0f, 40f, 0f, 0f);
+                                TranslateAnimation translateAnim3 = new TranslateAnimation(-40f, 0f, 0f, 0f);
                                 translateAnim3.setDuration(1100);
                                 translateAnim3.setFillAfter(true);
                                 binding.welIm0.startAnimation(translateAnim3);

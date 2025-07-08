@@ -9,6 +9,7 @@
     tools:context=".fragment.SetInitFragment">
 
     <com.aliangmaker.media.control.RollStatueScrollView
+        android:id="@+id/init_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,6 +20,31 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/init_rg2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/init_tv3">
+
+                <RadioButton
+                    android:id="@+id/init_rb12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:buttonTint="@color/main"
+                    android:text="方屏"
+                    android:textColor="#FFFFFF" />
+
+                <RadioButton
+                    android:id="@+id/init_rb13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:buttonTint="@color/main"
+                    android:text="圆屏"
+                    android:textColor="#FFFFFF" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/init_tv0"
@@ -82,13 +108,28 @@
                 android:text="缩放模式"
                 android:textColor="#FFFFFF"
                 android:textSize="17sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/init_tv4" />
+
+            <TextView
+                android:id="@+id/init_tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
+                android:text="屏幕型号"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/init_tv" />
 
             <RadioGroup
                 android:id="@+id/init_rg1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/init_tv1">
 
@@ -118,21 +159,36 @@
                 android:text="若您手表支持多指触控，建议选择双指缩放\n若您选择单指缩放，则可通过双击缩放以及特殊手势进行缩放（单击一次屏幕后快速触摸屏幕并向上/下平移手指，其中向上平移放大，向下平移缩小）"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/init_rg1" />
+
+            <TextView
+                android:id="@+id/init_tv5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="将会对您选择的屏幕型号进行优先适配"
+                android:textColor="#99CCCCCC"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/init_rg2" />
 
             <com.aliangmaker.media.control.ScaleViewConstraintLayout
                 android:id="@+id/init_cl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:visibility="invisible"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/init_tv">
+                app:layout_constraintTop_toBottomOf="@+id/init_tv5">
 
                 <View
                     android:id="@+id/init_btn"
@@ -149,7 +205,7 @@
                     android:layout_width="79dp"
                     android:layout_height="27dp"
                     android:layout_marginStart="18dp"
-                    android:text="开启4.0"
+                    android:text="开启5.0"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="@+id/init_btn"
                     app:layout_constraintStart_toStartOf="@+id/init_btn"
@@ -159,7 +215,7 @@
                     android:id="@+id/init_im0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/init_btn"
                     app:layout_constraintEnd_toEndOf="@+id/init_btn"
                     app:layout_constraintTop_toTopOf="@+id/init_btn"

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
-    <master.flame.danmaku.ui.widget.DanmakuView
+    <com.bytedance.danmaku.render.engine.DanmakuView
         android:id="@+id/pv_danmaku_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,12 +31,12 @@
         android:id="@+id/pv_tv0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_marginTop="15dp"
-        android:textSize="15sp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/ba_round_grey_video"
         android:gravity="center"
+        android:padding="5dp"
         android:text="倍速播放中"
+        android:textSize="15sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,13 +65,13 @@
         android:id="@+id/pv_tc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="7dp"
+        android:layout_marginTop="4dp"
         android:format12Hour="hh:mm"
         android:format24Hour="HH:mm"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/pv_back"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pv_back" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pv_danmaku_view" />
 
     <com.aliangmaker.media.control.SteppedSeekBar
         android:id="@+id/pv_sb"
@@ -203,12 +203,12 @@
         android:id="@+id/pv_tv_speed"
         android:layout_width="40dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="4dp"
-        android:textSize="15sp"
+        android:layout_marginEnd="35dp"
         android:gravity="right|center_vertical"
         android:text="倍速"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/pv_back"
-        app:layout_constraintEnd_toStartOf="@+id/pv_tc"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/pv_back" />
 
     <ProgressBar
@@ -231,6 +231,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pv_pb_buff" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pv_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pv_top"
+        app:layout_constraintVertical_bias="0.45">
+        <ImageView
+            android:id="@+id/pv_im_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
     <FrameLayout
             android:id="@+id/pv_fl_dark"
             android:layout_width="match_parent" android:layout_height="match_parent"
