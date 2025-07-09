@@ -41,7 +41,7 @@ public class ServerRequest {
                 if (response.isSuccessful()) {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().string());
-                        serverCallBack.getVersionSuccess(jsonObject.getString("lasted_version"), jsonObject.getString("happy_version"), jsonObject.getString("notice_version"));
+                        serverCallBack.getVersionSuccess(jsonObject.getInt("code"), jsonObject.getString("happy_version"), jsonObject.getString("notice_version"));
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -85,7 +85,7 @@ public class ServerRequest {
         return decryptedText.toString();
     }
     public interface versionCallBack {
-        void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion);
+        void getVersionSuccess(Integer code, String happyVersion, String noticeVersion);
 
         void getVersionFail();
     }

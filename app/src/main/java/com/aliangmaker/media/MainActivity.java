@@ -3,6 +3,8 @@ package com.aliangmaker.media;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         serverRequest.getVersion(new ServerRequest.versionCallBack() {
             boolean isUpdate, isNotice;
             @Override
-            public void getVersionSuccess(String lastedVersion, String happyVersion, String noticeVersion) {
-                isUpdate = canUpdate(getString(R.string.version), lastedVersion);
+            public void getVersionSuccess(Integer code, String happyVersion, String noticeVersion) {
+                isUpdate = code > getPackageVersionCode();
                 isNotice = !noticeVersion.equals(sharedPreferences.getString("notice", "1"));
                 if (isUpdate || isNotice) {
                     serverRequest.getUrl(new ServerRequest.urlCallBack() {
@@ -154,15 +156,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private boolean canUpdate(String current, String lasted) {
-        if (current.equals(lasted)) return false;
-        String[] cur = current.split("\\.");
-        String[] las = lasted.split("\\.");
-        for (int i = 0; i <= 2; i++) {
-            if (Integer.parseInt(cur[i]) < Integer.parseInt(las[i])) return true;
+    public int getPackageVersionCode() {
+        try {
+            PackageManager manager = getPackageManager();
+            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+            return info.versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
-        return false;
     }
+
 
     @Override
     protected void onDestroy() {
