@@ -33,14 +33,20 @@ public class SetDisplayFragment extends Fragment {
         binding.sdSwGone.setChecked(sharedPreferences.getBoolean("wipe", false));
         binding.sdSwStuff.setChecked(sharedPreferences.getBoolean("stuff",false));
         binding.sdSwInner.setChecked(sharedPreferences.getBoolean("inner_show",false));
-        binding.sdSwBitmap.setChecked(sharedPreferences.getBoolean("bitmap",true));
         if (sharedPreferences.getBoolean("dp_hd1",false)) binding.title.setVisibility(View.GONE);
         boolean dark = sharedPreferences.getBoolean("dark", false);
+        boolean bitmap = sharedPreferences.getBoolean("bitmap",true);
+        binding.sdSwBitmap.setChecked(bitmap);
         binding.sdSwDark.setChecked(dark);
+        binding.sdSbBitmapSize.setMax(600);
         binding.sdSbDark.setMax(255);
         if (dark) {
             binding.sdClSb.setVisibility(View.VISIBLE);
             binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 125));
+        }
+        if (bitmap) {
+            binding.sdCl1.setVisibility(View.VISIBLE);
+            binding.sdSbBitmapSize.setProgress(sharedPreferences.getInt("size_pg",250));
         }
         return binding.getRoot();
     }
@@ -60,6 +66,7 @@ public class SetDisplayFragment extends Fragment {
             binding.title.setVisibility(View.GONE);
             return true;
         });
+        binding.sdTvBitmapSize.setText(sharedPreferences.getInt("size_pg",250) + "");
         binding.sdTvDark.setText(sharedPreferences.getInt("dark_pg", 125) + "");
         binding.sdSwSize.setOnCheckedChangeListener((compoundButton, b) -> {
             sharedPreferences.edit().putBoolean("small_tv", b).apply();
@@ -73,16 +80,23 @@ public class SetDisplayFragment extends Fragment {
             sharedPreferences.edit().putBoolean("wipe", b).apply();
         });
         binding.sdSwDark.setOnCheckedChangeListener((compoundButton, b) -> {
+            sharedPreferences.edit().putBoolean("dark", b).apply();
             if (b) {
-                sharedPreferences.edit().putBoolean("dark", true).apply();
                 binding.sdClSb.setVisibility(View.VISIBLE);
                 binding.sdSbDark.setProgress(sharedPreferences.getInt("dark_pg", 125));
             } else {
-                sharedPreferences.edit().putBoolean("dark", false).apply();
-                getActivity().runOnUiThread(() -> binding.sdClSb.setVisibility(View.GONE));
+                binding.sdClSb.setVisibility(View.GONE);
             }
         });
-        binding.sdSwBitmap.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("bitmap",b).apply());
+        binding.sdSwBitmap.setOnCheckedChangeListener((compoundButton, b) -> {
+            sharedPreferences.edit().putBoolean("bitmap",b).apply();
+            if (b) {
+                binding.sdCl1.setVisibility(View.VISIBLE);
+                binding.sdSbBitmapSize.setProgress(sharedPreferences.getInt("size_pg",250));
+            } else {
+                binding.sdCl1.setVisibility(View.GONE);
+            }
+        });
         binding.sdSwInner.setOnCheckedChangeListener((compoundButton, b) -> sharedPreferences.edit().putBoolean("inner_show",b).apply());
         binding.sdNext.setOnClickListener(view -> {
             Toast.makeText(getContext(), "即将停止", Toast.LENGTH_SHORT).show();
@@ -91,6 +105,26 @@ public class SetDisplayFragment extends Fragment {
             sharedPreferences1.edit().putFloat("dpi",1.00f).commit();
             Handler handler = new Handler();
             handler.postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 500);
+        });
+        binding.sdSbBitmapSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (b) {
+                    progress = i;
+                    binding.sdTvBitmapSize.setText(i + "");
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                sharedPreferences.edit().putInt("size_pg", progress).apply();
+            }
         });
         binding.sdSbDark.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress;

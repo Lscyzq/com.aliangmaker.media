@@ -16,6 +16,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sd_cl_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv17">
+
+                <TextView
+                    android:id="@+id/sd_tv18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="缩略图大小"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/sd_tv_bitmap_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/sd_tv18"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/sd_tv18" />
+
+                <com.aliangmaker.media.control.SeekBar
+                    android:id="@+id/sd_sb_bitmap_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:maxHeight="6dp"
+                    android:progressDrawable="@drawable/ba_seekbar"
+                    android:thumb="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sd_tv18"
+                    tools:targetApi="lollipop" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <com.aliangmaker.media.control.ScaleViewConstraintLayout
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -136,23 +181,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/sd_tv4"
                 app:track="@drawable/switch_background" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/sd_cl_sb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:visibility="gone"
-                android:layout_marginEnd="4dp"
-                app:layout_constraintTop_toBottomOf="@+id/sd_tv7"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sd_tv7">
 
                 <TextView
-                    android:textSize="17sp"
                     android:id="@+id/sd_tv8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
                     android:layout_marginStart="4dp"
                     android:text="暗压程度"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -161,20 +209,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/sd_tv8"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/sd_tv8" />
 
 
-                <com.aliangmaker.media.control.SeekBar android:id="@+id/sd_sb_dark"
+                <com.aliangmaker.media.control.SeekBar
+                    android:id="@+id/sd_sb_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:thumb="@null"
                     android:background="@null"
                     android:maxHeight="6dp"
                     android:progressDrawable="@drawable/ba_seekbar"
+                    android:thumb="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sd_tv8"
-                    app:layout_constraintEnd_toEndOf="parent" tools:targetApi="lollipop"/>
+                    tools:targetApi="lollipop" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,7 +270,7 @@
                 android:text="圆屏内嵌"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sd_tv17" />
+                app:layout_constraintTop_toBottomOf="@+id/sd_cl_1" />
 
             <TextView
                 android:id="@+id/sd_tv7"
@@ -260,7 +310,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="拖动进度时将显示小窗预览，但会加重功耗（部分视频不支持）"
+                android:text="拖动进度时将显示小窗预览，但会加重功耗"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -327,7 +377,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="75dp"
                 android:text="重启将会进入界面设置"
                 android:textColor="#99CCCCCC"
                 android:textSize="13sp"

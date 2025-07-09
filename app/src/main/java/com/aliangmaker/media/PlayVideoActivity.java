@@ -628,7 +628,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         binding.pvTv0.setText(info);
         binding.pvTv0.setVisibility(View.VISIBLE);
         handler.removeCallbacks(setToastInvisible);
-        handler.postDelayed(setToastInvisible, 1000);
+        handler.postDelayed(setToastInvisible, 1500);
     }
 
     Runnable setToastInvisible = new Runnable() {
@@ -717,7 +717,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             } else progress = getIntent().getIntExtra("progress", 0);
             if (progress > 0) {
                 ijkMediaPlayer.seekTo(progress);
-                Toast.makeText(this, "3S内长按重播", Toast.LENGTH_SHORT).show();
+                toast("3S内长按重播");
             }
             handler.postDelayed(() -> canRestart = false, 3000);
             if (playSet.getInt("lock_mode", 0) == 1) {
@@ -786,12 +786,13 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         int bitmapWidth, bitmapHeight;
         float m = (float) videoWidth / videoHeight;
         boolean http = path.startsWith("http");
+        int size = playSet.getInt("size_pg", 250);
         if (videoWidth > videoHeight) {
-            bitmapWidth = 250;
-            bitmapHeight = (int) (250 / m);
+            bitmapWidth = size;
+            bitmapHeight = (int) (size / m);
         } else {
-            bitmapHeight = 250;
-            bitmapWidth = (int) (250 * m);
+            bitmapHeight = size;
+            bitmapWidth = (int) (size * m);
         }
         new Thread() {
             @Override

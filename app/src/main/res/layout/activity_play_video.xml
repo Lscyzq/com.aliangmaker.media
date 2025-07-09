@@ -26,17 +26,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/pv_tv0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="15sp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ba_round_grey_video"
         android:gravity="center"
+        android:padding="5dp"
         android:text="倍速播放中"
+        android:textSize="15sp"
         android:visibility="invisible"
-        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pv_tv_title" />

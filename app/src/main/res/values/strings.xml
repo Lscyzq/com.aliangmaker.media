@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">凉腕播放器</string>
-    <string name="stage">内测版</string>
+    <string name="stage">公测版</string>
     <string name="version">5.0.0</string>
     <string name="up_title">红日追梦|踏坎偕行</string>
     <string name="up_body">
@@ -28,9 +28,11 @@
         \n8.修复初始化界面动画组件显示问题
         \n9.优化圆屏播放界面UI体验
         \n10.优化初始化设置体验
-        \n11.换新「应用信息」中图标设计（Powered By js.design）
-        \n12.纠正弹幕设置界面标点（优化文字阅读体验）
-        \n13.更新使用协议相关内容
+        \n11.优化播放界面Toast
+        \n12.换新「应用信息」中图标设计（Powered By js.design）
+        \n13.延长播放界面通知展示时间
+        \n14.纠正弹幕设置界面标点（优化文字阅读体验）
+        \n15.更新使用协议相关内容
     </string>
     <string name="none_volume">此调音与系统音量完全隔离，当您觉得系统最低音量依然过高或者系统每阶音量差距过大时，可调节此功能以强制调节视频音量或者减少每阶音量差距</string>
     <string name="handle">
