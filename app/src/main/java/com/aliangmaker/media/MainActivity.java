@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         String[] cur = current.split("\\.");
         String[] las = lasted.split("\\.");
         for (int i = 0; i <= 2; i++) {
-            if (Integer.parseInt(cur[i]) > Integer.parseInt(las[i])) return false;
+            if (Integer.parseInt(cur[i]) < Integer.parseInt(las[i])) return true;
         }
-        return true;
+        return false;
     }
 
     @Override
