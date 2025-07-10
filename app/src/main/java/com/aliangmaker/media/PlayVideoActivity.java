@@ -580,10 +580,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     if (lockMode == 1 && secondLockChanged) {
                         secondLockChanged = false;
                         speedACan[1] = false;
-                        if (secondLockTouchMode == horizonMode) {
-                            ijkMediaPlayer.seekTo(change);
-                            binding.pvImBitmap.setImageBitmap(null);
-                        }
+                        if (secondLockTouchMode == horizonMode) ijkMediaPlayer.seekTo(change);
+                        binding.pvImBitmap.setImageBitmap(null);
                         binding.pvTv0.setVisibility(View.INVISIBLE);
                         secondLockTouchMode = 3;
                     }
