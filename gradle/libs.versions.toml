@@ -1,0 +1,24 @@
+[versions]
+agp = "8.10.1"
+constraintlayout = "2.1.4"
+cardview = "1.0.0"
+eventbus = "3.0.0"
+danmakuRenderEngine = "0.1.0"
+ijkplayerJava = "0.8.8"
+appcompat = "1.6.1"
+okhttp = "3.12.1"
+viewpager2 = "1.0.0"
+
+[libraries]
+cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+danmaku-render-engine = { module = "com.github.bytedance:danmaku-render-engine", version.ref = "danmakuRenderEngine" }
+eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
+ijkplayer-java = { module = "tv.danmaku.ijk.media:ijkplayer-java", version.ref = "ijkplayerJava" }
+
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
