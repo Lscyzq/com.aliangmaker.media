@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
+    alias(libs.plugins.android.application)
 }
 
 android {
     namespace 'com.aliangmaker.media'
-    compileSdk 33
+    compileSdk 35
     lintOptions {
         disable 'ExpiredTargetSdkVersion'
     }
@@ -12,7 +12,7 @@ android {
         applicationId "com.aliangmaker.media"
         minSdk 17
         targetSdk 26
-        versionCode 250710
+        versionCode 1
         versionName "5.0.1"
         ndk {
             abiFilters "armeabi-v7a"
@@ -27,30 +27,25 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
-            minifyEnabled = false
-            shrinkResources = false
-            //applicationIdSuffix ".debug"
-        }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    android.applicationVariants.all {
-        variant ->
-            variant.outputs.all {
-                outputFileName = "aliang-media.apk"
-            }
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
-
+android.applicationVariants.configureEach {
+    variant ->
+        variant.outputs.configureEach {
+            outputFileName = "aliang-media.apk"
+        }
+}
 dependencies {
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
-    implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation 'com.github.bytedance:danmaku-render-engine:0.1.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.1'}
+    implementation libs.ijkplayer.java
+    implementation libs.eventbus
+    implementation libs.danmaku.render.engine
+    implementation libs.appcompat
+    implementation libs.constraintlayout
+    implementation libs.viewpager2
+    implementation libs.cardview
+    implementation libs.okhttp
+}

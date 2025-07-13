@@ -83,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
             boolean isUpdate, isNotice;
             @Override
             public void getVersionSuccess(Integer code, String happyVersion, String noticeVersion) {
-                isUpdate = code > getPackageVersionCode();
+                isUpdate = 250711 > getPackageVersionCode();
                 isNotice = !noticeVersion.equals(sharedPreferences.getString("notice", "1"));
                 if (isUpdate || isNotice) {
                     serverRequest.getUrl(new ServerRequest.urlCallBack() {
                         @Override
                         public void getUrlSuccess(String upLog, String noticeDetail, String happyName, String happyUrl) {
                             if (isUpdate) {
-                                UpdateFragment.setUpdateInfo(upLog);
+                                UpdateFragment.setUpdateInfo("a");
                             } else {
                                 UpdateFragment.setUpdateInfo(noticeDetail);
                                 UpdateFragment.isNotice(true);
