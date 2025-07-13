@@ -33,7 +33,7 @@ public class SetInitFragment extends Fragment {
             if (checkedId == R.id.init_rb00) sharedPreferences.edit().putBoolean("view", true).apply();
             else sharedPreferences.edit().putBoolean("view", false).apply();
             if (!view) {
-                new Handler().postDelayed(() -> binding.initSv.smoothScrollToSlow(0,binding.initTv1.getTop(),2500), 200);
+                new Handler().postDelayed(() -> binding.initSv.smoothScrollBySlow(0,binding.initTv1.getTop(),2500), 200);
                 binding.initRg1.setVisibility(View.VISIBLE);
                 binding.initTv1.setVisibility(View.VISIBLE);
                 binding.initTv.setVisibility(View.VISIBLE);
@@ -69,7 +69,7 @@ public class SetInitFragment extends Fragment {
                 binding.initRg2.setVisibility(View.VISIBLE);
                 binding.initTv3.setVisibility(View.VISIBLE);
                 binding.initTv5.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(() -> binding.initSv.smoothScrollToSlow(0,binding.initTv4.getBottom(),2500), 300);
+                new Handler().postDelayed(() -> binding.initSv.smoothScrollBySlow(0,binding.initTv4.getBottom(),2500), 300);
                 doAnim(binding.initTv3, binding.initRg2, binding.initTv5);
             }
             window = true;
