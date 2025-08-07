@@ -1,5 +1,7 @@
 package com.aliangmaker.media;
 
+import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.CMD_PAUSE_ITEM;
+import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.CMD_SET_TOUCHABLE;
 import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_BOTTOM_CENTER;
 import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_SCROLL;
 import static com.bytedance.danmaku.render.engine.utils.ConstantsKt.LAYER_TYPE_TOP_CENTER;
@@ -17,6 +19,8 @@ import android.content.res.Configuration;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.media.*;
 import android.net.Uri;
@@ -57,6 +61,8 @@ import com.aliangmaker.media.event.SQLiteOpenHelper;
 import com.bytedance.danmaku.render.engine.DanmakuView;
 import com.bytedance.danmaku.render.engine.control.DanmakuConfig;
 import com.bytedance.danmaku.render.engine.control.DanmakuController;
+import com.bytedance.danmaku.render.engine.data.DanmakuData;
+import com.bytedance.danmaku.render.engine.touch.IItemClickListener;
 
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
@@ -122,9 +128,9 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         playSet = getSharedPreferences("play_set", MODE_PRIVATE);
         currentSpeed = playSet.getFloat("speed", 1.00f);
         choose_suf = playSet.getBoolean("view", true);
-        playBitmap = playSet.getBoolean("bitmap", true) && !getIntent().getBooleanExtra("live_mode",false);
+        playBitmap = playSet.getBoolean("bitmap", true) && !getIntent().getBooleanExtra("live_mode", false);
         sqLiteOpenHelper = new SQLiteOpenHelper(this);//初始化数据库
-        playDanmaku = getIntent().getStringExtra("danmaku") != null && !getIntent().getBooleanExtra("live_mode",false);
+        playDanmaku = getIntent().getStringExtra("danmaku") != null && !getIntent().getBooleanExtra("live_mode", false);
         if (playBitmap) {
             mediaMetadataRetriever1 = new MediaMetadataRetriever();
             mediaMetadataRetriever2 = new MediaMetadataRetriever();
@@ -243,6 +249,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         DanmakuView danmakuView = findViewById(R.id.pv_danmaku_view);
         danmakuController = danmakuView.getController();
         danmakuConfig = danmakuController.getConfig();
+        danmakuController.setItemClickListener((danmakuData, rectF, pointF) -> danmakuController.executeCommand(CMD_SET_TOUCHABLE, null, false));
         SAXParser reader = SAXParserFactory.newInstance().newSAXParser();
         BiliDanmakuModeHandler biliDanmakuModeHandler = new BiliDanmakuModeHandler(sharedPreferences.getBoolean("style", true), this, (sharedPreferences.getInt("size", 45) + 20) / 100.0f, danmakuData -> {
             danmakuController.setData(danmakuData, 0);
@@ -258,7 +265,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             danmakuConfig.getScroll().setMoveTime((long) (8000L * (1 / (basicDanmakuSpeed / 100F))));
         });
         String danmakuUrl = getIntent().getStringExtra("danmaku");
-        if (danmakuUrl.startsWith("http") || danmakuUrl.startsWith("https")) {
+        if (danmakuUrl.startsWith("http")) {
             new DownloadEvent(danmakuUrl, this, true, () -> {
                 try {
                     reader.parse(new File(getExternalFilesDir("danmaku").getAbsolutePath() + "/danmaku.xml"), biliDanmakuModeHandler);
