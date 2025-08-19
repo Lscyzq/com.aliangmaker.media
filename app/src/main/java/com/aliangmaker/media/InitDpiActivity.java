@@ -72,7 +72,7 @@ public class InitDpiActivity extends AppCompatActivity {
             initSeeBar();
             initTap();
         } else {
-            startActivity(new Intent(this,WelcomeActivity.class));
+            startActivity(new Intent(this, WelcomeActivity.class));
             finish();
         }
 

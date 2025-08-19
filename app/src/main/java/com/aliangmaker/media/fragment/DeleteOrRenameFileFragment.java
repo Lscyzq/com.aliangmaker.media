@@ -1,5 +1,6 @@
 package com.aliangmaker.media.fragment;
 
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -56,6 +57,7 @@ public class DeleteOrRenameFileFragment extends Fragment {
             } else if (file.renameTo(newFile)) {
                 info = "重命名成功";
                 ViewPageAdapter.recyclerViewAdapter.renameItem(getArguments().getInt("pos"), newName, newPath);
+                MediaScannerConnection.scanFile(getContext(), new String[]{filePath, newFile.getAbsolutePath()}, new String[]{"video/*","video/*"}, null);
                 getActivity().onBackPressed();
             } else {
                 info = "重命名失败";
@@ -68,6 +70,7 @@ public class DeleteOrRenameFileFragment extends Fragment {
                 if (isDeleted) {
                     info = "删除成功";
                     ViewPageAdapter.recyclerViewAdapter.removeItem(getArguments().getInt("pos"));
+                    MediaScannerConnection.scanFile(getContext(), new String[]{filePath}, new String[]{"video/*"}, null);
                 } else {
                     info = "删除失败";
                 }

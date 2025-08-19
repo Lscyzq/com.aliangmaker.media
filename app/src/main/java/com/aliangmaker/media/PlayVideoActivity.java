@@ -302,7 +302,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             binding.pvFlDark.setBackgroundColor(Color.argb(playSet.getInt("dark_pg", 125), 0, 0, 0));
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     private void initPoWin(TextView tv) {
         String[] items = {"0.50", "1.00", "1.25", "1.50", "2.00"};
         popupWindow = new ListPopupWindow(this);

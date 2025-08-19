@@ -22,7 +22,6 @@ public class AsyncVideoList {
     List<String[]> videoInfoList0 = new ArrayList<>();
     List<Bitmap> bitmaps = new ArrayList<>();
     Context context;
-
     private void getFiles(String path) {
         File file = new File(path);
         File[] files = file.listFiles();
@@ -40,6 +39,8 @@ public class AsyncVideoList {
     }
 
     private Bitmap getBitmapFromVideo(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) return null;
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(filePath);
         return mediaMetadataRetriever.getFrameAtTime();
